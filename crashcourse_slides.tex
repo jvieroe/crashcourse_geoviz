@@ -1,6 +1,7 @@
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 %
 \documentclass[
   8pt,
@@ -83,7 +84,11 @@
 \hypersetup{
   pdftitle={Crash course: Geospatial Datavisualisering},
   pdfauthor={Jeppe Vierø},
-  hidelinks,
+  colorlinks=true,
+  linkcolor={Maroon},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={blue},
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
 \newif\ifbibliography
@@ -176,66 +181,47 @@
 \hypertarget{xx}{%
 \section{xx}\label{xx}}
 
-\hypertarget{afgruxe6nsning}{%
-\section{Afgrænsning}\label{afgruxe6nsning}}
+\hypertarget{introduktion}{%
+\section{Introduktion}\label{introduktion}}
 
-\begin{frame}{abc}
-\protect\hypertarget{abc}{}
-text
+\begin{frame}{Motivation}
+\protect\hypertarget{motivation}{}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.90\textwidth]{pictures/Minard.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Afgrænsning}
+\protect\hypertarget{afgruxe6nsning}{}
+Jeg (regner med) at snakke \textbf{en del} om:
+
+\begin{itemize}
+\item
+  Hvad \textbf{spatial} data er
+\item
+  Hvordan vi kan bruge spatiale datakilder til at \textbf{visualisere}
+  andet data
+\item
+  Hvordan vi gør det i \texttt{R}
+\end{itemize}
+
+\bigskip
+
+Jeg kommer \textbf{ikke} til at snakke (så meget) om:
+
+\begin{itemize}
+\item
+  Datawrangling og -manipulation med geospatial data
+\item
+  Datavisualisering generelt
+\end{itemize}
 \end{frame}
 
 \hypertarget{section}{%
 \section{section}\label{section}}
 
-\begin{frame}[fragile]{R Markdown}
-\protect\hypertarget{r-markdown}{}
-This is an R Markdown document. Markdown is a simple formatting syntax
-for authoring HTML, PDF, and MS Word documents. For more details on
-using R Markdown see \url{http://rmarkdown.rstudio.com}.
-
-When you click the \textbf{Knit} button a document will be generated
-that includes both content as well as the output of any embedded R code
-chunks within the document. You can embed an R code chunk like this:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{summary}\NormalTok{(cars)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]{Including Plots}
-\protect\hypertarget{including-plots}{}
-You can also embed plots, for example:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{plot}\NormalTok{(pressure)}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{crashcourse_slides_files/figure-beamer/pressure-1.pdf}
-
-Note that the \texttt{echo\ =\ FALSE} parameter was added to the code
-chunk to prevent printing of the R code that generated the plot.
-\end{frame}
-
-\begin{frame}{XX}
-\protect\hypertarget{xx-1}{}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.90\textwidth]{pictures/Minard.png}
-\end{figure}
+\begin{frame}{section}
 \end{frame}
 
 \begin{frame}[fragile]{load}
@@ -430,12 +416,94 @@ arbejde med:
 \columnsend
 \end{frame}
 
-\hypertarget{openstreetmap}{%
-\section{OpenStreetMap}\label{openstreetmap}}
+\hypertarget{datakilder}{%
+\section{Datakilder}\label{datakilder}}
 
-\begin{frame}{xx}
-\protect\hypertarget{xx-2}{}
+\begin{frame}{DAGI}
+\protect\hypertarget{dagi}{}
+\columnsbegin
+
+\column{.7\textwidth}
+
+\begin{quote}
+``\textbf{Danmarks Administrative Geografiske Inddeling (DAGI)}
+beskriver landets administrative og geografiske inddeling i kommuner,
+regioner, sogne, retskredse, politikredse, postnumre, opstillingskredse
+og lignende.'' --
+\href{https://dawadocs.dataforsyningen.dk/dok/dagi}{DAWA}
+\end{quote}
+
+\medskip
+
+DAGI
+
+text \href{https://dawadocs.dataforsyningen.dk/dok/dagi}{Danmarks
+Administrative Geografiske Inddeling (DAGI)}
+
+\column{.3\textwidth}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.90\textwidth]{pictures/logo_sdfe.png}
+\end{figure}
+
+\columnsend
+\end{frame}
+
+\begin{frame}[fragile]{DAGI}
+\protect\hypertarget{dagi-1}{}
+\begin{itemize}
+\item
+  Vi kan let tilgå en masse crisp data på de danske administrative
+  enheder vha.
+  \href{https://dawadocs.dataforsyningen.dk/dok/api\#dagi}{den
+  tilhørende API}
+\item
+  API'en er plug 'n play, hvor vi kan vælge de
+  \textcolor{purple}{enheder}, vi skal bruge, og specificere
+  \textcolor{teal}{geojson}:
+\item
+  \texttt{https://api.dataforsyningen.dk/\textbackslash{}textcolor\{purple\}\{kommuner\}?format=\textbackslash{}textcolor\{teal\}\{geojson\}}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{DAGI: et eksempel}
+\protect\hypertarget{dagi-et-eksempel}{}
+\columnsbegin
+\column{.55\textwidth}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{url }\OtherTok{\textless{}{-}} 
+  \StringTok{"https://api.dataforsyningen.dk/kommuner?format=geojson"}
+
+\NormalTok{kommuner }\OtherTok{\textless{}{-}} 
+  \FunctionTok{read\_sf}\NormalTok{(url)}
+
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ kommuner) }\SpecialCharTok{+}
+  \FunctionTok{epitheme\_map}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\column{.45\textwidth}
+
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-10-1.pdf}
+\columnsend
+\end{frame}
+
+\begin{frame}{OpenStreetMap}
+\protect\hypertarget{openstreetmap}{}
 text \href{https://www.openstreetmap.org/about}{link}
+\end{frame}
+
+\hypertarget{indflyvning-til-vuxe6rktuxf8jer-i-r}{%
+\section{\texorpdfstring{Indflyvning til værktøjer i
+\texttt{R}}{Indflyvning til værktøjer i R}}\label{indflyvning-til-vuxe6rktuxf8jer-i-r}}
+
+\begin{frame}{text}
+\protect\hypertarget{text}{}
+xx
 \end{frame}
 
 \end{document}

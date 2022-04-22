@@ -1,19 +1,20 @@
 ---
-title: "Crash course: Geospatial Datavisualisering"
+title: 'Crash course: Geospatial Datavisualisering'
+author: "Jeppe Vierø"
+date: \today
 output:
   beamer_presentation:
     theme: "CambridgeUS"
     colortheme: "default"
-    toc: true
+    toc: yes
     slide_level: 2
-    keep_tex: TRUE
+    keep_tex: yes
     highlight: pygments
     includes:
-            in_header: header.tex
-author: Jeppe Vierø
-date: \today
-classoption: aspectratio=169
+      in_header: header.tex
+classoption: "aspectratio=169"
 fontsize: 8pt
+urlcolor: blue
 ---
 
 ```{r setup, include=FALSE}
@@ -22,41 +23,61 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # xx
 
-# Afgrænsning
-
-## abc
-
-text
-
-# section
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 
-## XX
+# Introduktion
+
+## Motivation
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.90\textwidth]{pictures/Minard.png}
 \end{figure}
+
+
+## Afgrænsning
+
+Jeg (regner med) at snakke __en del__ om:
+
+* Hvad __spatial__ data er
+
+* Hvordan vi kan bruge spatiale datakilder til at __visualisere__ andet data
+
+* Hvordan vi gør det i `R`
+
+
+\bigskip
+
+Jeg kommer __ikke__ til at snakke (så meget) om:
+
+* Datawrangling og -manipulation med geospatial data
+
+* Datavisualisering generelt
+
+
+# section
+
+<!-- ## R Markdown -->
+
+<!-- This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>. -->
+
+<!-- When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this: -->
+
+<!-- ```{r cars} -->
+<!-- summary(cars) -->
+<!-- ``` -->
+
+<!-- ## Including Plots -->
+
+<!-- You can also embed plots, for example: -->
+
+<!-- ```{r pressure} -->
+<!-- plot(pressure) -->
+<!-- ``` -->
+
+<!-- Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. -->
+
+
 
 
 ## load
@@ -236,10 +257,97 @@ ggplot() +
 
 
 
-# OpenStreetMap
+# Datakilder
 
-## xx
+## DAGI
+
+\columnsbegin
+
+\column{.7\textwidth}
+
+> "__Danmarks Administrative Geografiske Inddeling (DAGI)__ beskriver landets administrative og geografiske inddeling i kommuner, regioner, sogne, retskredse, politikredse, postnumre, opstillingskredse og lignende." <br> -- [DAWA](https://dawadocs.dataforsyningen.dk/dok/dagi)
+
+\medskip
+
+DAGI
+
+text [Danmarks Administrative Geografiske Inddeling (DAGI)](https://dawadocs.dataforsyningen.dk/dok/dagi) 
+
+
+
+
+
+\column{.3\textwidth}
+
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.90\textwidth]{pictures/logo_sdfe.png}
+\end{figure}
+
+
+\columnsend
+
+
+## DAGI
+
+* Vi kan let tilgå en masse crisp data på de danske administrative enheder vha. [den tilhørende API](https://dawadocs.dataforsyningen.dk/dok/api#dagi)
+
+* API'en er plug 'n play, hvor vi kan vælge de \textcolor{purple}{enheder}, vi skal bruge, og specificere \textcolor{teal}{geojson}:
+
+
+* `https://api.dataforsyningen.dk/\textcolor{purple}{kommuner}?format=\textcolor{teal}{geojson}`
+
+
+## DAGI: et eksempel
+
+\columnsbegin
+\column{.55\textwidth}
+
+```{r, eval=F}
+url <- 
+  "https://api.dataforsyningen.dk/kommuner?format=geojson"
+
+kommuner <- 
+  read_sf(url)
+
+ggplot() +
+  geom_sf(data = kommuner) +
+  epitheme_map()
+
+```
+\column{.45\textwidth}
+```{r, echo=F}
+url <- 
+  "https://api.dataforsyningen.dk/kommuner?format=geojson"
+
+kommuner <- 
+  read_sf(url)
+
+ggplot() +
+  geom_sf(data = kommuner) +
+  epitheme_map()
+
+```
+\columnsend
+
+
+
+
+
+
+
+
+## OpenStreetMap
 
 text [link](https://www.openstreetmap.org/about)
 
 
+
+
+# Indflyvning til værktøjer i `R`
+
+## text
+
+xx
