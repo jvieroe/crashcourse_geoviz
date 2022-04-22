@@ -248,7 +248,7 @@ chunk to prevent printing of the R code that generated the plot.
 \FunctionTok{library}\NormalTok{(tmap)}
 \FunctionTok{library}\NormalTok{(repinion)}
 
-\CommentTok{\# Installér \{repinion\}, hvis du ikke har den:}
+\CommentTok{\# Installér \{repinion\}, hvis I ikke har den:}
 \CommentTok{\# devtools::install\_github("jvieroe/repinion")}
 \end{Highlighting}
 \end{Shaded}
@@ -304,55 +304,138 @@ text
 
 \begin{frame}{Typer af geodata}
 \protect\hypertarget{typer-af-geodata}{}
-\columnsbegin
-\column{.3\textwidth}
-
 Grundlæggende arbejder vi med \textbf{tre typer af geospatiale
 datakilder}
+
+Hver type har en (nogenlunde) parallel til graftyper, I er vant til at
+arbejde med:
+
+\bigskip
 
 \begin{enumerate}
 \tightlist
 \item
-  Punkter
+  \textbf{Punkter}
 \end{enumerate}
 
-\bigskip
-\bigskip
+\begin{itemize}
+\tightlist
+\item
+  Tænk på dem som almindelige \emph{punkter i et scatterplot}
+\end{itemize}
 
 \begin{enumerate}
 \setcounter{enumi}{1}
 \tightlist
 \item
-  Linjer
+  \textbf{Linjer}
 \end{enumerate}
 
-\bigskip
-\bigskip
+\begin{itemize}
+\tightlist
+\item
+  Tænk på dem som \emph{linjer i et linechart}
+\end{itemize}
 
 \begin{enumerate}
 \setcounter{enumi}{2}
 \tightlist
 \item
-  Polygoner
+  \textbf{Polygoner}
 \end{enumerate}
 
-\column{.7\textwidth}
-
-\columnsend
+\begin{itemize}
+\tightlist
+\item
+  Her er parallelen ikke lige så tydelig
+\item
+  \ldots{} men i en data viz-kontekst kan I tænke på dem som
+  \emph{søjler i et bar chart} (ish\ldots)
+\end{itemize}
 \end{frame}
 
-\begin{frame}{(1) Polygoner}
-\protect\hypertarget{polygoner}{}
+\begin{frame}{(1) Punkter}
+\protect\hypertarget{punkter}{}
 \columnsbegin
 \column{.4\textwidth}
 
-xxxx
+\begin{itemize}
+\item
+  Punkter består af simple koordinater (x, y), der refererer til en
+  specifik lokation
+\item
+  Punkter har ingen størrelse (og intet \emph{areal}), de er uendeligt
+  små
+\item
+  Eksempler: byer, stationer, skoler osv.
+\end{itemize}
 
 \column{.6\textwidth}
 
 \includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-6-1}
 
 \columnsend
+\end{frame}
+
+\begin{frame}{(2) Linjer}
+\protect\hypertarget{linjer}{}
+\columnsbegin
+\column{.4\textwidth}
+
+\begin{itemize}
+\item
+  Linjer består -- grundlæggende -- af punkter, der er kombineret til en
+  \emph{linestring} vha. en defineret rækkefølge
+\item
+  Konstruktionen er sjældent noget, I skal bekymre jer om: linjedata
+  ligger typisk opbevaret som linjer (\(\neq\) punkter). Her er det bare
+  plug 'n play
+\item
+  Linjer har intet \emph{areal} (fordi de består af punkter)
+\item
+  Eksempler: veje, floder, jernbanenetværk osv.
+\end{itemize}
+
+\column{.6\textwidth}
+
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-7-1}
+
+\columnsend
+\end{frame}
+
+\begin{frame}{(3) Polygoner}
+\protect\hypertarget{polygoner}{}
+\columnsbegin
+\column{.4\textwidth}
+
+\begin{itemize}
+\item
+  Polygoner består -- ligesom linjer -- af punkter, der er kombineret
+  til en \emph{polygon} vha. en defineret rækkefølge. Igen, det er
+  sjældent noget, I skal bekymre jer om
+\item
+  Forskellen er, at polygoner er \emph{lukkede linjer}, der former et
+  afgrænset område
+\item
+  De kan have alle tænkelige former. Det centrale er, at polygoner har
+  et \emph{areal}
+\item
+  Eksempler: stater, kommuner, valgkredse osv.
+\end{itemize}
+
+\column{.6\textwidth}
+
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-8-1}
+
+\columnsend
+\end{frame}
+
+\hypertarget{openstreetmap}{%
+\section{OpenStreetMap}\label{openstreetmap}}
+
+\begin{frame}{xx}
+\protect\hypertarget{xx-2}{}
+text \href{link}{https://www.openstreetmap.org/about}
 \end{frame}
 
 \end{document}

@@ -68,7 +68,7 @@ library(sf)
 library(tmap)
 library(repinion)
 
-# Installér {repinion}, hvis du ikke har den:
+# Installér {repinion}, hvis I ikke har den:
 # devtools::install_github("jvieroe/repinion")
 
 ```
@@ -106,29 +106,25 @@ text
 
 ## Typer af geodata
 
-\columnsbegin
-\column{.3\textwidth}
-
-
 Grundlæggende arbejder vi med __tre typer af geospatiale datakilder__
 
-1. Punkter
+Hver type har en (nogenlunde) parallel til graftyper, I er vant til at arbejde med:
 
 \bigskip
-\bigskip
 
-2. Linjer
-
-\bigskip
-\bigskip
-
-3. Polygoner
+1. __Punkter__
+  + Tænk på dem som almindelige _punkter i et scatterplot_
 
 
-\column{.7\textwidth}
+2. __Linjer__
+  + Tænk på dem som _linjer i et linechart_
 
 
-\columnsend
+3. __Polygoner__
+  + Her er parallelen ikke lige så tydelig
+  + ... men i en data viz-kontekst kan I tænke på dem som _søjler i et bar chart_ (ish...)
+
+
 
 
 
@@ -149,18 +145,82 @@ metrolinjer <- st_read(dsn = "data/metro_lines",
 
 dsb <- readxl::read_xlsx("data/DSB_Stations_20201209.xlsm") %>% 
   clean_names() %>% 
-  filter(!is.na(x) & !is.na(y))
+  filter(!is.na(x) & !is.na(y)) %>% 
+  st_as_sf(coords = c("x", "y"),
+           crs = 4326) %>% 
+  st_intersection(.,
+                  regioner)
 
 
 ```
 
-## (1) Polygoner
+## (1) Punkter
 
 \columnsbegin
 \column{.4\textwidth}
 
 
-xxxx
+* Punkter består af simple koordinater (x, y), der refererer til en specifik lokation
+
+* Punkter har ingen størrelse (og intet _areal_), de er uendeligt små
+
+* Eksempler: byer, stationer, skoler osv.
+
+\column{.6\textwidth}
+
+```{r, echo=F, eval=TRUE, out.width='100%'}
+ggplot() +
+  #geom_sf(data = regioner) +
+  geom_sf(data = dsb) +
+  epitheme_map()
+
+```
+
+
+\columnsend
+
+
+## (2) Linjer
+
+\columnsbegin
+\column{.4\textwidth}
+
+
+* Linjer består -- grundlæggende -- af punkter, der er kombineret til en _linestring_ vha. en defineret rækkefølge
+
+* Konstruktionen er sjældent noget, I skal bekymre jer om: linjedata ligger typisk opbevaret som linjer ($\neq$ punkter). Her er det bare plug 'n play
+
+* Linjer har intet _areal_ (fordi de består af punkter)
+
+* Eksempler: veje, floder, jernbanenetværk osv.
+
+
+\column{.6\textwidth}
+
+```{r, echo=F, eval=TRUE, out.width='100%'}
+ggplot() +
+  geom_sf(data = metrolinjer) +
+  epitheme_map()
+
+```
+
+
+\columnsend
+
+
+## (3) Polygoner
+
+\columnsbegin
+\column{.4\textwidth}
+
+* Polygoner består -- ligesom linjer -- af punkter, der er kombineret til en _polygon_ vha. en defineret rækkefølge. Igen, det er sjældent noget, I skal bekymre jer om
+
+* Forskellen er, at polygoner er _lukkede linjer_, der former et afgrænset område
+
+* De kan have alle tænkelige former. Det centrale er, at polygoner har et _areal_
+
+* Eksempler: stater, kommuner, valgkredse osv.
+
 
 \column{.6\textwidth}
 
@@ -173,5 +233,13 @@ ggplot() +
 
 
 \columnsend
+
+
+
+# OpenStreetMap
+
+## xx
+
+text [link](https://www.openstreetmap.org/about)
 
 
