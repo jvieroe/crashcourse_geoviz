@@ -1,0 +1,177 @@
+---
+title: "Crash course: Geospatial Datavisualisering"
+output:
+  beamer_presentation:
+    theme: "CambridgeUS"
+    colortheme: "default"
+    toc: true
+    slide_level: 2
+    keep_tex: TRUE
+    highlight: pygments
+    includes:
+            in_header: header.tex
+author: Jeppe Vierø
+date: \today
+classoption: aspectratio=169
+fontsize: 8pt
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# xx
+
+# Afgrænsning
+
+## abc
+
+text
+
+# section
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+## XX
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.90\textwidth]{pictures/Minard.png}
+\end{figure}
+
+
+## load
+
+```{r, warning=FALSE,message=FALSE}
+library(tidyverse)
+library(janitor)
+library(sf)
+library(tmap)
+library(repinion)
+
+# Installér {repinion}, hvis du ikke har den:
+# devtools::install_github("jvieroe/repinion")
+
+```
+## xxxx
+
+xxx
+
+```{r, warning=FALSE}
+rejser <- readRDS("data/rejsekortdata.rds")
+head(rejser, 5)
+
+```
+
+## y
+\columnsbegin
+\column{.5\textwidth}
+```{r, eval=F}
+plot(mtcars[, 1:3])
+```
+\column{.5\textwidth}
+```{r, echo=F}
+plot(mtcars[, 1:3])
+```
+\columnsend
+
+
+
+
+# Datastrukturer
+
+
+## Need to know om geodata
+
+text
+
+## Typer af geodata
+
+\columnsbegin
+\column{.3\textwidth}
+
+
+Grundlæggende arbejder vi med __tre typer af geospatiale datakilder__
+
+1. Punkter
+
+\bigskip
+\bigskip
+
+2. Linjer
+
+\bigskip
+\bigskip
+
+3. Polygoner
+
+
+\column{.7\textwidth}
+
+
+\columnsend
+
+
+
+
+
+```{r, echo=F, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
+regioner <- st_read(dsn = "data/regioner",
+                    layer = "regioner")
+
+kommuner <- st_read(dsn = "data/kommuner",
+                    layer = "kommuner")
+
+metrostop <- st_read(dsn = "data/metro_stops",
+                    layer = "metro_stops")
+
+metrolinjer <- st_read(dsn = "data/metro_lines",
+                       layer = "metro_lines")
+
+dsb <- readxl::read_xlsx("data/DSB_Stations_20201209.xlsm") %>% 
+  clean_names() %>% 
+  filter(!is.na(x) & !is.na(y))
+
+
+```
+
+## (1) Polygoner
+
+\columnsbegin
+\column{.4\textwidth}
+
+
+xxxx
+
+\column{.6\textwidth}
+
+```{r, echo=F, eval=TRUE, out.width='100%'}
+ggplot() +
+  geom_sf(data = regioner) +
+  epitheme_map()
+
+```
+
+
+\columnsend
+
+

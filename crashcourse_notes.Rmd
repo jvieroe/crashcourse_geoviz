@@ -1,0 +1,205 @@
+---
+title: 'Crash course: Geospatial datavisualisering'
+author: "Jeppe Vierø"
+date: "April 2022"
+output:
+  html_document:
+    css: custom_css.css
+    code_folding: hide
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+subtitle: xx
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Dataviz vs kartografi
+
+## Datastrukturer
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+Integer posuere cursus ullamcorper. Donec tincidunt ultrices rhoncus. Vivamus ex felis, iaculis eu erat vel, mollis sollicitudin massa. Nam a finibus nunc. Morbi a purus eget urna vestibulum accumsan. Phasellus scelerisque ipsum venenatis lobortis rhoncus. Maecenas mi ante, pretium vel dolor non, condimentum sollicitudin tellus. Mauris nibh est, convallis pharetra turpis quis, iaculis placerat nunc. Duis ut efficitur massa, in pellentesque nisi. Donec vulputate tristique vulputate. Integer a volutpat ante. Vivamus ornare, erat eu pellentesque ullamcorper, orci justo ultricies elit, at accumsan elit lectus ac nulla. In metus nibh, cursus non dictum at, consequat nec arcu.
+
+Cras efficitur porta nulla, quis dictum eros lacinia imperdiet. Nam condimentum, est ut consequat auctor, massa dui malesuada risus, sed congue augue lacus pulvinar leo. Nam eget semper neque, at lacinia elit. Aliquam sit amet augue lectus. Nunc.
+
+### Din bedste ven: `sf`
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+
+#### Verden før `sf`
+
+Integer posuere cursus ullamcorper. Donec tincidunt ultrices rhoncus. Vivamus ex felis, iaculis eu erat vel, mollis sollicitudin massa. Nam a finibus nunc. Morbi a purus eget urna vestibulum accumsan. Phasellus scelerisque ipsum venenatis lobortis rhoncus. Maecenas mi ante, pretium vel dolor non, condimentum sollicitudin tellus. Mauris nibh est, convallis pharetra turpis quis, iaculis placerat nunc. Duis ut efficitur massa, in pellentesque nisi. Donec vulputate tristique vulputate. Integer a volutpat ante. Vivamus ornare, erat eu pellentesque ullamcorper, orci justo ultricies elit, at accumsan elit lectus ac nulla. In metus nibh, cursus non dictum at, consequat nec arcu.
+
+Cras efficitur porta nulla, quis dictum eros lacinia imperdiet. Nam condimentum, est ut consequat auctor, massa dui malesuada risus, sed congue augue lacus pulvinar leo. Nam eget semper neque, at lacinia elit. Aliquam sit amet augue lectus. Nunc.
+
+#### Where the magic happens: `df$geometry`
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+## Datatyper
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+### `points`
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+
+### `polygons`
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+
+### `lines`
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+
+## Let's get started!
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+```{r, class.source = 'fold-show', warning=FALSE, message=FALSE}
+library(tidyverse)
+library(sf)
+library(repinion)
+
+# Installér {repinion}, hvis du ikke har den:
+# devtools::install_github("jvieroe/repinion")
+
+```
+### Indlæs data
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+
+```{r}
+plot(pressure)
+```
+
+### temp
+
+Et eller andet sted: afmystificer!
+
+
+```{r, class.source = 'fold-show', warning=FALSE, message=FALSE}
+library(tidyverse)
+library(sf)
+library(tmap)
+
+tmap_mode("view")
+
+tribble(~lat, ~lon,
+        55.71372762470475, 9.556222451831141)
+
+
+```
+```{r, class.source = 'fold-show', warning=FALSE, message=FALSE}
+vb <- tribble(~lat, ~lon,
+              55.71372762470475, 9.556222451831141) %>% 
+  st_as_sf(coords = c("lon", "lat"),
+           crs = 4326)
+
+ggplot() +
+  geom_sf(data = vb, size = 2, col = "#a71d2a")
+
+```
+
+
+```{r, class.source = 'fold-show', warning=FALSE, message=FALSE}
+tm_shape(vb) +
+  tm_dots(siz = .5, col = "#a71d2a")
+
+```
+
+
+### Visualisér med `ggplot2`
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+
+### Visualisér med `tmap`
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+
+## OpenStreet Map
+
+Opgave: visualisér hjemby
+
+
+## CRS: Projektioner af kloden
+> _"All models are wrong, but some are useful"_ <br> -- George Box
+
+Vi vil ofte gerne vise en globe i et 2D-rum. Problemet er, at er __fysisk umuligt__. Det kan simpelthen ikke lade sig gøre. Det betyder, at alle kort I nogensinde har set (glober undtaget) er forkerte på én eller anden måde. Tror I mig ikke? [Se her!](https://www.youtube.com/watch?v=kIID5FDi2JQ).
+
+Det er her, CRS'er (Coordinate Reference Systems) kommer ind i billedet. For at "løse" det helt fundamentale problem (og fordi glober er ret besværlige at gå rundt med) er der udviklet [en lang række projektioner](https://en.wikipedia.org/wiki/List_of_map_projections). Vi bruger med andre ord disse matematiske projektioner til at _projicere_ en globe (oftest vores egen klode) i et 2D-rum på en måde, der fungerer til formålet.
+
+Alle disse projektioner er "forkerte" på en eller anden måde, og der er __altid__ en eller anden forvrængning af størrelse, form eller retninger. Men, de er jo ikke udviklet for sjov. De er udviklet, fordi vi har brug for dem, og fordi de er brugbare. De er ikke allesammen lige brugbare, og de er sjældent lige brugbare til samme formål. Med en let omskrivning af ovenstående citat kan vi beskrive dem som:
+
+> &rarr; All __projections__ are wrong, but some are useful
+
+
+Det nok mest berømte eksempel på en projektion (og på, at de aldrig er perfekte...) er Mercator-projektionen (_EPSG 4326 / 3857_, se mere [her](https://gist.github.com/keum/7441007)). Den er berømt og berygtet for at repræsentere visse dele af kloden (især Afrika og Sydamerika) som værende mindre, end de faktisk er. Det er jo uden tvivl rigtigt nok. Se billedet nedenfor, hvor cirklerne angiver areal relativt til faktisk areal. Den mere ukvalificerede del af kritikken går så langt som til at fremhæve, at den er "forkert". Det er den, men det er alle alternativer også.
+
+<!-- http://america.aljazeera.com/opinions/2015/6/every-map-youve-ever-seen-of-africa-is-right.html -->
+<center>
+<img src="https://cdn.vox-cdn.com/thumbor/pmCChhMV01lxGaRIvtd5FFyh_8w=/0x0:2048x2037/920x0/filters:focal(0x0:2048x2037):format(webp):no_upscale()/cdn.vox-cdn.com/uploads/chorus_asset/file/7573771/Tissot_indicatrix_world_map_Mercator_proj.svg.0.png" width="50%"/>
+</center>
+
+
+Der er også spekuleret meget i, at projektionen skulle være udviklet med henblik på mentalt at (re)producere europæisk dominans, fordi den fremstiller Afrika som langt mindre relativt til Europa end det faktisk er:
+
+> _"These maps of Africa, drawn up by a small group of western cartographers, symbolically reinforced Europeans' sense of control over their mapped territories and subjects, but they didn't betray much in the way of real information. Though they would have been seen as objective and impartial at the time, in retrospect it is clear how subjective, ideologically driven, and, in many ways, fantastical they were."_ <br> [-- James Wan](https://www.theguardian.com/world/2014/apr/02/google-maps-gets-africa-wrong)
+
+Det er noget sludder. Det er også et ulogisk argument. I det 15. århundrede, hvor Mercator-projektionen blev udviklet, havde europæerne ikke behov for at fremstille det afrikanske argument som værende "småt" for at legitimere kolonialisering. Der var masser af "legitimitet" at hente qua religion, "civilisation", vanvittige idéer om "raceforskelle" osv. Tværtimod havde europæiske magthavere, om noget, [interesse i at fremstille deres oversøiske besiddelser som værende så store og imponerende som muligt](http://america.aljazeera.com/opinions/2015/6/every-map-youve-ever-seen-of-africa-is-right.html).
+
+Mercator-projektionen er uden tvivl relateret til europæisk kolonialisme, men på en lidt mere indirekte måde. Den var nemlig [__helt eminent at navigere efter__](https://www.britannica.com/science/Mercator-projection)__, især på meget lange maritime strækninger__ og med simpel teknologi. Som, fx, på turene over Atlanterhavet i det 15. århundrede. På disse længere ture giver Mercator-projektionen ikke _helt_ den korteste rute, men det giver den mest bullet-proof kurs.
+
+
+<!-- <iframe width="560" height="315" src="https://www.youtube.com/watch?v=kIID5FDi2JQ" frameborder="0" allowfullscreen></iframe> -->
+
+<!-- <iframe src="https://www.youtube.com/watch?v=kIID5FDi2JQ" data-external= "1" > </iframe> -->
+
+
+### Hvilken CRS skal I bruge?
+
+Det vigtigste er, at I bruger den samme CRS i alle jeres objekter. Et lille trick er at definere en værdi i starten, som I løbende kan referere til. På den måde skal I kun ændre den ét sted, hvis det bliver aktuelt
+
+```{r, class.source = 'fold-show', warning=FALSE, message=FALSE}
+my_crs <- 4326
+
+# df <- read_sf() %>% 
+#   st_transform(4326)
+# 
+# map <- read_sf() %>% 
+#   st_transform(3359)
+# 
+# st_crs(df) == st_crs(map)
+# 
+# df <- df %>%
+#   st_transform(crs = my_crs)
+# 
+# map <- map %>%
+#   st_transform(crs = my_crs)
+# 
+# st_crs(df) == st_crs(map)
+
+
+```
+
+For mere information om brug af CRS'er i R, se:
+
+* Oversigt over EPSG-koder: `rgdal::make_EPSG()`
+* ["Overview of Coordinate Reference Systems (CRS) in R"](https://www.nceas.ucsb.edu/sites/default/files/2020-04/OverviewCoordinateReferenceSystems.pdf)
+* [Lesson 3. Coordinate Reference System and Spatial Projection](https://www.earthdatascience.org/courses/earth-analytics/spatial-data-r/intro-to-coordinate-reference-systems/)
+* [Choosing a projection](http://www.geo.hunter.cuny.edu/~jochen/gtech201/lectures/lec6concepts/map%20coordinate%20systems/how%20to%20choose%20a%20projection.htm)
+
+
+## Data wrangling
+
+### `st_cast` og `MULTI*`-klassen
+
+xx
+
+
+
+## Vil du vide mere?
+
+xx
