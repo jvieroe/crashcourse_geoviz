@@ -81,7 +81,7 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 \onslide <2->
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.90\textwidth]{pictures/Fleksible mobilister_start.png}
+	\includegraphics[width=.90\textwidth]{pictures/Forstadsbilister_start.png}
 \end{figure}
 
 
@@ -94,20 +94,20 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 
 \columnsbegin
 
-\column{.5\textwidth}
+\column{.4\textwidth}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.90\textwidth]{pictures/potentialeudnyttelse_absolut.png}
+	\includegraphics[width=.70\textwidth]{pictures/potentialeudnyttelse_absolut.png}
 \end{figure}
 
 
-\column{.5\textwidth}
+\column{.6\textwidth}
 
 \onslide <2->
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.90\textwidth]{pictures/potentialeudnyttelse_absolut.png}
+	\includegraphics[width=.99\textwidth]{pictures/hex_ringsted.png}
 \end{figure}
 
 
