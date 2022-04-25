@@ -10,7 +10,8 @@ dk <- st_read(dsn = "data/regioner",
 dk <- dk %>% 
   st_union()
 
-
+ggplot() +
+  geom_sf(data = dk)
 
 st_write(dk,
          dsn = "data/dk",
