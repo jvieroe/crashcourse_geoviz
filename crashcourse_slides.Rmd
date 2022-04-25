@@ -588,7 +588,7 @@ ggplot() +
   theme_void()
 
 ```
-
+\columnsend
 
 ## Visualisering med {`ggplot2`}
 
@@ -633,7 +633,7 @@ ggplot() +
 
 
 
-
+\columnsend
 
 
 

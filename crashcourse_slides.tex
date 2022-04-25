@@ -651,12 +651,30 @@ XXX
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{class}\NormalTok{(vshare}\SpecialCharTok{$}\NormalTok{geometry)}
+\FunctionTok{head}\NormalTok{(vshare)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "sfc_MULTIPOLYGON" "sfc"
+## Simple feature collection with 6 features and 7 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 12.2635 ymin: 55.53633 xmax: 12.73425 ymax: 55.77944
+## Geodetic CRS:  WGS 84
+##   dagi_id          navn kommune_nr             region party  total      share
+## 1  389103     København        101 Region Hovedstaden 23652 300216 0.07878328
+## 2  389104 Frederiksberg        147 Region Hovedstaden  3748  59298 0.06320618
+## 3  389105      Ballerup        151 Region Hovedstaden  2739  25949 0.10555320
+## 4  389106       Brøndby        153 Region Hovedstaden  1689  16921 0.09981680
+## 5  389107        Dragør        155 Region Hovedstaden  1732   8403 0.20611686
+## 6  389108      Gentofte        157 Region Hovedstaden  2649  40430 0.06552065
+##                         geometry
+## 1 MULTIPOLYGON (((12.54502 55...
+## 2 MULTIPOLYGON (((12.53735 55...
+## 3 MULTIPOLYGON (((12.3423 55....
+## 4 MULTIPOLYGON (((12.44279 55...
+## 5 MULTIPOLYGON (((12.64513 55...
+## 6 MULTIPOLYGON (((12.59175 55...
 \end{verbatim}
 
 \normalsize
@@ -667,8 +685,8 @@ YYY
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{barns }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\AttributeTok{dsn =} \StringTok{"data/barns"}\NormalTok{,}
-                 \AttributeTok{layer =} \StringTok{"barns"}\NormalTok{)}
+\NormalTok{region }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\AttributeTok{dsn =} \StringTok{"data/regioner"}\NormalTok{,}
+                  \AttributeTok{layer =} \StringTok{"regioner"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -678,12 +696,22 @@ YYY
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{class}\NormalTok{(barns}\SpecialCharTok{$}\NormalTok{geometry)}
+\FunctionTok{head}\NormalTok{(region)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## [1] "sfc_POINT" "sfc"
+## Simple feature collection with 5 features and 2 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 8.07251 ymin: 54.55908 xmax: 15.1974 ymax: 57.75257
+## Geodetic CRS:  WGS 84
+##                 navn dagi_id                       geometry
+## 1 Region Nordjylland  389098 MULTIPOLYGON (((10.6141 57....
+## 2 Region Midtjylland  389101 MULTIPOLYGON (((9.06696 56....
+## 3  Region Syddanmark  389102 MULTIPOLYGON (((10.59216 54...
+## 4 Region Hovedstaden  389099 MULTIPOLYGON (((12.31077 56...
+## 5    Region Sjælland  389100 MULTIPOLYGON (((11.27761 56...
 \end{verbatim}
 
 \normalsize
@@ -691,7 +719,6 @@ YYY
 
 \begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
 \protect\hypertarget{visualisering-med-ggplot2-1}{}
-\onslide <1>
 \columnsbegin
 \column{.5\textwidth}
 
@@ -711,8 +738,10 @@ YYY
 \includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-18-1.pdf}
 
 \normalsize \columnsend
+\end{frame}
 
-\onslide <2>
+\begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
+\protect\hypertarget{visualisering-med-ggplot2-2}{}
 \columnsbegin
 \column{.5\textwidth}
 
@@ -733,6 +762,92 @@ YYY
 \includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-20-1.pdf}
 
 \normalsize \columnsend
+\end{frame}
+
+\begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
+\protect\hypertarget{visualisering-med-ggplot2-3}{}
+\columnsbegin
+\column{.5\textwidth}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ vshare,}
+          \FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ share)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_void}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize \column{.5\textwidth}
+
+\tiny
+
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-22-1.pdf}
+
+\normalsize \columnsend
+\end{frame}
+
+\begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
+\protect\hypertarget{visualisering-med-ggplot2-4}{}
+\columnsbegin
+\column{.5\textwidth}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ vshare,}
+          \FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ share),}
+          \AttributeTok{color =} \StringTok{"transparent"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_void}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize \column{.5\textwidth}
+
+\tiny
+
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-24-1.pdf}
+
+\normalsize
+\end{frame}
+
+\begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
+\protect\hypertarget{visualisering-med-ggplot2-5}{}
+\columnsbegin
+\column{.5\textwidth}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ vshare,}
+          \FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ share),}
+          \AttributeTok{color =} \StringTok{"transparent"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_continuous}\NormalTok{(}\AttributeTok{name =} \StringTok{"Vælgerandel, Venstre. Kommunalvalg 2017"}\NormalTok{,}
+                        \AttributeTok{labels =}\NormalTok{ scales}\SpecialCharTok{::}\NormalTok{percent,}
+                        \AttributeTok{breaks =} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FloatTok{0.6}\NormalTok{, .}\DecValTok{1}\NormalTok{),}
+                        \AttributeTok{limits =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, .}\DecValTok{6}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_void}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{guides}\NormalTok{(}\AttributeTok{fill =} \FunctionTok{guide\_colorbar}\NormalTok{(}\AttributeTok{title.position =} \StringTok{"top"}\NormalTok{,}
+                               \AttributeTok{title.hjust =}\NormalTok{ .}\DecValTok{5}\NormalTok{,}
+                               \AttributeTok{barwidth =} \DecValTok{16}\NormalTok{,}
+                               \AttributeTok{barheight =}\NormalTok{ .}\DecValTok{5}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize \column{.5\textwidth}
+
+\tiny
+
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-26-1.pdf}
+
+\normalsize
 \end{frame}
 
 \hypertarget{datakilder}{%
@@ -824,7 +939,7 @@ YYY
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-22-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-28-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -941,7 +1056,7 @@ YYY
 ## Data (c) OpenStreetMap contributors, ODbL 1.0. https://www.openstreetmap.org/copyright
 \end{verbatim}
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-24-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-30-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
