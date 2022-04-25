@@ -263,21 +263,21 @@ ggplot() +
 
 \columnsbegin
 
-\column{.7\textwidth}
+\column{.6\textwidth}
 
-> "__Danmarks Administrative Geografiske Inddeling (DAGI)__ beskriver landets administrative og geografiske inddeling i kommuner, regioner, sogne, retskredse, politikredse, postnumre, opstillingskredse og lignende." <br> -- [DAWA](https://dawadocs.dataforsyningen.dk/dok/dagi)
+* _"__Danmarks Administrative Geografiske Inddeling (DAGI)__ beskriver landets administrative og geografiske inddeling i kommuner, regioner, sogne, retskredse, politikredse, postnumre, opstillingskredse og lignende."_ -- [DAWA](https://dawadocs.dataforsyningen.dk/dok/dagi)
 
 \medskip
 
-DAGI
+* ... med andre ord; alt hvad vi kunne drømme om
 
-text [Danmarks Administrative Geografiske Inddeling (DAGI)](https://dawadocs.dataforsyningen.dk/dok/dagi) 
+* DAGI-data kan hentes via Styrelsen for Dataforsyning og Effektiviserings [Datafordeler](https://datafordeler.dk/dataoversigt/)
+
+* Det er en ret håbløs hjemmeside, til gengæld er der masser at vælge mellem (inkl. historiske enheder!)
 
 
 
-
-
-\column{.3\textwidth}
+\column{.4\textwidth}
 
 
 
@@ -293,11 +293,11 @@ text [Danmarks Administrative Geografiske Inddeling (DAGI)](https://dawadocs.dat
 ## DAGI
 
 
-* Vi kan let tilgå en masse crisp data på de danske administrative enheder vha. [den tilhørende API](https://dawadocs.dataforsyningen.dk/dok/api#dagi)
+* Til de fleste formål kan vi hoppe uden om Datafordelen ved at bruge [DAWA (Danmarks Adressers Web API)](https://dawadocs.dataforsyningen.dk/dok/dagi) og den [tilhørende API](https://dawadocs.dataforsyningen.dk/dok/api#dagi) 
 
 * API'en er plug 'n play, hvor vi kan vælge de \textcolor{purple}{enheder}, vi skal bruge, og specificere \textcolor{teal}{format}:
 
-* \nolinkurl{https://api.dataforsyningen.dk/\textcolor{purple}{kommuner}?format=\textcolor{teal}{geojson}}
+* \nolinkurl{https://api.dataforsyningen.dk/ \textcolor{purple}{kommuner}?format=\textcolor{teal}{geojson}}
 
 
 

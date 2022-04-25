@@ -426,24 +426,33 @@ arbejde med:
 \protect\hypertarget{dagi}{}
 \columnsbegin
 
-\column{.7\textwidth}
+\column{.6\textwidth}
 
-\begin{quote}
-``\textbf{Danmarks Administrative Geografiske Inddeling (DAGI)}
-beskriver landets administrative og geografiske inddeling i kommuner,
-regioner, sogne, retskredse, politikredse, postnumre, opstillingskredse
-og lignende.'' --
-\href{https://dawadocs.dataforsyningen.dk/dok/dagi}{DAWA}
-\end{quote}
+\begin{itemize}
+\tightlist
+\item
+  \emph{``\textbf{Danmarks Administrative Geografiske Inddeling (DAGI)}
+  beskriver landets administrative og geografiske inddeling i kommuner,
+  regioner, sogne, retskredse, politikredse, postnumre,
+  opstillingskredse og lignende.''} --
+  \href{https://dawadocs.dataforsyningen.dk/dok/dagi}{DAWA}
+\end{itemize}
 
 \medskip
 
-DAGI
+\begin{itemize}
+\item
+  \ldots{} med andre ord; alt hvad vi kunne drømme om
+\item
+  DAGI-data kan hentes via Styrelsen for Dataforsyning og
+  Effektiviserings
+  \href{https://datafordeler.dk/dataoversigt/}{Datafordeler}
+\item
+  Det er en ret håbløs hjemmeside, til gengæld er der masser at vælge
+  mellem (inkl. historiske enheder!)
+\end{itemize}
 
-text \href{https://dawadocs.dataforsyningen.dk/dok/dagi}{Danmarks
-Administrative Geografiske Inddeling (DAGI)}
-
-\column{.3\textwidth}
+\column{.4\textwidth}
 
 \begin{figure}[H]
     \centering
@@ -457,16 +466,17 @@ Administrative Geografiske Inddeling (DAGI)}
 \protect\hypertarget{dagi-1}{}
 \begin{itemize}
 \item
-  Vi kan let tilgå en masse crisp data på de danske administrative
-  enheder vha.
-  \href{https://dawadocs.dataforsyningen.dk/dok/api\#dagi}{den
-  tilhørende API}
+  Til de fleste formål kan vi hoppe uden om Datafordelen ved at bruge
+  \href{https://dawadocs.dataforsyningen.dk/dok/dagi}{DAWA (Danmarks
+  Adressers Web API)} og den
+  \href{https://dawadocs.dataforsyningen.dk/dok/api\#dagi}{tilhørende
+  API}
 \item
   API'en er plug 'n play, hvor vi kan vælge de
   \textcolor{purple}{enheder}, vi skal bruge, og specificere
   \textcolor{teal}{format}:
 \item
-  \nolinkurl{https://api.dataforsyningen.dk/\textcolor{purple}{kommuner}?format=\textcolor{teal}{geojson}}
+  \nolinkurl{https://api.dataforsyningen.dk/ \textcolor{purple}{kommuner}?format=\textcolor{teal}{geojson}}
 \end{itemize}
 \end{frame}
 
