@@ -486,7 +486,8 @@ vshare <- st_read(dsn = "data/kommuner_98",
                   layer = "kommuner_98")
 ```
 ```{r, eval=T,message=FALSE, warning=FALSE, results='hide'}
-vsj
+vshare <- vshare %>% 
+  filter(region %in% c("Region Syddanmark", "Region Midtjylland", "Region Nordjylland"))
 ```
 
 
@@ -504,6 +505,13 @@ barns <- st_read(dsn = "data/barns",
 ```{r, eval=T, warning=FALSE}
 head(barns)
 ```
+
+```{r, eval=T, warning=FALSE}
+barns <- barns %>% 
+  st_intersection(.,
+                  vshare)
+```
+
 
 ## Visualisering med {`ggplot2`}
 
