@@ -123,7 +123,108 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 
 
 
+## Hvorfor skal vi arbejde med spatialt data?
+
+
+
+\columnsbegin
+\column{.5\textwidth}
+
+```{r, echo=F, eval=TRUE, out.width='100%'}
+ggplot() +
+  geom_col(data = plot_df, aes(x = fct_reorder(kommune_navn, share),
+                               y = share,
+                               fill = share)) +
+  scale_fill_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_classic() +
+  theme(legend.position = "bottom")
+
+```
+
+
+
+\column{.5\textwidth}
+
+```{r, echo=F, eval=TRUE, out.width='100%'}
+ggplot() +
+  geom_sf(data = kommuner_elec, aes(fill = share),
+          color = "transparent") +
+  scale_fill_continuous(labels = scales::percent) +
+  theme_void() +
+  theme(legend.position = "bottom")
+
+
+
+```
+
+
+\columnsend
+
+
+## Hvorfor skal vi arbejde med spatialt data?
+
+
+\columnsbegin
+
+\column{.5\textwidth}
+
+Typisk kan man med fordel (overveje at) visualisere sit data grafisk, hvis
+
+* Der er nogle __substantielle geografiske mønstre__ i data, der er interessante
+(case in point:)
+
+og/eller,
+
+* Det data, vi gerne vil visualisere fundamentalt set har en tydelig geografisk dimension, selvom der ikke er noget geografisk mønster. Her vil en geografisk fremstilling ikke bidrage substantielt men hjælpe modtageren med en klar reference
+
+
+\column{.5\textwidth}
+
+```{r, echo=F, eval=TRUE, out.width='100%'}
+ggplot() +
+  geom_sf(data = kommuner_elec, aes(fill = share),
+          color = "transparent") +
+  scale_fill_continuous(labels = scales::percent) +
+  theme_void() +
+  theme(legend.position = "bottom")
+
+
+
+```
+
+
+
+
+
+\columnsend
+
+
+
+## Hvorfor skal vi arbejde med spatialt data?
+
+* Kort er fede, fordi de er de __eneste visualiseringer, hvor alle har en intuitiv og umiddelbar forståelse af X- og Y-aksen__
+
+
+* Det er smart, fordi det frigør lidt (kognitiv) plads til at visualisere flere andre _dimensioner_ i data ved hjælp af farve, størrelse osv. ('aesthetics')
+
+* Tit arbejder vi (også i Epinion) med geografiske enheder uden at tænke nærmere over det:
+  + danske skoler, 
+  + valgkredse til FT-valg,
+  + metrostationer i København,
+  + norske jerbaneruter osv.
+
+* Her kan det (måske) give mening at visualisere nogle af sine pointer ved hjælp af geografiske datavisualiseringer
+
+* ... hvilket er en lang måde at sige "kort" på
+
+
+
+
+
+
 # The Basics: Geodata / spatialt data
+
 
 
 ## Hvad er (geo)spatialt data?
@@ -291,104 +392,6 @@ ggplot() +
 
 
 \columnsend
-
-
-
-## Hvorfor skal vi arbejde med spatialt data?
-
-
-
-\columnsbegin
-\column{.5\textwidth}
-
-```{r, echo=F, eval=TRUE, out.width='100%'}
-ggplot() +
-  geom_col(data = plot_df, aes(x = fct_reorder(kommune_navn, share),
-                               y = share,
-                               fill = share)) +
-  scale_fill_continuous(labels = scales::percent) +
-  coord_flip() +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-```
-
-
-
-\column{.5\textwidth}
-
-```{r, echo=F, eval=TRUE, out.width='100%'}
-ggplot() +
-  geom_sf(data = kommuner_elec, aes(fill = share),
-          color = "transparent") +
-  scale_fill_continuous(labels = scales::percent) +
-  theme_void() +
-  theme(legend.position = "bottom")
-
-
-
-```
-
-
-\columnsend
-
-
-## Hvorfor skal vi arbejde med spatialt data?
-
-
-\columnsbegin
-
-\column{.5\textwidth}
-
-Typisk kan man med fordel (overveje at) visualisere sit data grafisk, hvis
-
-* Der er nogle __substantielle geografiske mønstre__ i data, der er interessante
-(case in point:)
-
-og/eller,
-
-* Det data, vi gerne vil visualisere fundamentalt set har en tydelig geografisk dimension, selvom der ikke er noget geografisk mønster. Her vil en geografisk fremstilling ikke bidrage substantielt men hjælpe modtageren med en klar reference
-
-
-\column{.5\textwidth}
-
-```{r, echo=F, eval=TRUE, out.width='100%'}
-ggplot() +
-  geom_sf(data = kommuner_elec, aes(fill = share),
-          color = "transparent") +
-  scale_fill_continuous(labels = scales::percent) +
-  theme_void() +
-  theme(legend.position = "bottom")
-
-
-
-```
-
-
-
-
-
-\columnsend
-
-
-
-## Hvorfor skal vi arbejde med spatialt data?
-
-* Kort er fede, fordi de er de __eneste visualiseringer, hvor alle har en intuitiv og umiddelbar forståelse af X- og Y-aksen__
-
-
-* Det er smart, fordi det frigør lidt (kognitiv) plads til at visualisere flere andre _dimensioner_ i data ved hjælp af farve, størrelse osv. ('aesthetics')
-
-* Tit arbejder vi (også i Epinion) med geografiske enheder uden at tænke nærmere over det:
-  + danske skoler, 
-  + valgkredse til FT-valg,
-  + metrostationer i København,
-  + norske jerbaneruter osv.
-
-* Her kan det (måske) give mening at visualisere nogle af sine pointer ved hjælp af geografiske datavisualiseringer
-
-* ... hvilket er en lang måde at sige "kort" på
-
 
 
 
