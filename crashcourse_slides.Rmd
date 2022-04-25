@@ -426,7 +426,10 @@ library(tmap)
 
 ## Din nye bedste ven: {`sf`}
 
-* Lad os kigge på det! Til en start loader vi et datasæt over danske kommuner:
+* Lad os kigge på det! 
+
+
+* Lad os starte med at loade et datasæt over danske kommuner:
 
 
 ```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
@@ -444,7 +447,40 @@ df
 
 
 
+## Din nye bedste ven: {`sf`}
+
+```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE}
+glimpse(df)
+
+```
+
+
 * Magien ligger i `geometry`-listen. Alt (!) andet er data frames/tibbles, som I kender dem
+
+* Derfor kan vi også med et snuptag konvertere det hele om til at rent og ikke-spatialt datasæt:
+
+```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE}
+df %>% 
+  st_drop_geometry() %>% 
+  glimpse(.)
+
+
+```
+
+## Fra geokodet til spatialt data
+
+* Tit har vi data (typisk __punkter__), som ikke er opbevaret som spatialt data men derimod blot med en række koordinater. Her skal vi transformere dem for at kunne udnytte, at den underliggende information er spatial
+
+* Lad os 
+
+
+
+
+
+
+
+
+
 
 
 

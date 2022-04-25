@@ -582,11 +582,10 @@ og/eller,
 \begin{frame}[fragile]{Din nye bedste ven: \{\texttt{sf}\}}
 \protect\hypertarget{din-nye-bedste-ven-sf}{}
 \begin{itemize}
+\tightlist
 \item
-  Lad os kigge på det og loade et datasæt over danske kommuner
-\item
-  Typisk vil spatialt data ligge gemt som shapefiles eller som
-  geojson-filer
+  Lad os kigge på det! Til en start loader vi et datasæt over danske
+  kommuner:
 \end{itemize}
 
 \tiny
@@ -607,17 +606,28 @@ og/eller,
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\FunctionTok{glimpse}\NormalTok{(df)}
+\NormalTok{df}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## Rows: 98
-## Columns: 4
-## $ navn     <chr> "København", "Frederiksberg", "Ballerup", "Brøndby", "Dragør"~
-## $ dagi_id  <chr> "389103", "389104", "389105", "389106", "389107", "389108", "~
-## $ region   <chr> "Region Hovedstaden", "Region Hovedstaden", "Region Hovedstad~
-## $ geometry <MULTIPOLYGON [°]> MULTIPOLYGON (((12.54502 55..., MULTIPOLYGON (((~
+## Simple feature collection with 98 features and 3 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 8.07251 ymin: 54.55908 xmax: 15.15738 ymax: 57.75257
+## Geodetic CRS:  WGS 84
+## First 10 features:
+##             navn dagi_id             region                       geometry
+## 1      København  389103 Region Hovedstaden MULTIPOLYGON (((12.54502 55...
+## 2  Frederiksberg  389104 Region Hovedstaden MULTIPOLYGON (((12.53735 55...
+## 3       Ballerup  389105 Region Hovedstaden MULTIPOLYGON (((12.3423 55....
+## 4        Brøndby  389106 Region Hovedstaden MULTIPOLYGON (((12.44279 55...
+## 5         Dragør  389107 Region Hovedstaden MULTIPOLYGON (((12.64513 55...
+## 6       Gentofte  389108 Region Hovedstaden MULTIPOLYGON (((12.59175 55...
+## 7       Gladsaxe  389109 Region Hovedstaden MULTIPOLYGON (((12.47771 55...
+## 8       Glostrup  389110 Region Hovedstaden MULTIPOLYGON (((12.41842 55...
+## 9         Herlev  389111 Region Hovedstaden MULTIPOLYGON (((12.40838 55...
+## 10   Albertslund  389112 Region Hovedstaden MULTIPOLYGON (((12.36431 55...
 \end{verbatim}
 
 \normalsize
