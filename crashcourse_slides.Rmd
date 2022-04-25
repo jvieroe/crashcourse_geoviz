@@ -215,7 +215,9 @@ og/eller,
 * Det data, vi gerne vil visualisere fundamentalt set har en tydelig geografisk dimension. Selvom der ikke er noget geografisk mønster. Her vil en geografisk fremstilling ikke bidrage substantielt men hjælpe modtageren med en klar reference
 
 
-Kort er fede, fordi de er de __eneste visualiseringer, hvor alle har en intuitiv forståelse af X- og Y-aksen__
+Kort er fede, fordi de er de __eneste visualiseringer, hvor alle har en intuitiv og umiddelbar forståelse af X- og Y-aksen__
+
+Det er smart, fordi det frigør lidt plads til at visualisere flere dimensioner i data ved hjælp af farve, størrelse osv. ('aesthetics')
 
 
 
