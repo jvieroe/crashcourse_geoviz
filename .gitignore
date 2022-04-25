@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+data/DSB_Stations_20201209.xlsm
+data/rejsekortdata.rds
