@@ -601,7 +601,8 @@ ggplot() +
           aes(fill = share),
           color = "transparent") +
   scale_fill_continuous(name = "Vælgerandel, Venstre. Kommunalvalg 2017",
-                        labels = scales::percent) +
+                        labels = scales::percent,
+                        limits = c(0, 1)) +
   theme_void() +
   theme(legend.position = "bottom") +
   guides(fill = guide_colorbar(title.position = "top",
@@ -617,13 +618,15 @@ ggplot() +
           aes(fill = share),
           color = "transparent") +
   scale_fill_continuous(name = "Vælgerandel, Venstre. Kommunalvalg 2017",
-                        labels = scales::percent) +
+                        labels = scales::percent,
+                        limits = c(0, 1)) +
   theme_void() +
   theme(legend.position = "bottom") +
   guides(fill = guide_colorbar(title.position = "top",
                                title.hjust = .5,
                                barwidth = 16,
                                barheight = .5))
+
 
 ```
 
