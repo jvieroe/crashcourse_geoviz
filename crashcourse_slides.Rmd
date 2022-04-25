@@ -159,7 +159,7 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 
 
 
-## Hvorfor ikke bare bruge klassiske visualiseringer?
+## Hvorfor ikke bare bruge "klassiske" visualiseringer? (I)
 
 
 
@@ -198,9 +198,60 @@ ggplot() +
 \columnsend
 
 
+## Hvorfor ikke bare bruge "klassiske" visualiseringer? (II)
+
+
+\columnsbegin
+
+\column{.5\textwidth}
+
+Typisk kan man med fordel (overveje at) visualisere sit data grafisk, hvis
+
+* Der er nogle __substantielle geografiske mønstre__ i data, der er interessante
+(case in point:)
+
+eller,
+
+* Det data, vi gerne vil visualisere fundamentalt set har en geografisk dimension
 
 
 
+\column{.5\textwidth}
+
+```{r, echo=F, eval=TRUE, out.width='100%'}
+ggplot() +
+  geom_sf(data = kommuner_elec, aes(fill = share),
+          color = "transparent") +
+  scale_fill_continuous(labels = scales::percent) +
+  theme_void() +
+  theme(legend.position = "bottom")
+
+
+
+```
+
+
+
+
+
+\columnsend
+
+
+## Kan man gøre det hele _endnu_ nemmere?
+
+* Der er lavet et par `R`-pakker, der spytter ready-made kort ud for dig
+
+* [{mapDK}](https://github.com/sebastianbarfort/mapDK) er efterhånden fem år gammel og er ikke rigtigt blevet opdateret. Den er et no-go
+
+* [{plotDK}](https://github.com/kristianSN/plotDK) blev lanceret i 2021. Den kan meget af det samme, men er udgivet på `CRAN` og er up to date.
+
+* Min anke med de pakker er primært, at 
+
+  + De (meget!) hurtigt bliver spændetrøjer ift. hvad man kan visualisere og hvordan
+  
+  + Det faktisk er rigtig nemt at gøre det selv!
+  
+* Det er så det, vi er her for at snakke lidt om i dag!
 
 
 
@@ -226,19 +277,102 @@ ggplot() +
 <!-- Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. -->
 
 
+# The Basics: Geodata i `R`
+
+
+## A Blast from the past: {`sp`}
+
+```{r,echo=F, warning=FALSE,message=FALSE}
+library(tidyverse)
+library(janitor)
+library(sf)
+library(tmap)
+
+```
+
+
+* Det har tidligere været relativt besværligt at arbejde med spatialt data i `R`
+
+* `sp`-pakken var det førende framework, men selv simple datasæt var... irriterende:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.90\textwidth]{pictures/sp.png}
+\end{figure}
+
+
+## Din nye bedste ven: {`sf`}
+
+* Med `sf` er det blevet [smooth sailing](https://www.nickbearman.me.uk/2019/04/spatial-r-moving-from-sp-to-sf/). Den måde, pakken håndterer det _spatiale_ aspekt af et datasæt gør, at det ligner alle andre datasæt til forveksling:
+
+* Magien ligger i `geometry`-listen til sidst. Alt (!) andet er data frames/tibbles, som I kender dem
+
+
+```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
+library(tidyverse)
+library(sf)
+
+df <- st_read(dsn = "data/kommuner",
+              layer = "kommuner")
+```
+
+```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE}
+df
+
+```
 
 
 
-# Datastrukturer
+
+## Din nye bedste ven: {`sf`}
+
+Helt konkret giver `sf` os mulighed for at bruge simple `tidyverse`-funktioner til at:
+
+1. arbejde med data (`dplyr`, `tidyr` osv.)
+
+2. visualisere data! (`ggplot2`)
+
+Lad os prøve begge dele!
+
+\columnsbegin
+\column{.5\textwidth}
+```{r, echo=T, eval=FALSE, message=FALSE,warning=FALSE}
+
+# data wrangling med tidyverse (dplyr):
+df <- df %>% 
+  filter(region %in% c("Region Syddanmark", "Region Midtjylland"))
+
+# data viz med tidyverse (ggplot2):
+ggplot() +
+  geom_sf(data = df, aes(fill = region)) +
+  theme_void()
+
+```
+
+\column{.5\textwidth}
+```{r, echo=F, eval=T, message=FALSE,warning=FALSE}
+
+# data wrangling med tidyverse (dplyr):
+df <- df %>% 
+  filter(region %in% c("Region Syddanmark", "Region Midtjylland"))
+
+# data viz med tidyverse (ggplot2):
+ggplot() +
+  geom_sf(data = df, aes(fill = region)) +
+  theme_void()
+
+```
+\columnsend
 
 
-## Need to know om geodata
 
-text
 
-## Typer af geodata
+
+
+## Datastrukturer og typer af geodata
 
 Grundlæggende arbejder vi med __tre typer af geospatiale datakilder__
+
 
 Hver type har en (nogenlunde) parallel til graftyper, I er vant til at arbejde med:
 
@@ -257,24 +391,6 @@ Hver type har en (nogenlunde) parallel til graftyper, I er vant til at arbejde m
   + ... men i en data viz-kontekst kan I tænke på dem som _søjler i et bar chart_ (ish...)
 
 
-
-
-## load
-
-```{r, warning=FALSE,message=FALSE}
-library(tidyverse)
-library(janitor)
-library(sf)
-library(tmap)
-library(repinion)
-
-# Installér {repinion}, hvis I ikke har den:
-# devtools::install_github("jvieroe/repinion")
-
-```
-## xxxx
-
-xxx
 
 
 
@@ -297,7 +413,7 @@ xxx
 ```{r, echo=F, eval=TRUE, out.width='100%'}
 ggplot() +
   geom_sf(data = dsb, alpha = .5) +
-  epitheme_map()
+  theme_void()
 
 ```
 
@@ -325,7 +441,7 @@ ggplot() +
 ```{r, echo=F, eval=TRUE, out.width='100%'}
 ggplot() +
   geom_sf(data = metrolinjer) +
-  epitheme_map()
+  theme_void()
 
 ```
 
@@ -352,13 +468,19 @@ ggplot() +
 ```{r, echo=F, eval=TRUE, out.width='100%'}
 ggplot() +
   geom_sf(data = regioner) +
-  epitheme_map()
+  theme_void()
 
 ```
 
 
 \columnsend
 
+
+# Geospatial datavisualiesering
+
+## xx
+
+yy
 
 
 # Datakilder
@@ -422,7 +544,7 @@ kommuner_raw <-
 # plot data
 ggplot() +
   geom_sf(data = kommuner_raw) +
-  epitheme_map()
+  theme_void()
 
 ```
 \column{.5\textwidth}
@@ -438,7 +560,7 @@ kommuner_raw <-
 # plot data
 ggplot() +
   geom_sf(data = kommuner_raw) +
-  epitheme_map()
+  theme_void()
 
 ```
 \columnsend
@@ -460,8 +582,6 @@ ggplot() +
 * [OpenStreetMap (OSM)](https://www.openstreetmap.org/about) er en crowd sourced geografisk database med detaljeret information om hele verden
 
 * OSM indeholder data på (næsten) alt, hvad hjertet begærer 
-
-\bigskip
 
 * OSM har en tilhørende [wiki](https://wiki.openstreetmap.org/wiki/Map_features), med en oversigt over de forskellige features
 
@@ -543,7 +663,7 @@ ggplot() +
   geom_sf(data = vejle, fill = "white") +
   geom_sf(data = roads, aes(color = as.numeric(maxspeed))) +
   scale_color_viridis_c(direction = -1, name = "Speed limit (km/h)") +
-  epitheme_map()
+  theme_void()
 
 ```
 \column{.5\textwidth}
@@ -577,7 +697,7 @@ ggplot() +
   geom_sf(data = vejle, fill = "white") +
   geom_sf(data = roads, aes(color = as.numeric(maxspeed))) +
   scale_color_viridis_c(direction = -1, name = "Speed limit (km/h)") +
-  epitheme_map()
+  theme_void()
 
 ```
 \columnsend

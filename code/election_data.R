@@ -99,3 +99,4 @@ st_write(map_df,
 
 
 
+View(shape)

@@ -181,8 +181,11 @@
 \begin{frame}[allowframebreaks]
   \tableofcontents[hideallsubsections]
 \end{frame}
-\hypertarget{xx}{%
-\section{xx}\label{xx}}
+\begin{frame}
+\tiny
+
+\normalsize
+\end{frame}
 
 \hypertarget{introduktion}{%
 \section{Introduktion}\label{introduktion}}
@@ -270,12 +273,9 @@ pointer?}
 \columnsend
 \end{frame}
 
-\begin{frame}{Hvorfor ikke bare bruge klassiske visualiseringer?}
-\protect\hypertarget{hvorfor-ikke-bare-bruge-klassiske-visualiseringer}{}
-\tiny
-
-\normalsize
-
+\begin{frame}{Hvorfor ikke bare bruge ``klassiske'' visualiseringer?
+(I)}
+\protect\hypertarget{hvorfor-ikke-bare-bruge-klassiske-visualiseringer-i}{}
 \columnsbegin
 \column{.5\textwidth}
 
@@ -296,16 +296,200 @@ pointer?}
 \columnsend
 \end{frame}
 
-\hypertarget{datastrukturer}{%
-\section{Datastrukturer}\label{datastrukturer}}
+\begin{frame}{Hvorfor ikke bare bruge ``klassiske'' visualiseringer?
+(II)}
+\protect\hypertarget{hvorfor-ikke-bare-bruge-klassiske-visualiseringer-ii}{}
+\columnsbegin
 
-\begin{frame}{Need to know om geodata}
-\protect\hypertarget{need-to-know-om-geodata}{}
-text
+\column{.5\textwidth}
+
+Typisk kan man med fordel (overveje at) visualisere sit data grafisk,
+hvis
+
+\begin{itemize}
+\tightlist
+\item
+  Der er nogle \textbf{substantielle geografiske mønstre} i data, der er
+  interessante (case in point:)
+\end{itemize}
+
+eller,
+
+\begin{itemize}
+\tightlist
+\item
+  Det data, vi gerne vil visualisere fundamentalt set har en geografisk
+  dimension
+\end{itemize}
+
+\column{.5\textwidth}
+
+\tiny
+
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-4-1}
+
+\normalsize
+
+\columnsend
 \end{frame}
 
-\begin{frame}{Typer af geodata}
-\protect\hypertarget{typer-af-geodata}{}
+\begin{frame}[fragile]{Kan man gøre det hele \emph{endnu} nemmere?}
+\protect\hypertarget{kan-man-guxf8re-det-hele-endnu-nemmere}{}
+\begin{itemize}
+\item
+  Der er lavet et par \texttt{R}-pakker, der spytter ready-made kort ud
+  for dig
+\item
+  \href{https://github.com/sebastianbarfort/mapDK}{\{mapDK\}} er
+  efterhånden fem år gammel og er ikke rigtigt blevet opdateret. Den er
+  et no-go
+\item
+  \href{https://github.com/kristianSN/plotDK}{\{plotDK\}} blev lanceret
+  i 2021. Den kan meget af det samme, men er udgivet på \texttt{CRAN} og
+  er up to date.
+\item
+  Min anke med de pakker er primært, at
+
+  \begin{itemize}
+  \item
+    De (meget!) hurtigt bliver spændetrøjer ift. hvad man kan
+    visualisere og hvordan
+  \item
+    Det faktisk er rigtig nemt at gøre det selv!
+  \end{itemize}
+\item
+  Det er så det, vi er her for at snakke lidt om i dag!
+\end{itemize}
+\end{frame}
+
+\hypertarget{the-basics-geodata-i-r}{%
+\section{\texorpdfstring{The Basics: Geodata i
+\texttt{R}}{The Basics: Geodata i R}}\label{the-basics-geodata-i-r}}
+
+\begin{frame}[fragile]{A Blast from the past: \{\texttt{sp}\}}
+\protect\hypertarget{a-blast-from-the-past-sp}{}
+\tiny
+
+\normalsize
+
+\begin{itemize}
+\item
+  Det har tidligere været relativt besværligt at arbejde med spatialt
+  data i \texttt{R}
+\item
+  \texttt{sp}-pakken var det førende framework, men selv simple datasæt
+  var\ldots{} irriterende:
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.90\textwidth]{pictures/sp.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}[fragile]{Din nye bedste ven: \{\texttt{sf}\}}
+\protect\hypertarget{din-nye-bedste-ven-sf}{}
+\begin{itemize}
+\item
+  Med \texttt{sf} er det blevet
+  \href{https://www.nickbearman.me.uk/2019/04/spatial-r-moving-from-sp-to-sf/}{smooth
+  sailing}. Den måde, pakken håndterer det \emph{spatiale} aspekt af et
+  datasæt gør, at det ligner alle andre datasæt til forveksling:
+\item
+  Magien ligger i \texttt{geometry}-listen til sidst. Alt (!) andet er
+  data frames/tibbles, som I kender dem
+\end{itemize}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(sf)}
+
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\AttributeTok{dsn =} \StringTok{"data/kommuner"}\NormalTok{,}
+              \AttributeTok{layer =} \StringTok{"kommuner"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Simple feature collection with 98 features and 3 fields
+## Geometry type: MULTIPOLYGON
+## Dimension:     XY
+## Bounding box:  xmin: 8.07251 ymin: 54.55908 xmax: 15.15738 ymax: 57.75257
+## Geodetic CRS:  WGS 84
+## First 10 features:
+##             navn dagi_id             region                       geometry
+## 1      København  389103 Region Hovedstaden MULTIPOLYGON (((12.54502 55...
+## 2  Frederiksberg  389104 Region Hovedstaden MULTIPOLYGON (((12.53735 55...
+## 3       Ballerup  389105 Region Hovedstaden MULTIPOLYGON (((12.3423 55....
+## 4        Brøndby  389106 Region Hovedstaden MULTIPOLYGON (((12.44279 55...
+## 5         Dragør  389107 Region Hovedstaden MULTIPOLYGON (((12.64513 55...
+## 6       Gentofte  389108 Region Hovedstaden MULTIPOLYGON (((12.59175 55...
+## 7       Gladsaxe  389109 Region Hovedstaden MULTIPOLYGON (((12.47771 55...
+## 8       Glostrup  389110 Region Hovedstaden MULTIPOLYGON (((12.41842 55...
+## 9         Herlev  389111 Region Hovedstaden MULTIPOLYGON (((12.40838 55...
+## 10   Albertslund  389112 Region Hovedstaden MULTIPOLYGON (((12.36431 55...
+\end{verbatim}
+
+\normalsize
+\end{frame}
+
+\begin{frame}[fragile]{Din nye bedste ven: \{\texttt{sf}\}}
+\protect\hypertarget{din-nye-bedste-ven-sf-1}{}
+Helt konkret giver \texttt{sf} os mulighed for at bruge simple
+\texttt{tidyverse}-funktioner til at:
+
+\begin{enumerate}
+\item
+  arbejde med data (\texttt{dplyr}, \texttt{tidyr} osv.)
+\item
+  visualisere data! (\texttt{ggplot2})
+\end{enumerate}
+
+Lad os prøve begge dele!
+
+\columnsbegin
+\column{.5\textwidth}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# data wrangling med tidyverse (dplyr):}
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(region }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"Region Syddanmark"}\NormalTok{, }\StringTok{"Region Midtjylland"}\NormalTok{))}
+
+\CommentTok{\# data viz med tidyverse (ggplot2):}
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ region)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_void}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize
+
+\column{.5\textwidth}
+
+\tiny
+
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-9-1.pdf}
+
+\normalsize \columnsend
+\end{frame}
+
+\begin{frame}{Datastrukturer og typer af geodata}
+\protect\hypertarget{datastrukturer-og-typer-af-geodata}{}
 Grundlæggende arbejder vi med \textbf{tre typer af geospatiale
 datakilder}
 
@@ -356,32 +540,6 @@ arbejde med:
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{load}
-\protect\hypertarget{load}{}
-\tiny
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(tidyverse)}
-\FunctionTok{library}\NormalTok{(janitor)}
-\FunctionTok{library}\NormalTok{(sf)}
-\FunctionTok{library}\NormalTok{(tmap)}
-\FunctionTok{library}\NormalTok{(repinion)}
-
-\CommentTok{\# Installér \{repinion\}, hvis I ikke har den:}
-\CommentTok{\# devtools::install\_github("jvieroe/repinion")}
-\end{Highlighting}
-\end{Shaded}
-
-\normalsize \#\# xxxx
-
-xxx
-
-\tiny
-
-\normalsize
-\end{frame}
-
 \begin{frame}{(1) Punkter}
 \protect\hypertarget{punkter}{}
 \columnsbegin
@@ -402,7 +560,7 @@ xxx
 
 \tiny
 
-\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-6-1}
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-10-1}
 
 \normalsize
 
@@ -432,7 +590,7 @@ xxx
 
 \tiny
 
-\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-7-1}
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-11-1}
 
 \normalsize
 
@@ -463,11 +621,20 @@ xxx
 
 \tiny
 
-\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-8-1}
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-12-1}
 
 \normalsize
 
 \columnsend
+\end{frame}
+
+\hypertarget{geospatial-datavisualiesering}{%
+\section{Geospatial
+datavisualiesering}\label{geospatial-datavisualiesering}}
+
+\begin{frame}{xx}
+\protect\hypertarget{xx}{}
+yy
 \end{frame}
 
 \hypertarget{datakilder}{%
@@ -551,7 +718,7 @@ xxx
 \CommentTok{\# plot data}
 \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
   \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ kommuner\_raw) }\SpecialCharTok{+}
-  \FunctionTok{epitheme\_map}\NormalTok{()}
+  \FunctionTok{theme\_void}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
@@ -559,7 +726,7 @@ xxx
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-10-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-14-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -577,12 +744,6 @@ xxx
   verden
 \item
   OSM indeholder data på (næsten) alt, hvad hjertet begærer
-\end{itemize}
-
-\bigskip
-
-\begin{itemize}
-\tightlist
 \item
   OSM har en tilhørende
   \href{https://wiki.openstreetmap.org/wiki/Map_features}{wiki}, med en
@@ -670,7 +831,7 @@ xxx
   \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ vejle, }\AttributeTok{fill =} \StringTok{"white"}\NormalTok{) }\SpecialCharTok{+}
   \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ roads, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{color =} \FunctionTok{as.numeric}\NormalTok{(maxspeed))) }\SpecialCharTok{+}
   \FunctionTok{scale\_color\_viridis\_c}\NormalTok{(}\AttributeTok{direction =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\AttributeTok{name =} \StringTok{"Speed limit (km/h)"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{epitheme\_map}\NormalTok{()}
+  \FunctionTok{theme\_void}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
@@ -682,7 +843,7 @@ xxx
 ## Data (c) OpenStreetMap contributors, ODbL 1.0. https://www.openstreetmap.org/copyright
 \end{verbatim}
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-12-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-16-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
