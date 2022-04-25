@@ -628,13 +628,111 @@ arbejde med:
 \columnsend
 \end{frame}
 
-\hypertarget{geospatial-datavisualiesering}{%
+\hypertarget{geospatial-datavisualisering}{%
 \section{Geospatial
-datavisualiesering}\label{geospatial-datavisualiesering}}
+datavisualisering}\label{geospatial-datavisualisering}}
 
-\begin{frame}{xx}
-\protect\hypertarget{xx}{}
-yy
+\begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
+\protect\hypertarget{visualisering-med-ggplot2}{}
+XXX
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{vshare }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\AttributeTok{dsn =} \StringTok{"data/kommuner\_98"}\NormalTok{,}
+                  \AttributeTok{layer =} \StringTok{"kommuner\_98"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(vshare}\SpecialCharTok{$}\NormalTok{geometry)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "sfc_MULTIPOLYGON" "sfc"
+\end{verbatim}
+
+\normalsize
+
+YYY
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{barns }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\AttributeTok{dsn =} \StringTok{"data/barns"}\NormalTok{,}
+                 \AttributeTok{layer =} \StringTok{"barns"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(barns}\SpecialCharTok{$}\NormalTok{geometry)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "sfc_POINT" "sfc"
+\end{verbatim}
+
+\normalsize
+\end{frame}
+
+\begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
+\protect\hypertarget{visualisering-med-ggplot2-1}{}
+\onslide <1>
+\columnsbegin
+\column{.5\textwidth}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ vshare)}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize \column{.5\textwidth}
+
+\tiny
+
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-18-1.pdf}
+
+\normalsize \columnsend
+
+\onslide <2>
+\columnsbegin
+\column{.5\textwidth}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ vshare) }\SpecialCharTok{+}
+  \FunctionTok{theme\_void}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize \column{.5\textwidth}
+
+\tiny
+
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-20-1.pdf}
+
+\normalsize \columnsend
 \end{frame}
 
 \hypertarget{datakilder}{%
@@ -726,7 +824,7 @@ yy
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-14-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-22-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -843,7 +941,7 @@ yy
 ## Data (c) OpenStreetMap contributors, ODbL 1.0. https://www.openstreetmap.org/copyright
 \end{verbatim}
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-16-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-24-1.pdf}
 
 \normalsize \columnsend
 \end{frame}

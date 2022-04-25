@@ -476,11 +476,94 @@ ggplot() +
 \columnsend
 
 
-# Geospatial datavisualiesering
+# Geospatial datavisualisering
 
-## xx
+## Visualisering med {`ggplot2`}
 
-yy
+XXX 
+```{r, eval=T,message=FALSE, warning=FALSE, results='hide'}
+vshare <- st_read(dsn = "data/kommuner_98",
+                  layer = "kommuner_98")
+```
+```{r, eval=T,message=FALSE, warning=FALSE, results='hide'}
+vsj
+```
+
+
+```{r, eval=T, warning=FALSE}
+head(vshare)
+```
+
+
+YYY
+```{r, eval=T,message=FALSE, warning=FALSE, results='hide'}
+barns <- st_read(dsn = "data/barns",
+                 layer = "barns")
+```
+
+```{r, eval=T, warning=FALSE}
+head(barns)
+```
+
+## Visualisering med {`ggplot2`}
+
+\columnsbegin
+\column{.5\textwidth}
+
+```{r, eval=F, results='hide',message=FALSE, warning=FALSE}
+ggplot() +
+  geom_sf(data = vshare)
+
+```
+\column{.5\textwidth}
+```{r, echo=F}
+ggplot() +
+  geom_sf(data = vshare)
+```
+\columnsend
+
+
+## Visualisering med {`ggplot2`}
+
+\columnsbegin
+\column{.5\textwidth}
+
+```{r, eval=F, results='hide',message=FALSE, warning=FALSE}
+ggplot() +
+  geom_sf(data = vshare) +
+  theme_void()
+
+```
+\column{.5\textwidth}
+```{r, echo=F}
+ggplot() +
+  geom_sf(data = vshare) +
+  theme_void()
+
+```
+\columnsend
+
+
+## Visualisering med {`ggplot2`}
+
+\columnsbegin
+\column{.5\textwidth}
+
+```{r, eval=F, results='hide',message=FALSE, warning=FALSE}
+ggplot() +
+  geom_sf(data = vshare) +
+  theme_void()
+
+```
+\column{.5\textwidth}
+```{r, echo=F}
+ggplot() +
+  geom_sf(data = vshare) +
+  theme_void()
+
+```
+\columnsend
+
 
 
 # Datakilder

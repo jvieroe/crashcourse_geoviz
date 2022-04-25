@@ -87,6 +87,7 @@ map_df <- map_df %>%
   select(dagi_id,
          navn,
          kommune_nr,
+         region = regionsnavn,
          party, total, share)
 
 st_write(map_df,
@@ -99,4 +100,4 @@ st_write(map_df,
 
 
 
-View(shape)
+rm(geo, map_df, plot_df, vs)
