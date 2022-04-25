@@ -485,11 +485,6 @@ XXX
 vshare <- st_read(dsn = "data/kommuner_98",
                   layer = "kommuner_98")
 ```
-```{r, eval=T,message=FALSE, warning=FALSE, results='hide'}
-vshare <- vshare %>% 
-  filter(region %in% c("Region Syddanmark", "Region Midtjylland", "Region Nordjylland"))
-```
-
 
 ```{r, eval=T, warning=FALSE}
 head(vshare)
@@ -498,19 +493,15 @@ head(vshare)
 
 YYY
 ```{r, eval=T,message=FALSE, warning=FALSE, results='hide'}
-barns <- st_read(dsn = "data/barns",
-                 layer = "barns")
+region <- st_read(dsn = "data/regioner",
+                  layer = "regioner")
 ```
 
 ```{r, eval=T, warning=FALSE}
-head(barns)
+head(region)
 ```
 
-```{r, eval=T, warning=FALSE}
-barns <- barns %>% 
-  st_intersection(.,
-                  vshare)
-```
+
 
 
 ## Visualisering med {`ggplot2`}
@@ -559,18 +550,79 @@ ggplot() +
 
 ```{r, eval=F, results='hide',message=FALSE, warning=FALSE}
 ggplot() +
-  geom_sf(data = vshare) +
+  geom_sf(data = vshare,
+          aes(fill = share)) +
   theme_void()
 
 ```
 \column{.5\textwidth}
 ```{r, echo=F}
 ggplot() +
-  geom_sf(data = vshare) +
+  geom_sf(data = vshare,
+          aes(fill = share)) +
   theme_void()
 
 ```
 \columnsend
+
+
+## Visualisering med {`ggplot2`}
+
+\columnsbegin
+\column{.5\textwidth}
+
+```{r, eval=F, results='hide',message=FALSE, warning=FALSE}
+ggplot() +
+  geom_sf(data = vshare,
+          aes(fill = share),
+          color = "transparent") +
+  theme_void()
+
+```
+\column{.5\textwidth}
+```{r, echo=F}
+ggplot() +
+  geom_sf(data = vshare,
+          aes(fill = share),
+          color = "transparent") +
+  theme_void()
+
+```
+
+
+## Visualisering med {`ggplot2`}
+
+\columnsbegin
+\column{.5\textwidth}
+
+```{r, eval=F, results='hide',message=FALSE, warning=FALSE}
+ggplot() +
+  geom_sf(data = vshare,
+          aes(fill = share),
+          color = "transparent") +
+  geom_sf(data = region,
+          fill = "transparent",
+          color = "red") +
+  theme_void()
+
+```
+\column{.5\textwidth}
+```{r, echo=F}
+ggplot() +
+  geom_sf(data = vshare,
+          aes(fill = share),
+          color = "transparent") +
+  theme_void()
+
+```
+
+
+
+
+
+
+
+
 
 
 
