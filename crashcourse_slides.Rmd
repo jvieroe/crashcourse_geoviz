@@ -295,10 +295,10 @@ text [Danmarks Administrative Geografiske Inddeling (DAGI)](https://dawadocs.dat
 
 * Vi kan let tilgå en masse crisp data på de danske administrative enheder vha. [den tilhørende API](https://dawadocs.dataforsyningen.dk/dok/api#dagi)
 
-* API'en er plug 'n play, hvor vi kan vælge de \textcolor{purple}{enheder}, vi skal bruge, og specificere \textcolor{teal}{geojson}:
+* API'en er plug 'n play, hvor vi kan vælge de \textcolor{purple}{enheder}, vi skal bruge, og specificere \textcolor{teal}{format}:
 
+* \nolinkurl{https://api.dataforsyningen.dk/\textcolor{purple}{kommuner}?format=\textcolor{teal}{geojson}}
 
-* `https://api.dataforsyningen.dk/\textcolor{purple}{kommuner}?format=\textcolor{teal}{geojson}`
 
 
 ## DAGI: et eksempel
@@ -307,12 +307,15 @@ text [Danmarks Administrative Geografiske Inddeling (DAGI)](https://dawadocs.dat
 \column{.55\textwidth}
 
 ```{r, eval=F}
+# definér data
 url <- 
   "https://api.dataforsyningen.dk/kommuner?format=geojson"
 
+# indlæs data
 kommuner <- 
   read_sf(url)
 
+# plot data
 ggplot() +
   geom_sf(data = kommuner) +
   epitheme_map()
@@ -320,12 +323,15 @@ ggplot() +
 ```
 \column{.45\textwidth}
 ```{r, echo=F}
+# definér data
 url <- 
   "https://api.dataforsyningen.dk/kommuner?format=geojson"
 
+# indlæs data
 kommuner <- 
   read_sf(url)
 
+# plot data
 ggplot() +
   geom_sf(data = kommuner) +
   epitheme_map()

@@ -168,6 +168,9 @@
   \endgroup
 }
 \makeatother
+
+
+\usepackage{hyperref}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -450,7 +453,7 @@ Administrative Geografiske Inddeling (DAGI)}
 \columnsend
 \end{frame}
 
-\begin{frame}[fragile]{DAGI}
+\begin{frame}{DAGI}
 \protect\hypertarget{dagi-1}{}
 \begin{itemize}
 \item
@@ -461,9 +464,9 @@ Administrative Geografiske Inddeling (DAGI)}
 \item
   API'en er plug 'n play, hvor vi kan vælge de
   \textcolor{purple}{enheder}, vi skal bruge, og specificere
-  \textcolor{teal}{geojson}:
+  \textcolor{teal}{format}:
 \item
-  \texttt{https://api.dataforsyningen.dk/\textbackslash{}textcolor\{purple\}\{kommuner\}?format=\textbackslash{}textcolor\{teal\}\{geojson\}}
+  \nolinkurl{https://api.dataforsyningen.dk/\textcolor{purple}{kommuner}?format=\textcolor{teal}{geojson}}
 \end{itemize}
 \end{frame}
 
@@ -474,12 +477,15 @@ Administrative Geografiske Inddeling (DAGI)}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\# definér data}
 \NormalTok{url }\OtherTok{\textless{}{-}} 
   \StringTok{"https://api.dataforsyningen.dk/kommuner?format=geojson"}
 
+\CommentTok{\# indlæs data}
 \NormalTok{kommuner }\OtherTok{\textless{}{-}} 
   \FunctionTok{read\_sf}\NormalTok{(url)}
 
+\CommentTok{\# plot data}
 \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
   \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ kommuner) }\SpecialCharTok{+}
   \FunctionTok{epitheme\_map}\NormalTok{()}
