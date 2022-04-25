@@ -120,6 +120,67 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 ## Hvorfor ikke bare bruge klassiske visualiseringer?
 
 
+```{r, echo=F, eval=TRUE, out.width='100%'}
+library(tidyverse)
+library(janitor)
+library(sf)
+
+kommuner <- read_sf("https://api.dataforsyningen.dk/kommuner?format=geojson")
+
+vs <- readxl::read_xlsx("data/valgdata.xlsx") %>% 
+  clean_names()
+
+geo <- read_delim("https://raw.githubusercontent.com/jvieroe/dataviz/main/2021/kv2021/data/Geografiske_stamdata.csv", locale = locale(encoding = "windows-1252") %>% 
+  tibble()
+
+geo <- read_csv("2021/kv2021/data/Geografiske_stamdata.csv")
+
+  dplyr::select(-c(kreds_nr,
+                   stor_kreds_nr,
+                   landsdels_nr))
+
+geo <- read_delim("2021/kv2021/data/Geografiske_stamdata.csv",
+                  locale = locale(encoding = "windows-1252")) %>% 
+  clean_names() %>% 
+  mutate(kommune_navn = ifelse(kommune_navn == "Lyngby-Tårbæk",
+                               "Lyngby-Taarbæk",
+                               kommune_navn)) %>% 
+  mutate(kommune_navn = ifelse(kommune_navn == "Frederiksværk-Hundested",
+                               "Halsnæs",
+                               kommune_navn)) %>% 
+  mutate(kommune_navn = ifelse(kommune_navn == "Bornholms Region",
+                               "Bornholm",
+                               kommune_navn)) %>% 
+  mutate(kommune_navn = ifelse(kommune_navn == "Århus",
+                               "Aarhus",
+                               kommune_navn)) %>% 
+  mutate(kommune_navn = ifelse(kommune_navn == "Brønderslev-Dronninglund",
+                               "Brønderslev",
+                               kommune_navn))
+
+
+
+
+vs <- vs %>% 
+  left_join(.,
+            geo,
+            by = c("valgsted_id")) %>% 
+  left_join(.,
+            match_df,
+            by = c("kommune_navn" = "navn.x"))
+
+
+vs <- vs %>% 
+  rename(stemmeberettigede = kv2017_stemmeberettigede,
+         afgivne = kv2017_afgivne_stemmer,
+         blanke = kv2017_blanke_stemmer,
+         andre_ugyldige = kv2017_andre_ugyldige_stemmer,
+         gyldige = kv2017_gyldige_stemmer)
+
+```
+
+
+
 
 <!-- ## R Markdown -->
 
