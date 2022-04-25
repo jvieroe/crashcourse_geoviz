@@ -292,6 +292,7 @@ text [Danmarks Administrative Geografiske Inddeling (DAGI)](https://dawadocs.dat
 
 ## DAGI
 
+
 * Vi kan let tilgå en masse crisp data på de danske administrative enheder vha. [den tilhørende API](https://dawadocs.dataforsyningen.dk/dok/api#dagi)
 
 * API'en er plug 'n play, hvor vi kan vælge de \textcolor{purple}{enheder}, vi skal bruge, og specificere \textcolor{teal}{geojson}:
