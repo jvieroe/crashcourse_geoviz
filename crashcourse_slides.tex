@@ -678,43 +678,6 @@ XXX
 \end{verbatim}
 
 \normalsize
-
-YYY
-
-\tiny
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{region }\OtherTok{\textless{}{-}} \FunctionTok{st\_read}\NormalTok{(}\AttributeTok{dsn =} \StringTok{"data/regioner"}\NormalTok{,}
-                  \AttributeTok{layer =} \StringTok{"regioner"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\normalsize
-
-\tiny
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{head}\NormalTok{(region)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Simple feature collection with 5 features and 2 fields
-## Geometry type: MULTIPOLYGON
-## Dimension:     XY
-## Bounding box:  xmin: 8.07251 ymin: 54.55908 xmax: 15.1974 ymax: 57.75257
-## Geodetic CRS:  WGS 84
-##                 navn dagi_id                       geometry
-## 1 Region Nordjylland  389098 MULTIPOLYGON (((10.6141 57....
-## 2 Region Midtjylland  389101 MULTIPOLYGON (((9.06696 56....
-## 3  Region Syddanmark  389102 MULTIPOLYGON (((10.59216 54...
-## 4 Region Hovedstaden  389099 MULTIPOLYGON (((12.31077 56...
-## 5    Region Sjælland  389100 MULTIPOLYGON (((11.27761 56...
-\end{verbatim}
-
-\normalsize
 \end{frame}
 
 \begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
@@ -735,7 +698,7 @@ YYY
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-18-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-16-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -759,7 +722,7 @@ YYY
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-20-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-18-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -784,7 +747,7 @@ YYY
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-22-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-20-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -810,7 +773,7 @@ YYY
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-24-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-22-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -845,7 +808,7 @@ YYY
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-26-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-24-1.pdf}
 
 \normalsize
 
@@ -941,7 +904,7 @@ YYY
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-28-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-26-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -1043,8 +1006,9 @@ YYY
 
 \CommentTok{\# Plot vejene}
 \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ vejle, }\AttributeTok{fill =} \StringTok{"white"}\NormalTok{) }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ roads, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{color =} \FunctionTok{as.numeric}\NormalTok{(maxspeed))) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ vejle, }\AttributeTok{fill =} \StringTok{"white"}\NormalTok{, }\AttributeTok{linetype =} \StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ roads, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{color =} \FunctionTok{as.numeric}\NormalTok{(maxspeed)),}
+          \AttributeTok{size =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
   \FunctionTok{scale\_color\_viridis\_c}\NormalTok{(}\AttributeTok{direction =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\AttributeTok{name =} \StringTok{"Speed limit (km/h)"}\NormalTok{) }\SpecialCharTok{+}
   \FunctionTok{theme\_void}\NormalTok{()}
 \end{Highlighting}
@@ -1058,7 +1022,7 @@ YYY
 ## Data (c) OpenStreetMap contributors, ODbL 1.0. https://www.openstreetmap.org/copyright
 \end{verbatim}
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-30-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-28-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
