@@ -784,7 +784,6 @@ ggplot() +
 
 ```{r, eval=F, warning=FALSE}
 library(osmdata)
-#library(httr)
 
 # Hent OSM-data for Vejle
 vejle <- kommuner_raw %>% 
@@ -845,8 +844,9 @@ roads <- roads$osm_lines %>%
 
 # Plot vejene
 ggplot() +
-  geom_sf(data = vejle, fill = "white") +
-  geom_sf(data = roads, aes(color = as.numeric(maxspeed))) +
+  geom_sf(data = vejle, fill = "white", linetype = "dashed") +
+  geom_sf(data = roads, aes(color = as.numeric(maxspeed)),
+          size = 1) +
   scale_color_viridis_c(direction = -1, name = "Speed limit (km/h)") +
   theme_void()
 
