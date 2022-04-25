@@ -600,10 +600,14 @@ ggplot() +
   geom_sf(data = vshare,
           aes(fill = share),
           color = "transparent") +
-  geom_sf(data = region,
-          fill = "transparent",
-          color = "red") +
-  theme_void()
+  scale_fill_continuous(name = "Vælgerandel, Venstre. Kommunalvalg 2017",
+                        labels = scales::percent) +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  guides(fill = guide_colorbar(title.position = "top",
+                               title.hjust = .5,
+                               barwidth = 16,
+                               barheight = .5))
 
 ```
 \column{.5\textwidth}
