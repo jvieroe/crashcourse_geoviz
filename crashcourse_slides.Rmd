@@ -242,47 +242,17 @@ ggplot() +
 \columnsend
 
 
-## Kan man gøre det hele _endnu_ nemmere?
-
-* Der er lavet et par `R`-pakker, der spytter ready-made kort ud for dig
-
-* [{mapDK}](https://github.com/sebastianbarfort/mapDK) er efterhånden fem år gammel og er ikke rigtigt blevet opdateret. Den er et no-go
-
-* [{plotDK}](https://github.com/kristianSN/plotDK) blev lanceret i 2021. Den kan meget af det samme, men er udgivet på `CRAN` og er up to date.
-
-* Min anke med de pakker er primært, at 
-
-  + De (meget!) hurtigt bliver spændetrøjer ift. hvad man kan visualisere og hvordan
-  
-  + Det faktisk er rigtig nemt at gøre det selv!
-  
-* Det er så det, vi er her for at snakke lidt om i dag!
-
-
-
-
-<!-- ## R Markdown -->
-
-<!-- This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>. -->
-
-<!-- When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this: -->
-
-<!-- ```{r cars} -->
-<!-- summary(cars) -->
-<!-- ``` -->
-
-<!-- ## Including Plots -->
-
-<!-- You can also embed plots, for example: -->
-
-<!-- ```{r pressure} -->
-<!-- plot(pressure) -->
-<!-- ``` -->
-
-<!-- Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. -->
 
 
 # The Basics: Geodata i `R`
+
+
+## Hvad er (geo)spatialt data?
+
+* "Spatial data" er basically alt data, hvor observationer har en form for fysisk placering/relation ift. hinanden
+
+* Typisk bliver det brugt i den lidt mere snævre forstand (= __geospatial__ data), hvor fokus er på geografiske placeringer
+
 
 
 ## A Blast from the past: {`sp`}
@@ -898,6 +868,23 @@ tm_shape(vshare) +
 
 
 \columnsend
+
+
+## Kan man gøre det hele _endnu_ nemmere?
+
+* Der er lavet et par `R`-pakker, der spytter ready-made kort ud for dig
+
+* [{mapDK}](https://github.com/sebastianbarfort/mapDK) er efterhånden fem år gammel og er ikke rigtigt blevet opdateret. Den er et no-go
+
+* [{plotDK}](https://github.com/kristianSN/plotDK) blev lanceret i 2021. Den kan meget af det samme, men er udgivet på `CRAN` og er up to date.
+
+* Min anke med de pakker er primært, at 
+
+  + De (meget!) hurtigt bliver spændetrøjer ift. hvad man kan visualisere og hvordan
+  
+  + Det faktisk er rigtig nemt at gøre det selv!
+  
+* Det er så det, vi er her for at snakke lidt om i dag!
 
 
 
