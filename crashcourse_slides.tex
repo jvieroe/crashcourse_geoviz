@@ -192,6 +192,7 @@
 \begin{figure}[H]
     \centering
     \includegraphics[width=.90\textwidth]{pictures/Minard.png}
+    \caption{by Charles Joseph Minard, 1869}
 \end{figure}
 \end{frame}
 
@@ -221,66 +222,54 @@ Jeg kommer \textbf{ikke} til at snakke (så meget) om:
 \end{itemize}
 \end{frame}
 
-\hypertarget{section}{%
-\section{section}\label{section}}
-
-\begin{frame}{section}
-\end{frame}
-
-\begin{frame}[fragile]{load}
-\protect\hypertarget{load}{}
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(tidyverse)}
-\FunctionTok{library}\NormalTok{(janitor)}
-\FunctionTok{library}\NormalTok{(sf)}
-\FunctionTok{library}\NormalTok{(tmap)}
-\FunctionTok{library}\NormalTok{(repinion)}
-
-\CommentTok{\# Installér \{repinion\}, hvis I ikke har den:}
-\CommentTok{\# devtools::install\_github("jvieroe/repinion")}
-\end{Highlighting}
-\end{Shaded}
-\end{frame}
-
-\begin{frame}[fragile]{xxxx}
-\protect\hypertarget{xxxx}{}
-xxx
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{rejser }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"data/rejsekortdata.rds"}\NormalTok{)}
-\FunctionTok{head}\NormalTok{(rejser, }\DecValTok{5}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## # A tibble: 5 x 3
-##   count station             share
-##   <int> <chr>               <dbl>
-## 1  5875 Nørreport St.      0.0688
-## 2  5875 Kongens Nytorv St. 0.0652
-## 3  5875 København H        0.0482
-## 4  5875 Trianglen St.      0.0480
-## 5  5875 Frederiksberg St.  0.0476
-\end{verbatim}
-\end{frame}
-
-\begin{frame}[fragile]{y}
-\protect\hypertarget{y}{}
+\begin{frame}{Hvordan kan vi bruge geodata til at visualisere vores
+pointer?}
+\protect\hypertarget{hvordan-kan-vi-bruge-geodata-til-at-visualisere-vores-pointer}{}
 \columnsbegin
-\column{.5\textwidth}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{plot}\NormalTok{(mtcars[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{])}
-\end{Highlighting}
-\end{Shaded}
 
 \column{.5\textwidth}
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-4-1.pdf}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.90\textwidth]{pictures/fuel.png}
+\end{figure}
+
+\column{.5\textwidth}
+
+\onslide <2->
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.90\textwidth]{pictures/Fleksible mobilister_start.png}
+\end{figure}
+
 \columnsend
+\end{frame}
+
+\begin{frame}{Hvordan kan vi bruge geodata til at visualisere vores
+pointer?}
+\protect\hypertarget{hvordan-kan-vi-bruge-geodata-til-at-visualisere-vores-pointer-1}{}
+\columnsbegin
+
+\column{.5\textwidth}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.90\textwidth]{pictures/potentialeudnyttelse_absolut.png}
+\end{figure}
+
+\column{.5\textwidth}
+
+\onslide <2->
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.90\textwidth]{pictures/potentialeudnyttelse_absolut.png}
+\end{figure}
+
+\columnsend
+\end{frame}
+
+\begin{frame}{Hvorfor ikke bare bruge klassiske visualiseringer?}
+\protect\hypertarget{hvorfor-ikke-bare-bruge-klassiske-visualiseringer}{}
 \end{frame}
 
 \hypertarget{datastrukturer}{%
@@ -343,6 +332,32 @@ arbejde med:
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{load}
+\protect\hypertarget{load}{}
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(janitor)}
+\FunctionTok{library}\NormalTok{(sf)}
+\FunctionTok{library}\NormalTok{(tmap)}
+\FunctionTok{library}\NormalTok{(repinion)}
+
+\CommentTok{\# Installér \{repinion\}, hvis I ikke har den:}
+\CommentTok{\# devtools::install\_github("jvieroe/repinion")}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize \#\# xxxx
+
+xxx
+
+\tiny
+
+\normalsize
+\end{frame}
+
 \begin{frame}{(1) Punkter}
 \protect\hypertarget{punkter}{}
 \columnsbegin
@@ -361,7 +376,11 @@ arbejde med:
 
 \column{.6\textwidth}
 
-\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-6-1}
+\tiny
+
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-3-1}
+
+\normalsize
 
 \columnsend
 \end{frame}
@@ -387,7 +406,11 @@ arbejde med:
 
 \column{.6\textwidth}
 
-\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-7-1}
+\tiny
+
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-4-1}
+
+\normalsize
 
 \columnsend
 \end{frame}
@@ -414,7 +437,11 @@ arbejde med:
 
 \column{.6\textwidth}
 
-\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-8-1}
+\tiny
+
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-5-1}
+
+\normalsize
 
 \columnsend
 \end{frame}
@@ -483,7 +510,9 @@ arbejde med:
 \begin{frame}[fragile]{DAGI: et eksempel}
 \protect\hypertarget{dagi-et-eksempel}{}
 \columnsbegin
-\column{.55\textwidth}
+\column{.5\textwidth}
+
+\tiny
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -492,30 +521,151 @@ arbejde med:
   \StringTok{"https://api.dataforsyningen.dk/kommuner?format=geojson"}
 
 \CommentTok{\# indlæs data}
-\NormalTok{kommuner }\OtherTok{\textless{}{-}} 
+\NormalTok{kommuner\_raw }\OtherTok{\textless{}{-}} 
   \FunctionTok{read\_sf}\NormalTok{(url)}
 
 \CommentTok{\# plot data}
 \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ kommuner) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ kommuner\_raw) }\SpecialCharTok{+}
   \FunctionTok{epitheme\_map}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
-\column{.45\textwidth}
+\normalsize \column{.5\textwidth}
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-10-1.pdf}
-\columnsend
+\tiny
+
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-7-1.pdf}
+
+\normalsize \columnsend
 \end{frame}
 
 \begin{frame}{OpenStreetMap}
 \protect\hypertarget{openstreetmap}{}
-text \href{https://www.openstreetmap.org/about}{link}
+\columnsbegin
+
+\column{.6\textwidth}
+
+\begin{itemize}
+\item
+  \href{https://www.openstreetmap.org/about}{OpenStreetMap (OSM)} er en
+  crowd sourced geografisk database med detaljeret information om hele
+  verden
+\item
+  OSM indeholder data på (næsten) alt, hvad hjertet begærer
+\end{itemize}
+
+\bigskip
+
+\begin{itemize}
+\tightlist
+\item
+  OSM har en tilhørende
+  \href{https://wiki.openstreetmap.org/wiki/Map_features}{wiki}, med en
+  oversigt over de forskellige features
+\end{itemize}
+
+\column{.4\textwidth}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.75\textwidth]{pictures/Openstreetmap_logo.svg}
+\end{figure}
+
+\columnsend
 \end{frame}
 
-\hypertarget{indflyvning-til-vuxe6rktuxf8jer-i-r}{%
-\section{\texorpdfstring{Indflyvning til værktøjer i
-\texttt{R}}{Indflyvning til værktøjer i R}}\label{indflyvning-til-vuxe6rktuxf8jer-i-r}}
+\begin{frame}[fragile]{OpenStreetMap}
+\protect\hypertarget{openstreetmap-1}{}
+\columnsbegin
+
+\column{.6\textwidth}
+
+\begin{itemize}
+\item
+  Vi kan bruge R-pakken
+  \href{https://cran.r-project.org/web/packages/osmdata/vignettes/osmdata.html}{\{\texttt{osmdata}\}}
+  til at hente OSM-data direkte i \texttt{R}
+\item
+  Her skal vi bruge
+
+  \begin{itemize}
+  \tightlist
+  \item
+    En geografisk afgrænsning
+  \item
+    Valg af features (vha. argumenterne \texttt{key} og \texttt{value}):
+  \end{itemize}
+\end{itemize}
+
+\column{.4\textwidth}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.90\textwidth]{pictures/sundell_bars.png}
+\end{figure}
+
+\columnsend
+\end{frame}
+
+\begin{frame}[fragile]{OpenStreetMap: et eksempel}
+\protect\hypertarget{openstreetmap-et-eksempel}{}
+\columnsbegin
+\column{.5\textwidth}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(osmdata)}
+
+\CommentTok{\# Hent OSM{-}data for Vejle}
+\NormalTok{vejle }\OtherTok{\textless{}{-}}\NormalTok{ kommuner\_raw }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(navn }\SpecialCharTok{==} \StringTok{"Vejle"}\NormalTok{)}
+
+\NormalTok{vejle\_bbox }\OtherTok{\textless{}{-}}\NormalTok{ vejle }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{st\_bbox}\NormalTok{()}
+
+\NormalTok{osm }\OtherTok{\textless{}{-}}\NormalTok{ vejle\_bbox }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{opq}\NormalTok{()}
+
+\CommentTok{\# Hent udvalgte veje}
+\NormalTok{roads }\OtherTok{\textless{}{-}}\NormalTok{ osm }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{add\_osm\_feature}\NormalTok{(}\AttributeTok{key =} \StringTok{\textquotesingle{}highway\textquotesingle{}}\NormalTok{,}
+                  \AttributeTok{value =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}motorway\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}trunk\textquotesingle{}}\NormalTok{,}
+                            \StringTok{\textquotesingle{}primary\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}secondary\textquotesingle{}}\NormalTok{, }
+                            \StringTok{\textquotesingle{}tertiary\textquotesingle{}}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{osmdata\_sf}\NormalTok{()}
+
+\CommentTok{\# Beskær}
+\NormalTok{roads }\OtherTok{\textless{}{-}}\NormalTok{ roads}\SpecialCharTok{$}\NormalTok{osm\_lines }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{st\_intersection}\NormalTok{(., vejle)}
+
+\CommentTok{\# Plot vejene}
+\FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ vejle, }\AttributeTok{fill =} \StringTok{"white"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ roads, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{color =} \FunctionTok{as.numeric}\NormalTok{(maxspeed))) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_viridis\_c}\NormalTok{(}\AttributeTok{direction =} \SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\AttributeTok{name =} \StringTok{"Speed limit (km/h)"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{epitheme\_map}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize \column{.5\textwidth}
+
+\tiny
+
+\begin{verbatim}
+## Data (c) OpenStreetMap contributors, ODbL 1.0. https://www.openstreetmap.org/copyright
+\end{verbatim}
+
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-9-1.pdf}
+
+\normalsize \columnsend
+\end{frame}
+
+\hypertarget{vuxe6rktuxf8jer-i-r}{%
+\section{\texorpdfstring{Værktøjer i
+\texttt{R}}{Værktøjer i R}}\label{vuxe6rktuxf8jer-i-r}}
 
 \begin{frame}{text}
 \protect\hypertarget{text}{}

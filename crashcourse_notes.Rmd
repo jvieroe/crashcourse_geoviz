@@ -123,6 +123,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor
 
 Opgave: visualisér hjemby
 
+(alternativt, osm <- opq(bbox = 'Vejle, Denmark'))
 
 ## CRS: Projektioner af kloden
 > _"All models are wrong, but some are useful"_ <br> -- George Box

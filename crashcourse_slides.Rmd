@@ -19,6 +19,13 @@ urlcolor: blue
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  paste0("\n \\", "tiny","\n\n", x, "\n\n \\normalsize")
+})
+
 ```
 
 # xx
@@ -32,6 +39,7 @@ knitr::opts_chunk$set(echo = TRUE)
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.90\textwidth]{pictures/Minard.png}
+	\caption{by Charles Joseph Minard, 1869}
 \end{figure}
 
 
@@ -55,7 +63,61 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 * Datavisualisering generelt
 
 
-# section
+
+## Hvordan kan vi bruge geodata til at visualisere vores pointer?
+
+\columnsbegin
+
+\column{.5\textwidth}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.90\textwidth]{pictures/fuel.png}
+\end{figure}
+
+
+\column{.5\textwidth}
+
+\onslide <2->
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.90\textwidth]{pictures/Fleksible mobilister_start.png}
+\end{figure}
+
+
+\columnsend
+
+
+
+
+## Hvordan kan vi bruge geodata til at visualisere vores pointer?
+
+\columnsbegin
+
+\column{.5\textwidth}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.90\textwidth]{pictures/potentialeudnyttelse_absolut.png}
+\end{figure}
+
+
+\column{.5\textwidth}
+
+\onslide <2->
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.90\textwidth]{pictures/potentialeudnyttelse_absolut.png}
+\end{figure}
+
+
+\columnsend
+
+
+
+## Hvorfor ikke bare bruge klassiske visualiseringer?
+
+
 
 <!-- ## R Markdown -->
 
@@ -77,43 +139,6 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 
 <!-- Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. -->
 
-
-
-
-## load
-
-```{r, warning=FALSE,message=FALSE}
-library(tidyverse)
-library(janitor)
-library(sf)
-library(tmap)
-library(repinion)
-
-# Installér {repinion}, hvis I ikke har den:
-# devtools::install_github("jvieroe/repinion")
-
-```
-## xxxx
-
-xxx
-
-```{r, warning=FALSE}
-rejser <- readRDS("data/rejsekortdata.rds")
-head(rejser, 5)
-
-```
-
-## y
-\columnsbegin
-\column{.5\textwidth}
-```{r, eval=F}
-plot(mtcars[, 1:3])
-```
-\column{.5\textwidth}
-```{r, echo=F}
-plot(mtcars[, 1:3])
-```
-\columnsend
 
 
 
@@ -148,6 +173,26 @@ Hver type har en (nogenlunde) parallel til graftyper, I er vant til at arbejde m
 
 
 
+## load
+
+```{r, warning=FALSE,message=FALSE}
+library(tidyverse)
+library(janitor)
+library(sf)
+library(tmap)
+library(repinion)
+
+# Installér {repinion}, hvis I ikke har den:
+# devtools::install_github("jvieroe/repinion")
+
+```
+## xxxx
+
+xxx
+
+
+
+
 
 
 
@@ -172,6 +217,8 @@ dsb <- readxl::read_xlsx("data/DSB_Stations_20201209.xlsm") %>%
   st_intersection(.,
                   regioner)
 
+rejser <- readRDS("data/rejsekortdata.rds")
+
 
 ```
 
@@ -191,8 +238,7 @@ dsb <- readxl::read_xlsx("data/DSB_Stations_20201209.xlsm") %>%
 
 ```{r, echo=F, eval=TRUE, out.width='100%'}
 ggplot() +
-  #geom_sf(data = regioner) +
-  geom_sf(data = dsb) +
+  geom_sf(data = dsb, alpha = .5) +
   epitheme_map()
 
 ```
@@ -304,7 +350,7 @@ ggplot() +
 ## DAGI: et eksempel
 
 \columnsbegin
-\column{.55\textwidth}
+\column{.5\textwidth}
 
 ```{r, eval=F}
 # definér data
@@ -312,28 +358,28 @@ url <-
   "https://api.dataforsyningen.dk/kommuner?format=geojson"
 
 # indlæs data
-kommuner <- 
+kommuner_raw <- 
   read_sf(url)
 
 # plot data
 ggplot() +
-  geom_sf(data = kommuner) +
+  geom_sf(data = kommuner_raw) +
   epitheme_map()
 
 ```
-\column{.45\textwidth}
+\column{.5\textwidth}
 ```{r, echo=F}
 # definér data
 url <- 
   "https://api.dataforsyningen.dk/kommuner?format=geojson"
 
 # indlæs data
-kommuner <- 
+kommuner_raw <- 
   read_sf(url)
 
 # plot data
 ggplot() +
-  geom_sf(data = kommuner) +
+  geom_sf(data = kommuner_raw) +
   epitheme_map()
 
 ```
@@ -348,12 +394,138 @@ ggplot() +
 
 ## OpenStreetMap
 
-text [link](https://www.openstreetmap.org/about)
+
+\columnsbegin
+
+\column{.6\textwidth}
+
+* [OpenStreetMap (OSM)](https://www.openstreetmap.org/about) er en crowd sourced geografisk database med detaljeret information om hele verden
+
+* OSM indeholder data på (næsten) alt, hvad hjertet begærer 
+
+\bigskip
+
+* OSM har en tilhørende [wiki](https://wiki.openstreetmap.org/wiki/Map_features), med en oversigt over de forskellige features
+
+\column{.4\textwidth}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.75\textwidth]{pictures/Openstreetmap_logo.svg}
+\end{figure}
+
+
+\columnsend
+
+
+## OpenStreetMap
+
+
+\columnsbegin
+
+\column{.6\textwidth}
+
+* Vi kan bruge R-pakken [{`osmdata`}](https://cran.r-project.org/web/packages/osmdata/vignettes/osmdata.html) til at hente OSM-data direkte i `R`
+
+* Her skal vi bruge
+  + En geografisk afgrænsning
+  + Valg af features (vha. argumenterne `key` og `value`):
+
+\column{.4\textwidth}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.90\textwidth]{pictures/sundell_bars.png}
+\end{figure}
+
+
+\columnsend
 
 
 
 
-# Indflyvning til værktøjer i `R`
+
+
+
+
+## OpenStreetMap: et eksempel
+
+\columnsbegin
+\column{.5\textwidth}
+
+```{r, eval=F, warning=FALSE}
+library(osmdata)
+
+# Hent OSM-data for Vejle
+vejle <- kommuner_raw %>% 
+  filter(navn == "Vejle")
+
+vejle_bbox <- vejle %>% 
+  st_bbox()
+
+osm <- vejle_bbox %>% 
+  opq()
+
+# Hent udvalgte veje
+roads <- osm %>% 
+  add_osm_feature(key = 'highway',
+                  value = c('motorway', 'trunk',
+                            'primary', 'secondary', 
+                            'tertiary')) %>% 
+  osmdata_sf()
+
+# Beskær
+roads <- roads$osm_lines %>% 
+  st_intersection(., vejle)
+
+# Plot vejene
+ggplot() +
+  geom_sf(data = vejle, fill = "white") +
+  geom_sf(data = roads, aes(color = as.numeric(maxspeed))) +
+  scale_color_viridis_c(direction = -1, name = "Speed limit (km/h)") +
+  epitheme_map()
+
+```
+\column{.5\textwidth}
+```{r, echo=F, warning=FALSE}
+library(osmdata)
+
+# Hent OSM-data for Vejle
+vejle <- kommuner_raw %>% 
+  filter(navn == "Vejle")
+
+vejle_bbox <- vejle %>% 
+  st_bbox()
+
+osm <- vejle_bbox %>% 
+  opq()
+
+# Hent udvalgte veje
+roads <- osm %>% 
+  add_osm_feature(key = 'highway',
+                  value = c('motorway', 'trunk',
+                            'primary', 'secondary', 
+                            'tertiary')) %>% 
+  osmdata_sf()
+
+# Beskær
+roads <- roads$osm_lines %>% 
+  st_intersection(., vejle)
+
+# Plot vejene
+ggplot() +
+  geom_sf(data = vejle, fill = "white") +
+  geom_sf(data = roads, aes(color = as.numeric(maxspeed))) +
+  scale_color_viridis_c(direction = -1, name = "Speed limit (km/h)") +
+  epitheme_map()
+
+```
+\columnsend
+
+
+# Værktøjer i `R`
 
 ## text
 
