@@ -475,7 +475,7 @@ ggplot() +
 \columnsend
 
 
-# Geospatial datavisualisering
+# Visualisering med {`ggplot2`}
 
 ## Visualisering med {`ggplot2`}
 
@@ -852,6 +852,47 @@ ggplot() +
 
 ```
 \columnsend
+
+
+# Interaktiv visualisering med {`tmap`}
+
+## Interaktiv visualisering med {`tmap`}
+
+* `tmap` er nyeste skud på stammen, når det kommer til at visualisere geospatial data. I modsætning til `ggplot2` er pakken udviklet _specifikt_ til dette formål
+
+* `tmap`-pakken er ikke helt lige så fleksibel som `ggplot2`. Der skal lige mere arbejde til for at gøre dit plot pænt. Derudover minder syntaxen meget om
+
+* Til gengæld er `tmap` eminent til at generere __interaktive kort__!
+
+* Af samme grund bruger jeg den ofte, når jeg arbejder _med_ data. Det gør det nemt at inspicere dine datasæt
+
+
+
+## Interaktiv visualisering med {`tmap`}
+
+\columnsbegin
+\column{.5\textwidth}
+
+```{r, eval=F, warning=FALSE}
+library(tmap)
+
+tmap_mode("view")
+
+tm_shape(vshare) +
+  tm_polygons(col = "share")
+
+```
+\column{.5\textwidth}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.90\textwidth]{pictures/tmap.png}
+\end{figure}
+
+
+
+\columnsend
+
 
 
 # Værktøjer i `R`

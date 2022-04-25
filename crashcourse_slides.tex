@@ -628,12 +628,12 @@ arbejde med:
 \columnsend
 \end{frame}
 
-\hypertarget{geospatial-datavisualisering}{%
-\section{Geospatial
-datavisualisering}\label{geospatial-datavisualisering}}
+\hypertarget{visualisering-med-ggplot2}{%
+\section{\texorpdfstring{Visualisering med
+\{\texttt{ggplot2}\}}{Visualisering med \{ggplot2\}}}\label{visualisering-med-ggplot2}}
 
 \begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
-\protect\hypertarget{visualisering-med-ggplot2}{}
+\protect\hypertarget{visualisering-med-ggplot2-1}{}
 XXX
 
 \tiny
@@ -681,7 +681,7 @@ XXX
 \end{frame}
 
 \begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
-\protect\hypertarget{visualisering-med-ggplot2-1}{}
+\protect\hypertarget{visualisering-med-ggplot2-2}{}
 \columnsbegin
 \column{.5\textwidth}
 
@@ -704,7 +704,7 @@ XXX
 \end{frame}
 
 \begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
-\protect\hypertarget{visualisering-med-ggplot2-2}{}
+\protect\hypertarget{visualisering-med-ggplot2-3}{}
 \columnsbegin
 \column{.5\textwidth}
 
@@ -728,7 +728,7 @@ XXX
 \end{frame}
 
 \begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
-\protect\hypertarget{visualisering-med-ggplot2-3}{}
+\protect\hypertarget{visualisering-med-ggplot2-4}{}
 \columnsbegin
 \column{.5\textwidth}
 
@@ -753,7 +753,7 @@ XXX
 \end{frame}
 
 \begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
-\protect\hypertarget{visualisering-med-ggplot2-4}{}
+\protect\hypertarget{visualisering-med-ggplot2-5}{}
 \columnsbegin
 \column{.5\textwidth}
 
@@ -779,7 +779,7 @@ XXX
 \end{frame}
 
 \begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
-\protect\hypertarget{visualisering-med-ggplot2-5}{}
+\protect\hypertarget{visualisering-med-ggplot2-6}{}
 \columnsbegin
 \column{.5\textwidth}
 
@@ -981,7 +981,6 @@ XXX
 \begin{Shaded}
 \begin{Highlighting}[]
 \FunctionTok{library}\NormalTok{(osmdata)}
-\CommentTok{\#library(httr)}
 
 \CommentTok{\# Hent OSM{-}data for Vejle}
 \NormalTok{vejle }\OtherTok{\textless{}{-}}\NormalTok{ kommuner\_raw }\SpecialCharTok{\%\textgreater{}\%} 
@@ -1026,6 +1025,58 @@ XXX
 \includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-28-1.pdf}
 
 \normalsize \columnsend
+\end{frame}
+
+\hypertarget{interaktiv-visualisering-med-tmap}{%
+\section{\texorpdfstring{Interaktiv visualisering med
+\{\texttt{tmap}\}}{Interaktiv visualisering med \{tmap\}}}\label{interaktiv-visualisering-med-tmap}}
+
+\begin{frame}[fragile]{Interaktiv visualisering med \{\texttt{tmap}\}}
+\protect\hypertarget{interaktiv-visualisering-med-tmap-1}{}
+\begin{itemize}
+\item
+  \texttt{tmap} er nyeste skud på stammen, når det kommer til at
+  visualisere geospatial data. I modsætning til \texttt{ggplot2} er
+  pakken udviklet \emph{specifikt} til dette formål
+\item
+  \texttt{tmap}-pakken er ikke helt lige så fleksibel som
+  \texttt{ggplot2}. Der skal lige mere arbejde til for at gøre dit plot
+  pænt. Derudover minder syntaxen meget om
+\item
+  Til gengæld er \texttt{tmap} eminent til at generere
+  \textbf{interaktive kort}!
+\item
+  Af samme grund bruger jeg den ofte, når jeg arbejder \emph{med} data.
+  Det gør det nemt at inspicere dine datasæt
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Interaktiv visualisering med \{\texttt{tmap}\}}
+\protect\hypertarget{interaktiv-visualisering-med-tmap-2}{}
+\columnsbegin
+\column{.5\textwidth}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tmap)}
+
+\FunctionTok{tmap\_mode}\NormalTok{(}\StringTok{"view"}\NormalTok{)}
+
+\FunctionTok{tm\_shape}\NormalTok{(vshare) }\SpecialCharTok{+}
+  \FunctionTok{tm\_polygons}\NormalTok{(}\AttributeTok{col =} \StringTok{"share"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize \column{.5\textwidth}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.90\textwidth]{pictures/tmap.png}
+\end{figure}
+
+\columnsend
 \end{frame}
 
 \hypertarget{vuxe6rktuxf8jer-i-r}{%
