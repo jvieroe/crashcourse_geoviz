@@ -784,7 +784,7 @@ ggplot() +
 
 ```{r, eval=F, warning=FALSE}
 library(osmdata)
-library(httr)
+#library(httr)
 
 # Hent OSM-data for Vejle
 vejle <- kommuner_raw %>% 
