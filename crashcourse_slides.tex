@@ -582,10 +582,10 @@ og/eller,
 \begin{frame}[fragile]{Din nye bedste ven: \{\texttt{sf}\}}
 \protect\hypertarget{din-nye-bedste-ven-sf}{}
 \begin{itemize}
-\tightlist
 \item
-  Lad os kigge på det! Til en start loader vi et datasæt over danske
-  kommuner:
+  Lad os kigge på det!
+\item
+  Til at starte med loader vi et datasæt over danske kommuner:
 \end{itemize}
 
 \tiny
@@ -631,17 +631,66 @@ og/eller,
 \end{verbatim}
 
 \normalsize
+\end{frame}
 
+\begin{frame}[fragile]{Din nye bedste ven: \{\texttt{sf}\}}
+\protect\hypertarget{din-nye-bedste-ven-sf-1}{}
 \begin{itemize}
 \tightlist
 \item
   Magien ligger i \texttt{geometry}-listen. Alt (!) andet er data
   frames/tibbles, som I kender dem
 \end{itemize}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{glimpse}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 98
+## Columns: 4
+## $ navn     <chr> "København", "Frederiksberg", "Ballerup", "Brøndby", "Dragør"~
+## $ dagi_id  <chr> "389103", "389104", "389105", "389106", "389107", "389108", "~
+## $ region   <chr> "Region Hovedstaden", "Region Hovedstaden", "Region Hovedstad~
+## $ geometry <MULTIPOLYGON [°]> MULTIPOLYGON (((12.54502 55..., MULTIPOLYGON (((~
+\end{verbatim}
+
+\normalsize
+
+\begin{itemize}
+\tightlist
+\item
+  Derfor kan vi også med et snuptag konvertere det hele om til at rent
+  og ikke-spatialt datasæt:
+\end{itemize}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{st\_drop\_geometry}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{glimpse}\NormalTok{(.)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 98
+## Columns: 3
+## $ navn    <chr> "København", "Frederiksberg", "Ballerup", "Brøndby", "Dragør",~
+## $ dagi_id <chr> "389103", "389104", "389105", "389106", "389107", "389108", "3~
+## $ region  <chr> "Region Hovedstaden", "Region Hovedstaden", "Region Hovedstade~
+\end{verbatim}
+
+\normalsize
 \end{frame}
 
 \begin{frame}[fragile]{Din nye bedste ven: \{\texttt{sf}\}}
-\protect\hypertarget{din-nye-bedste-ven-sf-1}{}
+\protect\hypertarget{din-nye-bedste-ven-sf-2}{}
 Helt konkret giver \texttt{sf} os mulighed for at bruge simple
 \texttt{tidyverse}-funktioner til at:
 
@@ -662,12 +711,12 @@ Lad os prøve begge dele!
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# data wrangling med tidyverse (dplyr):}
-\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{df\_2 }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
   \FunctionTok{filter}\NormalTok{(region }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"Region Syddanmark"}\NormalTok{, }\StringTok{"Region Midtjylland"}\NormalTok{))}
 
 \CommentTok{\# data viz med tidyverse (ggplot2):}
 \FunctionTok{ggplot}\NormalTok{() }\SpecialCharTok{+}
-  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ region)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_sf}\NormalTok{(}\AttributeTok{data =}\NormalTok{ df\_2, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ region)) }\SpecialCharTok{+}
   \FunctionTok{theme\_void}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
@@ -678,13 +727,83 @@ Lad os prøve begge dele!
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-12-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-14-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
 
-\begin{frame}{Det er ikke magi!}
-\protect\hypertarget{det-er-ikke-magi}{}
+\begin{frame}[fragile]{Fra geokodet til spatialt data}
+\protect\hypertarget{fra-geokodet-til-spatialt-data}{}
+\begin{itemize}
+\item
+  Tit har vi data (typisk \textbf{punkter}), som ikke er opbevaret som
+  spatialt data men derimod blot med en række koordinater
+\item
+  Her skal vi transformere koordinaterne for at udnytte, at den
+  underliggende information er spatial
+\item
+  Det kunne fx være nedenstånde datasæt over DSB-stationer:
+\end{itemize}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(janitor)}
+
+\NormalTok{dsb }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"data/DSB\_Stations\_20201209.xlsm"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{clean\_names}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(name, x, y)}
+
+\FunctionTok{glimpse}\NormalTok{(dsb)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 518
+## Columns: 3
+## $ name <chr> "Sommerland Sjælland", "Højby", "Nykøbing Sjælland", "Søborg", "S~
+## $ x    <dbl> 12.024358, 11.603761, 11.672502, 12.333784, 11.711389, 12.513020,~
+## $ y    <dbl> 55.54929, 55.91084, 55.92151, 56.10049, 55.54498, 55.77054, 55.77~
+\end{verbatim}
+
+\normalsize
+\end{frame}
+
+\begin{frame}[fragile]{Fra geokodet til spatialt data}
+\protect\hypertarget{fra-geokodet-til-spatialt-data-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Det er let at konvertere dette ``rå'' data til noget, \texttt{R}
+  betragter som spatialt:
+\end{itemize}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# fjern stationer uden koordinater}
+\NormalTok{dsb }\OtherTok{\textless{}{-}}\NormalTok{ dsb }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(x) }\SpecialCharTok{\&} \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(y))}
+
+\CommentTok{\# konverter til spatialt format}
+\NormalTok{dsb }\OtherTok{\textless{}{-}}\NormalTok{ dsb }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{st\_as\_sf}\NormalTok{(}\AttributeTok{coords =} \FunctionTok{c}\NormalTok{(}\StringTok{"x"}\NormalTok{, }\StringTok{"y"}\NormalTok{),}
+           \AttributeTok{crs =} \DecValTok{4326}\NormalTok{)}
+
+\FunctionTok{glimpse}\NormalTok{(dsb)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 515
+## Columns: 2
+## $ name     <chr> "Sommerland Sjælland", "Højby", "Nykøbing Sjælland", "Søborg"~
+## $ geometry <POINT [°]> POINT (12.02436 55.54929), POINT (11.60376 55.91084), P~
+\end{verbatim}
+
+\normalsize
 \end{frame}
 
 \hypertarget{visualisering-med-ggplot2}{%
@@ -693,7 +812,14 @@ Lad os prøve begge dele!
 
 \begin{frame}[fragile]{Visualisering med \{\texttt{ggplot2}\}}
 \protect\hypertarget{visualisering-med-ggplot2-1}{}
-XXX
+\begin{itemize}
+\item
+  Lad os prøve at se nærmere på vælgeropbakningen til Venstre ved
+  forrige kommunalvalg
+\item
+  Jeg har snydt lidt hjemmefra og samlet et datasæt over stemmeandel på
+  kommuneniveau:
+\end{itemize}
 
 \tiny
 
@@ -757,7 +883,7 @@ XXX
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-16-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-20-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -781,7 +907,7 @@ XXX
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-18-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-22-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -806,7 +932,7 @@ XXX
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-20-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-24-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -832,7 +958,7 @@ XXX
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-22-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-26-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -867,9 +993,61 @@ XXX
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-24-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-28-1.pdf}
 
 \normalsize
+
+\columnsend
+\end{frame}
+
+\hypertarget{interaktiv-visualisering-med-tmap}{%
+\section{\texorpdfstring{Interaktiv visualisering med
+\{\texttt{tmap}\}}{Interaktiv visualisering med \{tmap\}}}\label{interaktiv-visualisering-med-tmap}}
+
+\begin{frame}[fragile]{Interaktiv visualisering med \{\texttt{tmap}\}}
+\protect\hypertarget{interaktiv-visualisering-med-tmap-1}{}
+\begin{itemize}
+\item
+  \texttt{tmap} er nyeste skud på stammen, når det kommer til at
+  visualisere geospatial data. I modsætning til \texttt{ggplot2} er
+  pakken udviklet \emph{specifikt} til dette formål
+\item
+  \texttt{tmap}-pakken er ikke helt lige så fleksibel som
+  \texttt{ggplot2}. Der skal lige mere arbejde til for at gøre dit plot
+  pænt. Derudover minder syntaxen meget om
+\item
+  Til gengæld er \texttt{tmap} eminent til at generere
+  \textbf{interaktive kort}!
+\item
+  Af samme grund bruger jeg den ofte, når jeg arbejder \emph{med} data.
+  Det gør det nemt at inspicere dine datasæt
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Interaktiv visualisering med \{\texttt{tmap}\}}
+\protect\hypertarget{interaktiv-visualisering-med-tmap-2}{}
+\columnsbegin
+\column{.5\textwidth}
+
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tmap)}
+
+\FunctionTok{tmap\_mode}\NormalTok{(}\StringTok{"view"}\NormalTok{)}
+
+\FunctionTok{tm\_shape}\NormalTok{(vshare) }\SpecialCharTok{+}
+  \FunctionTok{tm\_polygons}\NormalTok{(}\AttributeTok{col =} \StringTok{"share"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize \column{.5\textwidth}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.90\textwidth]{pictures/tmap.png}
+\end{figure}
 
 \columnsend
 \end{frame}
@@ -963,7 +1141,7 @@ XXX
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-26-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-31-1.pdf}
 
 \normalsize \columnsend
 \end{frame}
@@ -1081,99 +1259,9 @@ XXX
 ## Data (c) OpenStreetMap contributors, ODbL 1.0. https://www.openstreetmap.org/copyright
 \end{verbatim}
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-28-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-33-1.pdf}
 
 \normalsize \columnsend
-\end{frame}
-
-\hypertarget{interaktiv-visualisering-med-tmap}{%
-\section{\texorpdfstring{Interaktiv visualisering med
-\{\texttt{tmap}\}}{Interaktiv visualisering med \{tmap\}}}\label{interaktiv-visualisering-med-tmap}}
-
-\begin{frame}[fragile]{Interaktiv visualisering med \{\texttt{tmap}\}}
-\protect\hypertarget{interaktiv-visualisering-med-tmap-1}{}
-\begin{itemize}
-\item
-  \texttt{tmap} er nyeste skud på stammen, når det kommer til at
-  visualisere geospatial data. I modsætning til \texttt{ggplot2} er
-  pakken udviklet \emph{specifikt} til dette formål
-\item
-  \texttt{tmap}-pakken er ikke helt lige så fleksibel som
-  \texttt{ggplot2}. Der skal lige mere arbejde til for at gøre dit plot
-  pænt. Derudover minder syntaxen meget om
-\item
-  Til gengæld er \texttt{tmap} eminent til at generere
-  \textbf{interaktive kort}!
-\item
-  Af samme grund bruger jeg den ofte, når jeg arbejder \emph{med} data.
-  Det gør det nemt at inspicere dine datasæt
-\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Interaktiv visualisering med \{\texttt{tmap}\}}
-\protect\hypertarget{interaktiv-visualisering-med-tmap-2}{}
-\columnsbegin
-\column{.5\textwidth}
-
-\tiny
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{library}\NormalTok{(tmap)}
-
-\FunctionTok{tmap\_mode}\NormalTok{(}\StringTok{"view"}\NormalTok{)}
-
-\FunctionTok{tm\_shape}\NormalTok{(vshare) }\SpecialCharTok{+}
-  \FunctionTok{tm\_polygons}\NormalTok{(}\AttributeTok{col =} \StringTok{"share"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\normalsize \column{.5\textwidth}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.90\textwidth]{pictures/tmap.png}
-\end{figure}
-
-\columnsend
-\end{frame}
-
-\begin{frame}[fragile]{Kan man gøre det hele \emph{endnu} nemmere?}
-\protect\hypertarget{kan-man-guxf8re-det-hele-endnu-nemmere}{}
-\begin{itemize}
-\item
-  Der er lavet et par \texttt{R}-pakker, der spytter ready-made kort ud
-  for dig
-\item
-  \href{https://github.com/sebastianbarfort/mapDK}{\{mapDK\}} er
-  efterhånden fem år gammel og er ikke rigtigt blevet opdateret. Den er
-  et no-go
-\item
-  \href{https://github.com/kristianSN/plotDK}{\{plotDK\}} blev lanceret
-  i 2021. Den kan meget af det samme, men er udgivet på \texttt{CRAN} og
-  er up to date.
-\item
-  Min anke med de pakker er primært, at
-
-  \begin{itemize}
-  \item
-    De (meget!) hurtigt bliver spændetrøjer ift. hvad man kan
-    visualisere og hvordan
-  \item
-    Det faktisk er rigtig nemt at gøre det selv!
-  \end{itemize}
-\item
-  Det er så det, vi er her for at snakke lidt om i dag!
-\end{itemize}
-\end{frame}
-
-\hypertarget{vuxe6rktuxf8jer-i-r}{%
-\section{\texorpdfstring{Værktøjer i
-\texttt{R}}{Værktøjer i R}}\label{vuxe6rktuxf8jer-i-r}}
-
-\begin{frame}{text}
-\protect\hypertarget{text}{}
-xx
 \end{frame}
 
 \end{document}

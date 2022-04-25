@@ -166,6 +166,10 @@ kommuner_elec <- st_read(dsn = "data/kommuner_98",
                          layer = "kommuner_98")
 
 
+dk <- st_read(dsn = "data/dk",
+              layer = "dk")
+
+
 
 
 ```
@@ -429,7 +433,7 @@ library(tmap)
 * Lad os kigge på det! 
 
 
-* Lad os starte med at loade et datasæt over danske kommuner:
+* Til at starte med loader vi et datasæt over danske kommuner:
 
 
 ```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
@@ -449,13 +453,15 @@ df
 
 ## Din nye bedste ven: {`sf`}
 
+* Magien ligger i `geometry`-listen. Alt (!) andet er data frames/tibbles, som I kender dem
+
+
 ```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE}
 glimpse(df)
 
 ```
 
 
-* Magien ligger i `geometry`-listen. Alt (!) andet er data frames/tibbles, som I kender dem
 
 * Derfor kan vi også med et snuptag konvertere det hele om til at rent og ikke-spatialt datasæt:
 
@@ -466,23 +472,6 @@ df %>%
 
 
 ```
-
-## Fra geokodet til spatialt data
-
-* Tit har vi data (typisk __punkter__), som ikke er opbevaret som spatialt data men derimod blot med en række koordinater. Her skal vi transformere dem for at kunne udnytte, at den underliggende information er spatial
-
-* Lad os 
-
-
-
-
-
-
-
-
-
-
-
 
 ## Din nye bedste ven: {`sf`}
 
@@ -496,15 +485,17 @@ Lad os prøve begge dele!
 
 \columnsbegin
 \column{.5\textwidth}
+
+
 ```{r, echo=T, eval=FALSE, message=FALSE,warning=FALSE}
 
 # data wrangling med tidyverse (dplyr):
-df <- df %>% 
+df_2 <- df %>% 
   filter(region %in% c("Region Syddanmark", "Region Midtjylland"))
 
 # data viz med tidyverse (ggplot2):
 ggplot() +
-  geom_sf(data = df, aes(fill = region)) +
+  geom_sf(data = df_2, aes(fill = region)) +
   theme_void()
 
 ```
@@ -513,12 +504,12 @@ ggplot() +
 ```{r, echo=F, eval=T, message=FALSE,warning=FALSE}
 
 # data wrangling med tidyverse (dplyr):
-df <- df %>% 
+df_2 <- df %>% 
   filter(region %in% c("Region Syddanmark", "Region Midtjylland"))
 
 # data viz med tidyverse (ggplot2):
 ggplot() +
-  geom_sf(data = df, aes(fill = region)) +
+  geom_sf(data = df_2, aes(fill = region)) +
   theme_void()
 
 ```
@@ -526,7 +517,47 @@ ggplot() +
 
 
 
-## Det er ikke magi!
+
+## Fra geokodet til spatialt data
+
+* Tit har vi data (typisk __punkter__), som ikke er opbevaret som spatialt data men derimod blot med en række koordinater
+
+* Her skal vi transformere koordinaterne for at udnytte, at den underliggende information er spatial
+
+* Det kunne fx være nedenstånde datasæt over DSB-stationer:
+
+
+```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE}
+library(janitor)
+
+dsb <- readxl::read_xlsx("data/DSB_Stations_20201209.xlsm") %>% 
+  clean_names() %>% 
+  select(name, x, y)
+
+glimpse(dsb)
+
+
+```
+
+
+## Fra geokodet til spatialt data
+
+* Det er let at konvertere dette "rå" data til noget, `R` betragter som spatialt:
+
+```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE}
+# fjern stationer uden koordinater
+dsb <- dsb %>% 
+  filter(!is.na(x) & !is.na(y))
+
+# konverter til spatialt format
+dsb <- dsb %>% 
+  st_as_sf(coords = c("x", "y"),
+           crs = 4326)
+
+glimpse(dsb)
+
+```
+
 
 
 
@@ -535,9 +566,14 @@ ggplot() +
 
 # Visualisering med {`ggplot2`}
 
+
+
 ## Visualisering med {`ggplot2`}
 
-XXX 
+* Lad os prøve at se nærmere på vælgeropbakningen til Venstre ved forrige kommunalvalg
+
+* Jeg har snydt lidt hjemmefra og samlet et datasæt over stemmeandel på kommuneniveau:
+
 ```{r, eval=T,message=FALSE, warning=FALSE, results='hide'}
 vshare <- st_read(dsn = "data/kommuner_98",
                   layer = "kommuner_98")
@@ -551,8 +587,6 @@ head(vshare)
 
 
 
-
-
 ## Visualisering med {`ggplot2`}
 
 \columnsbegin
@@ -684,6 +718,45 @@ ggplot() +
 
 \columnsend
 
+
+# Interaktiv visualisering med {`tmap`}
+
+## Interaktiv visualisering med {`tmap`}
+
+* `tmap` er nyeste skud på stammen, når det kommer til at visualisere geospatial data. I modsætning til `ggplot2` er pakken udviklet _specifikt_ til dette formål
+
+* `tmap`-pakken er ikke helt lige så fleksibel som `ggplot2`. Der skal lige mere arbejde til for at gøre dit plot pænt. Derudover minder syntaxen meget om
+
+* Til gengæld er `tmap` eminent til at generere __interaktive kort__!
+
+* Af samme grund bruger jeg den ofte, når jeg arbejder _med_ data. Det gør det nemt at inspicere dine datasæt
+
+
+
+## Interaktiv visualisering med {`tmap`}
+
+\columnsbegin
+\column{.5\textwidth}
+
+```{r, eval=F, warning=FALSE}
+library(tmap)
+
+tmap_mode("view")
+
+tm_shape(vshare) +
+  tm_polygons(col = "share")
+
+```
+\column{.5\textwidth}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.90\textwidth]{pictures/tmap.png}
+\end{figure}
+
+
+
+\columnsend
 
 
 
@@ -912,66 +985,27 @@ ggplot() +
 \columnsend
 
 
-# Interaktiv visualisering med {`tmap`}
 
-## Interaktiv visualisering med {`tmap`}
+<!-- ## Kan man gøre det hele _endnu_ nemmere? -->
 
-* `tmap` er nyeste skud på stammen, når det kommer til at visualisere geospatial data. I modsætning til `ggplot2` er pakken udviklet _specifikt_ til dette formål
+<!-- * Der er lavet et par `R`-pakker, der spytter ready-made kort ud for dig -->
 
-* `tmap`-pakken er ikke helt lige så fleksibel som `ggplot2`. Der skal lige mere arbejde til for at gøre dit plot pænt. Derudover minder syntaxen meget om
+<!-- * [{mapDK}](https://github.com/sebastianbarfort/mapDK) er efterhånden fem år gammel og er ikke rigtigt blevet opdateret. Den er et no-go -->
 
-* Til gengæld er `tmap` eminent til at generere __interaktive kort__!
+<!-- * [{plotDK}](https://github.com/kristianSN/plotDK) blev lanceret i 2021. Den kan meget af det samme, men er udgivet på `CRAN` og er up to date. -->
 
-* Af samme grund bruger jeg den ofte, når jeg arbejder _med_ data. Det gør det nemt at inspicere dine datasæt
+<!-- * Min anke med de pakker er primært, at  -->
 
+<!--   + De (meget!) hurtigt bliver spændetrøjer ift. hvad man kan visualisere og hvordan -->
 
+<!--   + Det faktisk er rigtig nemt at gøre det selv! -->
 
-## Interaktiv visualisering med {`tmap`}
-
-\columnsbegin
-\column{.5\textwidth}
-
-```{r, eval=F, warning=FALSE}
-library(tmap)
-
-tmap_mode("view")
-
-tm_shape(vshare) +
-  tm_polygons(col = "share")
-
-```
-\column{.5\textwidth}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=.90\textwidth]{pictures/tmap.png}
-\end{figure}
+<!-- * Det er så det, vi er her for at snakke lidt om i dag! -->
 
 
 
-\columnsend
+<!-- # Værktøjer i `R` -->
 
+<!-- ## text -->
 
-## Kan man gøre det hele _endnu_ nemmere?
-
-* Der er lavet et par `R`-pakker, der spytter ready-made kort ud for dig
-
-* [{mapDK}](https://github.com/sebastianbarfort/mapDK) er efterhånden fem år gammel og er ikke rigtigt blevet opdateret. Den er et no-go
-
-* [{plotDK}](https://github.com/kristianSN/plotDK) blev lanceret i 2021. Den kan meget af det samme, men er udgivet på `CRAN` og er up to date.
-
-* Min anke med de pakker er primært, at 
-
-  + De (meget!) hurtigt bliver spændetrøjer ift. hvad man kan visualisere og hvordan
-  
-  + Det faktisk er rigtig nemt at gøre det selv!
-  
-* Det er så det, vi er her for at snakke lidt om i dag!
-
-
-
-# Værktøjer i `R`
-
-## text
-
-xx
+<!-- xx -->
