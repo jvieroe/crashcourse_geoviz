@@ -181,12 +181,6 @@
 \begin{frame}[allowframebreaks]
   \tableofcontents[hideallsubsections]
 \end{frame}
-\begin{frame}
-\tiny
-
-\normalsize
-\end{frame}
-
 \hypertarget{introduktion}{%
 \section{Introduktion}\label{introduktion}}
 
@@ -205,10 +199,12 @@ Jeg (regner med) at snakke \textbf{en del} om:
 
 \begin{itemize}
 \item
-  Hvad \textbf{spatial} data er
+  Hvorfor vi gider arbejde med \textbf{spatiale} datakilder
+\item
+  Hvordan vi arbejder med spatiale datakilder
 \item
   Hvordan vi kan bruge spatiale datakilder til at \textbf{visualisere}
-  andet data
+  andre dimensioner i data
 \item
   Hvordan vi gør det i \texttt{R}
 \end{itemize}
@@ -225,9 +221,8 @@ Jeg kommer \textbf{ikke} til at snakke (så meget) om:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Hvordan kan vi bruge geodata til at visualisere vores
-pointer?}
-\protect\hypertarget{hvordan-kan-vi-bruge-geodata-til-at-visualisere-vores-pointer}{}
+\begin{frame}{Eksempler på spatiale datavisualiseringer}
+\protect\hypertarget{eksempler-puxe5-spatiale-datavisualiseringer}{}
 \columnsbegin
 
 \column{.5\textwidth}
@@ -249,9 +244,8 @@ pointer?}
 \columnsend
 \end{frame}
 
-\begin{frame}{Hvordan kan vi bruge geodata til at visualisere vores
-pointer?}
-\protect\hypertarget{hvordan-kan-vi-bruge-geodata-til-at-visualisere-vores-pointer-1}{}
+\begin{frame}{Eksempler på spatiale datavisualiseringer}
+\protect\hypertarget{eksempler-puxe5-spatiale-datavisualiseringer-1}{}
 \columnsbegin
 
 \column{.4\textwidth}
@@ -273,11 +267,102 @@ pointer?}
 \columnsend
 \end{frame}
 
-\begin{frame}{Hvorfor ikke bare bruge ``klassiske'' visualiseringer?
-(I)}
-\protect\hypertarget{hvorfor-ikke-bare-bruge-klassiske-visualiseringer-i}{}
+\hypertarget{the-basics-geodata-spatialt-data}{%
+\section{The Basics: Geodata / spatialt
+data}\label{the-basics-geodata-spatialt-data}}
+
+\begin{frame}{Hvad er (geo)spatialt data?}
+\protect\hypertarget{hvad-er-geospatialt-data}{}
+\tiny
+
+\normalsize
+
+\begin{itemize}
+\item
+  ``Spatial data'' er basically alt data, hvor observationer har en form
+  for placering/relation ift. hinanden
+\item
+  Typisk bliver det brugt i den lidt mere snævre forstand (=
+  \textbf{geospatial} data), hvor fokus er på geografiske
+  placeringer/relationer
+\item
+  Klassiske eksempler på spatialt data er digitaliserede kort over
+  landegrænser, landbrugsafkast, vejnetværk, togstationer osv.
+\item
+  Her består den spatiale dimension af det geografiske element:
+  \emph{hvad} ligger \emph{hvor}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Datastrukturer og typer af geodata}
+\protect\hypertarget{datastrukturer-og-typer-af-geodata}{}
+Grundlæggende arbejder vi med \textbf{tre typer af geospatiale
+datakilder}
+
+Hver type har en (nogenlunde) parallel til graftyper, I er vant til at
+arbejde med:
+
+\bigskip
+
+\begin{enumerate}
+\tightlist
+\item
+  \textbf{Punkter}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Tænk på dem som almindelige \emph{punkter i et scatterplot}
+\end{itemize}
+
+\begin{enumerate}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Linjer}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Tænk på dem som \emph{linjer i et linechart}
+\end{itemize}
+
+\begin{enumerate}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  \textbf{Polygoner}
+\end{enumerate}
+
+\begin{itemize}
+\tightlist
+\item
+  Her er parallelen ikke lige så tydelig
+\item
+  \ldots{} men i en data viz-kontekst kan I tænke på dem som
+  \emph{søjler i et bar chart} (ish\ldots)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{(1) Punkter}
+\protect\hypertarget{punkter}{}
 \columnsbegin
-\column{.5\textwidth}
+\column{.4\textwidth}
+
+\begin{itemize}
+\item
+  Punkter består af simple koordinater (x, y), der refererer til en
+  specifik lokation
+\item
+  Punkter har ingen størrelse (og intet \emph{areal}), de er uendeligt
+  små
+\item
+  Eksempler: byer, stationer, skoler osv.
+\end{itemize}
+
+\column{.6\textwidth}
 
 \tiny
 
@@ -285,7 +370,29 @@ pointer?}
 
 \normalsize
 
-\column{.5\textwidth}
+\columnsend
+\end{frame}
+
+\begin{frame}{(2) Linjer}
+\protect\hypertarget{linjer}{}
+\columnsbegin
+\column{.4\textwidth}
+
+\begin{itemize}
+\item
+  Linjer består -- grundlæggende -- af punkter, der er kombineret til en
+  \emph{linestring} vha. en defineret rækkefølge
+\item
+  Konstruktionen er sjældent noget, I skal bekymre jer om: linjedata
+  ligger typisk opbevaret som linjer (\(\neq\) punkter). Her er det bare
+  plug 'n play
+\item
+  Linjer har intet \emph{areal} (fordi de består af punkter)
+\item
+  Eksempler: veje, floder, jernbanenetværk osv.
+\end{itemize}
+
+\column{.6\textwidth}
 
 \tiny
 
@@ -296,9 +403,61 @@ pointer?}
 \columnsend
 \end{frame}
 
-\begin{frame}{Hvorfor ikke bare bruge ``klassiske'' visualiseringer?
-(II)}
-\protect\hypertarget{hvorfor-ikke-bare-bruge-klassiske-visualiseringer-ii}{}
+\begin{frame}{(3) Polygoner}
+\protect\hypertarget{polygoner}{}
+\columnsbegin
+\column{.4\textwidth}
+
+\begin{itemize}
+\item
+  Polygoner består -- ligesom linjer -- af punkter, der er kombineret
+  til en \emph{polygon} vha. en defineret rækkefølge. Igen, det er
+  sjældent noget, I skal bekymre jer om
+\item
+  Forskellen er, at polygoner er \emph{lukkede linjer}, der former et
+  afgrænset område
+\item
+  De kan have alle tænkelige former. Det centrale er, at polygoner har
+  et \emph{areal}
+\item
+  Eksempler: stater, kommuner, valgkredse osv.
+\end{itemize}
+
+\column{.6\textwidth}
+
+\tiny
+
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-4-1}
+
+\normalsize
+
+\columnsend
+\end{frame}
+
+\begin{frame}{Hvorfor skal vi arbejde med spatialt data?}
+\protect\hypertarget{hvorfor-skal-vi-arbejde-med-spatialt-data}{}
+\columnsbegin
+\column{.5\textwidth}
+
+\tiny
+
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-5-1}
+
+\normalsize
+
+\column{.5\textwidth}
+
+\tiny
+
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-6-1}
+
+\normalsize
+
+\columnsend
+\end{frame}
+
+\begin{frame}{Hvorfor skal vi arbejde med spatialt data?}
+\protect\hypertarget{hvorfor-skal-vi-arbejde-med-spatialt-data-1}{}
 \columnsbegin
 
 \column{.5\textwidth}
@@ -313,58 +472,73 @@ hvis
   interessante (case in point:)
 \end{itemize}
 
-eller,
+og/eller,
 
 \begin{itemize}
 \tightlist
 \item
-  Det data, vi gerne vil visualisere fundamentalt set har en geografisk
-  dimension
+  Det data, vi gerne vil visualisere fundamentalt set har en tydelig
+  geografisk dimension, selvom der ikke er noget geografisk mønster. Her
+  vil en geografisk fremstilling ikke bidrage substantielt men hjælpe
+  modtageren med en klar reference
 \end{itemize}
 
 \column{.5\textwidth}
 
 \tiny
 
-\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-4-1}
+\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-7-1}
 
 \normalsize
 
 \columnsend
 \end{frame}
 
-\begin{frame}[fragile]{Kan man gøre det hele \emph{endnu} nemmere?}
-\protect\hypertarget{kan-man-guxf8re-det-hele-endnu-nemmere}{}
+\begin{frame}{Hvorfor skal vi arbejde med spatialt data?}
+\protect\hypertarget{hvorfor-skal-vi-arbejde-med-spatialt-data-2}{}
 \begin{itemize}
 \item
-  Der er lavet et par \texttt{R}-pakker, der spytter ready-made kort ud
-  for dig
+  Kort er fede, fordi de er de \textbf{eneste visualiseringer, hvor alle
+  har en intuitiv og umiddelbar forståelse af X- og Y-aksen}
 \item
-  \href{https://github.com/sebastianbarfort/mapDK}{\{mapDK\}} er
-  efterhånden fem år gammel og er ikke rigtigt blevet opdateret. Den er
-  et no-go
+  Det er smart, fordi det frigør lidt (kognitiv) plads til at
+  visualisere flere andre \emph{dimensioner} i data ved hjælp af farve,
+  størrelse osv. (`aesthetics')
 \item
-  \href{https://github.com/kristianSN/plotDK}{\{plotDK\}} blev lanceret
-  i 2021. Den kan meget af det samme, men er udgivet på \texttt{CRAN} og
-  er up to date.
+  Tit arbejder vi (også i Epinion) med geografiske enheder uden at tænke
+  nærmere over det: danske skoler, valgkredse til FT-valg,
+  metrostationer i København, norske jerbaneruter osv.
 \item
-  Min anke med de pakker er primært, at
-
-  \begin{itemize}
-  \item
-    De (meget!) hurtigt bliver spændetrøjer ift. hvad man kan
-    visualisere og hvordan
-  \item
-    Det faktisk er rigtig nemt at gøre det selv!
-  \end{itemize}
+  Her kan det (måske) give mening at visualisere nogle af sine pointer
+  ved hjælp af geografiske datavisualiseringer
 \item
-  Det er så det, vi er her for at snakke lidt om i dag!
+  \ldots{} hvilket er en lang måde at sige ``kort'' på
 \end{itemize}
 \end{frame}
 
-\hypertarget{the-basics-geodata-i-r}{%
-\section{\texorpdfstring{The Basics: Geodata i
-\texttt{R}}{The Basics: Geodata i R}}\label{the-basics-geodata-i-r}}
+\hypertarget{the-basics-spatialt-data-i-r}{%
+\section{\texorpdfstring{The Basics: Spatialt data i
+\texttt{R}}{The Basics: Spatialt data i R}}\label{the-basics-spatialt-data-i-r}}
+
+\begin{frame}[fragile]{Hvordan arbejder vi med spatialt data?}
+\protect\hypertarget{hvordan-arbejder-vi-med-spatialt-data}{}
+\begin{itemize}
+\item
+  Den typiske måde at lege med spatialt data på er vha. GIS (Geographic
+  Information Systems)-værktøjer designet til det
+
+  \begin{itemize}
+  \tightlist
+  \item
+    QGis, ArcGIS osv.
+  \end{itemize}
+\item
+  Programmer som \texttt{R} er dog løbende blevet udvidet med pakker,
+  der gør det muligt at klare alting i det samme stykke software, som
+  man bruger til andre ting
+\item
+\end{itemize}
+\end{frame}
 
 \begin{frame}[fragile]{A Blast from the past: \{\texttt{sp}\}}
 \protect\hypertarget{a-blast-from-the-past-sp}{}
@@ -483,149 +657,9 @@ Lad os prøve begge dele!
 
 \tiny
 
-\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-9-1.pdf}
+\includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-12-1.pdf}
 
 \normalsize \columnsend
-\end{frame}
-
-\begin{frame}{Datastrukturer og typer af geodata}
-\protect\hypertarget{datastrukturer-og-typer-af-geodata}{}
-Grundlæggende arbejder vi med \textbf{tre typer af geospatiale
-datakilder}
-
-Hver type har en (nogenlunde) parallel til graftyper, I er vant til at
-arbejde med:
-
-\bigskip
-
-\begin{enumerate}
-\tightlist
-\item
-  \textbf{Punkter}
-\end{enumerate}
-
-\begin{itemize}
-\tightlist
-\item
-  Tænk på dem som almindelige \emph{punkter i et scatterplot}
-\end{itemize}
-
-\begin{enumerate}
-\setcounter{enumi}{1}
-\tightlist
-\item
-  \textbf{Linjer}
-\end{enumerate}
-
-\begin{itemize}
-\tightlist
-\item
-  Tænk på dem som \emph{linjer i et linechart}
-\end{itemize}
-
-\begin{enumerate}
-\setcounter{enumi}{2}
-\tightlist
-\item
-  \textbf{Polygoner}
-\end{enumerate}
-
-\begin{itemize}
-\tightlist
-\item
-  Her er parallelen ikke lige så tydelig
-\item
-  \ldots{} men i en data viz-kontekst kan I tænke på dem som
-  \emph{søjler i et bar chart} (ish\ldots)
-\end{itemize}
-\end{frame}
-
-\begin{frame}{(1) Punkter}
-\protect\hypertarget{punkter}{}
-\columnsbegin
-\column{.4\textwidth}
-
-\begin{itemize}
-\item
-  Punkter består af simple koordinater (x, y), der refererer til en
-  specifik lokation
-\item
-  Punkter har ingen størrelse (og intet \emph{areal}), de er uendeligt
-  små
-\item
-  Eksempler: byer, stationer, skoler osv.
-\end{itemize}
-
-\column{.6\textwidth}
-
-\tiny
-
-\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-10-1}
-
-\normalsize
-
-\columnsend
-\end{frame}
-
-\begin{frame}{(2) Linjer}
-\protect\hypertarget{linjer}{}
-\columnsbegin
-\column{.4\textwidth}
-
-\begin{itemize}
-\item
-  Linjer består -- grundlæggende -- af punkter, der er kombineret til en
-  \emph{linestring} vha. en defineret rækkefølge
-\item
-  Konstruktionen er sjældent noget, I skal bekymre jer om: linjedata
-  ligger typisk opbevaret som linjer (\(\neq\) punkter). Her er det bare
-  plug 'n play
-\item
-  Linjer har intet \emph{areal} (fordi de består af punkter)
-\item
-  Eksempler: veje, floder, jernbanenetværk osv.
-\end{itemize}
-
-\column{.6\textwidth}
-
-\tiny
-
-\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-11-1}
-
-\normalsize
-
-\columnsend
-\end{frame}
-
-\begin{frame}{(3) Polygoner}
-\protect\hypertarget{polygoner}{}
-\columnsbegin
-\column{.4\textwidth}
-
-\begin{itemize}
-\item
-  Polygoner består -- ligesom linjer -- af punkter, der er kombineret
-  til en \emph{polygon} vha. en defineret rækkefølge. Igen, det er
-  sjældent noget, I skal bekymre jer om
-\item
-  Forskellen er, at polygoner er \emph{lukkede linjer}, der former et
-  afgrænset område
-\item
-  De kan have alle tænkelige former. Det centrale er, at polygoner har
-  et \emph{areal}
-\item
-  Eksempler: stater, kommuner, valgkredse osv.
-\end{itemize}
-
-\column{.6\textwidth}
-
-\tiny
-
-\includegraphics[width=1\linewidth]{crashcourse_slides_files/figure-beamer/unnamed-chunk-12-1}
-
-\normalsize
-
-\columnsend
 \end{frame}
 
 \hypertarget{visualisering-med-ggplot2}{%
@@ -1077,6 +1111,35 @@ XXX
 \end{figure}
 
 \columnsend
+\end{frame}
+
+\begin{frame}[fragile]{Kan man gøre det hele \emph{endnu} nemmere?}
+\protect\hypertarget{kan-man-guxf8re-det-hele-endnu-nemmere}{}
+\begin{itemize}
+\item
+  Der er lavet et par \texttt{R}-pakker, der spytter ready-made kort ud
+  for dig
+\item
+  \href{https://github.com/sebastianbarfort/mapDK}{\{mapDK\}} er
+  efterhånden fem år gammel og er ikke rigtigt blevet opdateret. Den er
+  et no-go
+\item
+  \href{https://github.com/kristianSN/plotDK}{\{plotDK\}} blev lanceret
+  i 2021. Den kan meget af det samme, men er udgivet på \texttt{CRAN} og
+  er up to date.
+\item
+  Min anke med de pakker er primært, at
+
+  \begin{itemize}
+  \item
+    De (meget!) hurtigt bliver spændetrøjer ift. hvad man kan
+    visualisere og hvordan
+  \item
+    Det faktisk er rigtig nemt at gøre det selv!
+  \end{itemize}
+\item
+  Det er så det, vi er her for at snakke lidt om i dag!
+\end{itemize}
 \end{frame}
 
 \hypertarget{vuxe6rktuxf8jer-i-r}{%

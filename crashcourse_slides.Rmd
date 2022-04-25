@@ -48,9 +48,11 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 
 Jeg (regner med) at snakke __en del__ om:
 
-* Hvad __spatial__ data er
+* Hvorfor vi gider arbejde med __spatiale__ datakilder
 
-* Hvordan vi kan bruge spatiale datakilder til at __visualisere__ andet data
+* Hvordan vi arbejder med spatiale datakilder
+
+* Hvordan vi kan bruge spatiale datakilder til at __visualisere__ andre dimensioner i data
 
 * Hvordan vi gør det i `R`
 
@@ -65,7 +67,9 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 
 
 
-## Hvordan kan vi bruge geodata til at visualisere vores pointer?
+
+
+## Eksempler på spatiale datavisualiseringer
 
 \columnsbegin
 
@@ -92,7 +96,7 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 
 
 
-## Hvordan kan vi bruge geodata til at visualisere vores pointer?
+## Eksempler på spatiale datavisualiseringer
 
 \columnsbegin
 
@@ -118,7 +122,11 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 
 
 
-## Hvorfor ikke bare bruge "klassiske" visualiseringer? (I)
+
+# The Basics: Geodata / spatialt data
+
+
+## Hvad er (geo)spatialt data?
 
 ```{r, echo=F, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
 library(tidyverse)
@@ -163,191 +171,13 @@ kommuner_elec <- st_read(dsn = "data/kommuner_98",
 ```
 
 
-\columnsbegin
-\column{.5\textwidth}
-
-```{r, echo=F, eval=TRUE, out.width='100%'}
-ggplot() +
-  geom_col(data = plot_df, aes(x = fct_reorder(kommune_navn, share),
-                               y = share,
-                               fill = share)) +
-  scale_fill_continuous(labels = scales::percent) +
-  coord_flip() +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-```
-
-
-
-\column{.5\textwidth}
-
-```{r, echo=F, eval=TRUE, out.width='100%'}
-ggplot() +
-  geom_sf(data = kommuner_elec, aes(fill = share),
-          color = "transparent") +
-  scale_fill_continuous(labels = scales::percent) +
-  theme_void() +
-  theme(legend.position = "bottom")
-
-
-
-```
-
-
-\columnsend
-
-
-## Hvorfor ikke bare bruge "klassiske" visualiseringer? (II)
-
-
-\columnsbegin
-
-\column{.5\textwidth}
-
-Typisk kan man med fordel (overveje at) visualisere sit data grafisk, hvis
-
-* Der er nogle __substantielle geografiske mønstre__ i data, der er interessante
-(case in point:)
-
-og/eller,
-
-* Det data, vi gerne vil visualisere fundamentalt set har en tydelig geografisk dimension. Selvom der ikke er noget geografisk mønster. Her vil en geografisk fremstilling ikke bidrage substantielt men hjælpe modtageren med en klar reference
-
-
-Kort er fede, fordi de er de __eneste visualiseringer, hvor alle har en intuitiv og umiddelbar forståelse af X- og Y-aksen__
-
-Det er smart, fordi det frigør lidt plads til at visualisere flere dimensioner i data ved hjælp af farve, størrelse osv. ('aesthetics')
-
-
-
-\column{.5\textwidth}
-
-```{r, echo=F, eval=TRUE, out.width='100%'}
-ggplot() +
-  geom_sf(data = kommuner_elec, aes(fill = share),
-          color = "transparent") +
-  scale_fill_continuous(labels = scales::percent) +
-  theme_void() +
-  theme(legend.position = "bottom")
-
-
-
-```
-
-
-
-
-
-\columnsend
-
-
-
-
-# The Basics: Geodata i `R`
-
-
-## Hvad er (geo)spatialt data?
-
-* "Spatial data" er basically alt data, hvor observationer har en form for fysisk placering/relation ift. hinanden
+* "Spatial data" er basically alt data, hvor observationer har en form for placering/relation ift. hinanden
 
 * Typisk bliver det brugt i den lidt mere snævre forstand (= __geospatial__ data), hvor fokus er på geografiske placeringer/relationer
 
-* Klassiske eksempler på spatialt data er digitaliserede kort over landegrænser, landbrugsafkast, vejnetværk, metrostationer osv.
+* Klassiske eksempler på spatialt data er digitaliserede kort over landegrænser, landbrugsafkast, vejnetværk, togstationer osv.
 
-
-## Hvordan arbejder vi med spatialt data?
-
-* Når vi skal arbejde med spatiale datasæt
-
-
-
-
-## A Blast from the past: {`sp`}
-
-```{r,echo=F, warning=FALSE,message=FALSE}
-library(tidyverse)
-library(janitor)
-library(sf)
-library(tmap)
-
-```
-
-
-* Det har tidligere været relativt besværligt at arbejde med spatialt data i `R`
-
-* `sp`-pakken var det førende framework, men selv simple datasæt var... irriterende:
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=.90\textwidth]{pictures/sp.png}
-\end{figure}
-
-
-## Din nye bedste ven: {`sf`}
-
-* Med `sf` er det blevet [smooth sailing](https://www.nickbearman.me.uk/2019/04/spatial-r-moving-from-sp-to-sf/). Den måde, pakken håndterer det _spatiale_ aspekt af et datasæt gør, at det ligner alle andre datasæt til forveksling:
-
-* Magien ligger i `geometry`-listen til sidst. Alt (!) andet er data frames/tibbles, som I kender dem
-
-
-```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
-library(tidyverse)
-library(sf)
-
-df <- st_read(dsn = "data/kommuner",
-              layer = "kommuner")
-```
-
-```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE}
-df
-
-```
-
-
-
-
-## Din nye bedste ven: {`sf`}
-
-Helt konkret giver `sf` os mulighed for at bruge simple `tidyverse`-funktioner til at:
-
-1. arbejde med data (`dplyr`, `tidyr` osv.)
-
-2. visualisere data! (`ggplot2`)
-
-Lad os prøve begge dele!
-
-\columnsbegin
-\column{.5\textwidth}
-```{r, echo=T, eval=FALSE, message=FALSE,warning=FALSE}
-
-# data wrangling med tidyverse (dplyr):
-df <- df %>% 
-  filter(region %in% c("Region Syddanmark", "Region Midtjylland"))
-
-# data viz med tidyverse (ggplot2):
-ggplot() +
-  geom_sf(data = df, aes(fill = region)) +
-  theme_void()
-
-```
-
-\column{.5\textwidth}
-```{r, echo=F, eval=T, message=FALSE,warning=FALSE}
-
-# data wrangling med tidyverse (dplyr):
-df <- df %>% 
-  filter(region %in% c("Region Syddanmark", "Region Midtjylland"))
-
-# data viz med tidyverse (ggplot2):
-ggplot() +
-  geom_sf(data = df, aes(fill = region)) +
-  theme_void()
-
-```
-\columnsend
-
-
+* Her består den spatiale dimension af det geografiske element: _hvad_ ligger _hvor_
 
 
 
@@ -457,6 +287,213 @@ ggplot() +
 
 
 \columnsend
+
+
+
+## Hvorfor skal vi arbejde med spatialt data?
+
+
+
+\columnsbegin
+\column{.5\textwidth}
+
+```{r, echo=F, eval=TRUE, out.width='100%'}
+ggplot() +
+  geom_col(data = plot_df, aes(x = fct_reorder(kommune_navn, share),
+                               y = share,
+                               fill = share)) +
+  scale_fill_continuous(labels = scales::percent) +
+  coord_flip() +
+  theme_classic() +
+  theme(legend.position = "bottom")
+
+```
+
+
+
+\column{.5\textwidth}
+
+```{r, echo=F, eval=TRUE, out.width='100%'}
+ggplot() +
+  geom_sf(data = kommuner_elec, aes(fill = share),
+          color = "transparent") +
+  scale_fill_continuous(labels = scales::percent) +
+  theme_void() +
+  theme(legend.position = "bottom")
+
+
+
+```
+
+
+\columnsend
+
+
+## Hvorfor skal vi arbejde med spatialt data?
+
+
+\columnsbegin
+
+\column{.5\textwidth}
+
+Typisk kan man med fordel (overveje at) visualisere sit data grafisk, hvis
+
+* Der er nogle __substantielle geografiske mønstre__ i data, der er interessante
+(case in point:)
+
+og/eller,
+
+* Det data, vi gerne vil visualisere fundamentalt set har en tydelig geografisk dimension, selvom der ikke er noget geografisk mønster. Her vil en geografisk fremstilling ikke bidrage substantielt men hjælpe modtageren med en klar reference
+
+
+\column{.5\textwidth}
+
+```{r, echo=F, eval=TRUE, out.width='100%'}
+ggplot() +
+  geom_sf(data = kommuner_elec, aes(fill = share),
+          color = "transparent") +
+  scale_fill_continuous(labels = scales::percent) +
+  theme_void() +
+  theme(legend.position = "bottom")
+
+
+
+```
+
+
+
+
+
+\columnsend
+
+
+
+## Hvorfor skal vi arbejde med spatialt data?
+
+* Kort er fede, fordi de er de __eneste visualiseringer, hvor alle har en intuitiv og umiddelbar forståelse af X- og Y-aksen__
+
+
+* Det er smart, fordi det frigør lidt (kognitiv) plads til at visualisere flere andre _dimensioner_ i data ved hjælp af farve, størrelse osv. ('aesthetics')
+
+* Tit arbejder vi (også i Epinion) med geografiske enheder uden at tænke nærmere over det:
+  + danske skoler, 
+  + valgkredse til FT-valg,
+  + metrostationer i København,
+  + norske jerbaneruter osv.
+
+* Her kan det (måske) give mening at visualisere nogle af sine pointer ved hjælp af geografiske datavisualiseringer
+
+* ... hvilket er en lang måde at sige "kort" på
+
+
+
+
+
+# The Basics: Spatialt data i `R`
+
+## Hvordan arbejder vi med spatialt data?
+
+* Den typiske måde at lege med spatialt data på er vha. GIS (Geographic Information Systems)-værktøjer designet til det
+  + QGis, ArcGIS osv.
+
+* Programmer som `R` er dog løbende blevet udvidet med pakker, der gør det muligt at klare alting i det samme stykke software, som man bruger til andre ting
+
+* Det er dobbelt smart, fordi man har alting ét sted og bygget op omkring kode, der kan ændres og opdateres
+
+* Vi vil kigge lidt på `sf`-pakken, der har gjort alting ret meget nemmere
+
+
+## A Blast from the past: {`sp`}
+
+```{r,echo=F, warning=FALSE,message=FALSE}
+library(tidyverse)
+library(janitor)
+library(sf)
+library(tmap)
+
+```
+
+
+* Det har tidligere været relativt besværligt at arbejde med spatialt data i `R`
+
+* `sp`-pakken var det førende framework, men selv simple datasæt var... irriterende:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.90\textwidth]{pictures/sp.png}
+\end{figure}
+
+
+## Din nye bedste ven: {`sf`}
+
+* Med `sf` er det blevet [smooth sailing](https://www.nickbearman.me.uk/2019/04/spatial-r-moving-from-sp-to-sf/). Den måde, pakken håndterer det _spatiale_ aspekt af et datasæt gør, at det ligner alle andre datasæt til forveksling:
+
+* Magien ligger i `geometry`-listen til sidst. Alt (!) andet er data frames/tibbles, som I kender dem
+
+
+```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
+library(tidyverse)
+library(sf)
+
+df <- st_read(dsn = "data/kommuner",
+              layer = "kommuner")
+```
+
+```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE}
+df
+
+```
+
+
+
+
+## Din nye bedste ven: {`sf`}
+
+Helt konkret giver `sf` os mulighed for at bruge simple `tidyverse`-funktioner til at:
+
+1. arbejde med data (`dplyr`, `tidyr` osv.)
+
+2. visualisere data! (`ggplot2`)
+
+Lad os prøve begge dele!
+
+\columnsbegin
+\column{.5\textwidth}
+```{r, echo=T, eval=FALSE, message=FALSE,warning=FALSE}
+
+# data wrangling med tidyverse (dplyr):
+df <- df %>% 
+  filter(region %in% c("Region Syddanmark", "Region Midtjylland"))
+
+# data viz med tidyverse (ggplot2):
+ggplot() +
+  geom_sf(data = df, aes(fill = region)) +
+  theme_void()
+
+```
+
+\column{.5\textwidth}
+```{r, echo=F, eval=T, message=FALSE,warning=FALSE}
+
+# data wrangling med tidyverse (dplyr):
+df <- df %>% 
+  filter(region %in% c("Region Syddanmark", "Region Midtjylland"))
+
+# data viz med tidyverse (ggplot2):
+ggplot() +
+  geom_sf(data = df, aes(fill = region)) +
+  theme_void()
+
+```
+\columnsend
+
+
+
+## Det er ikke magi!
+
+
+
+
 
 
 # Visualisering med {`ggplot2`}
