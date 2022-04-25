@@ -506,8 +506,19 @@ og/eller,
   størrelse osv. (`aesthetics')
 \item
   Tit arbejder vi (også i Epinion) med geografiske enheder uden at tænke
-  nærmere over det: danske skoler, valgkredse til FT-valg,
-  metrostationer i København, norske jerbaneruter osv.
+  nærmere over det:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    danske skoler,
+  \item
+    valgkredse til FT-valg,
+  \item
+    metrostationer i København,
+  \item
+    norske jerbaneruter osv.
+  \end{itemize}
 \item
   Her kan det (måske) give mening at visualisere nogle af sine pointer
   ved hjælp af geografiske datavisualiseringer
@@ -537,10 +548,17 @@ og/eller,
   der gør det muligt at klare alting i det samme stykke software, som
   man bruger til andre ting
 \item
+  Det er dobbelt smart, fordi man har alting ét sted og bygget op
+  omkring kode, der kan ændres og opdateres
+\item
+  Med \texttt{sf} er det blevet
+  \href{https://www.nickbearman.me.uk/2019/04/spatial-r-moving-from-sp-to-sf/}{smooth
+  sailing}. Den måde, pakken håndterer det \emph{spatiale} aspekt af et
+  datasæt gør, at det ligner alle andre datasæt til forveksling
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{A Blast from the past: \{\texttt{sp}\}}
+\begin{frame}[fragile]{A Blast from the Past: \{\texttt{sp}\}}
 \protect\hypertarget{a-blast-from-the-past-sp}{}
 \tiny
 
@@ -565,13 +583,10 @@ og/eller,
 \protect\hypertarget{din-nye-bedste-ven-sf}{}
 \begin{itemize}
 \item
-  Med \texttt{sf} er det blevet
-  \href{https://www.nickbearman.me.uk/2019/04/spatial-r-moving-from-sp-to-sf/}{smooth
-  sailing}. Den måde, pakken håndterer det \emph{spatiale} aspekt af et
-  datasæt gør, at det ligner alle andre datasæt til forveksling:
+  Lad os kigge på det og loade et datasæt over danske kommuner
 \item
-  Magien ligger i \texttt{geometry}-listen til sidst. Alt (!) andet er
-  data frames/tibbles, som I kender dem
+  Typisk vil spatialt data ligge gemt som shapefiles eller som
+  geojson-filer
 \end{itemize}
 
 \tiny
@@ -592,31 +607,27 @@ og/eller,
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{df}
+\FunctionTok{glimpse}\NormalTok{(df)}
 \end{Highlighting}
 \end{Shaded}
 
 \begin{verbatim}
-## Simple feature collection with 98 features and 3 fields
-## Geometry type: MULTIPOLYGON
-## Dimension:     XY
-## Bounding box:  xmin: 8.07251 ymin: 54.55908 xmax: 15.15738 ymax: 57.75257
-## Geodetic CRS:  WGS 84
-## First 10 features:
-##             navn dagi_id             region                       geometry
-## 1      København  389103 Region Hovedstaden MULTIPOLYGON (((12.54502 55...
-## 2  Frederiksberg  389104 Region Hovedstaden MULTIPOLYGON (((12.53735 55...
-## 3       Ballerup  389105 Region Hovedstaden MULTIPOLYGON (((12.3423 55....
-## 4        Brøndby  389106 Region Hovedstaden MULTIPOLYGON (((12.44279 55...
-## 5         Dragør  389107 Region Hovedstaden MULTIPOLYGON (((12.64513 55...
-## 6       Gentofte  389108 Region Hovedstaden MULTIPOLYGON (((12.59175 55...
-## 7       Gladsaxe  389109 Region Hovedstaden MULTIPOLYGON (((12.47771 55...
-## 8       Glostrup  389110 Region Hovedstaden MULTIPOLYGON (((12.41842 55...
-## 9         Herlev  389111 Region Hovedstaden MULTIPOLYGON (((12.40838 55...
-## 10   Albertslund  389112 Region Hovedstaden MULTIPOLYGON (((12.36431 55...
+## Rows: 98
+## Columns: 4
+## $ navn     <chr> "København", "Frederiksberg", "Ballerup", "Brøndby", "Dragør"~
+## $ dagi_id  <chr> "389103", "389104", "389105", "389106", "389107", "389108", "~
+## $ region   <chr> "Region Hovedstaden", "Region Hovedstaden", "Region Hovedstad~
+## $ geometry <MULTIPOLYGON [°]> MULTIPOLYGON (((12.54502 55..., MULTIPOLYGON (((~
 \end{verbatim}
 
 \normalsize
+
+\begin{itemize}
+\tightlist
+\item
+  Magien ligger i \texttt{geometry}-listen. Alt (!) andet er data
+  frames/tibbles, som I kender dem
+\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Din nye bedste ven: \{\texttt{sf}\}}
@@ -660,6 +671,10 @@ Lad os prøve begge dele!
 \includegraphics{crashcourse_slides_files/figure-beamer/unnamed-chunk-12-1.pdf}
 
 \normalsize \columnsend
+\end{frame}
+
+\begin{frame}{Det er ikke magi!}
+\protect\hypertarget{det-er-ikke-magi}{}
 \end{frame}
 
 \hypertarget{visualisering-med-ggplot2}{%

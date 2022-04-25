@@ -400,10 +400,10 @@ ggplot() +
 
 * Det er dobbelt smart, fordi man har alting ét sted og bygget op omkring kode, der kan ændres og opdateres
 
-* Vi vil kigge lidt på `sf`-pakken, der har gjort alting ret meget nemmere
+* Med `sf` er det blevet [smooth sailing](https://www.nickbearman.me.uk/2019/04/spatial-r-moving-from-sp-to-sf/). Den måde, pakken håndterer det _spatiale_ aspekt af et datasæt gør, at det ligner alle andre datasæt til forveksling
 
 
-## A Blast from the past: {`sp`}
+## A Blast from the Past: {`sp`}
 
 ```{r,echo=F, warning=FALSE,message=FALSE}
 library(tidyverse)
@@ -426,9 +426,7 @@ library(tmap)
 
 ## Din nye bedste ven: {`sf`}
 
-* Med `sf` er det blevet [smooth sailing](https://www.nickbearman.me.uk/2019/04/spatial-r-moving-from-sp-to-sf/). Den måde, pakken håndterer det _spatiale_ aspekt af et datasæt gør, at det ligner alle andre datasæt til forveksling:
-
-* Magien ligger i `geometry`-listen til sidst. Alt (!) andet er data frames/tibbles, som I kender dem
+* Lad os kigge på det! Til en start loader vi et datasæt over danske kommuner:
 
 
 ```{r, echo=T, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
@@ -444,6 +442,9 @@ df
 
 ```
 
+
+
+* Magien ligger i `geometry`-listen. Alt (!) andet er data frames/tibbles, som I kender dem
 
 
 
