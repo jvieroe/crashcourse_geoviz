@@ -29,47 +29,7 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 ```
 
 
-```{r, echo=F, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
-library(tidyverse)
-library(janitor)
-library(sf)
-library(tmap)
 
-regioner <- st_read(dsn = "data/regioner",
-                    layer = "regioner")
-
-kommuner <- st_read(dsn = "data/kommuner",
-                    layer = "kommuner")
-
-metrostop <- st_read(dsn = "data/metro_stops",
-                    layer = "metro_stops")
-
-metrolinjer <- st_read(dsn = "data/metro_lines",
-                       layer = "metro_lines")
-
-dsb <- readxl::read_xlsx("data/DSB_Stations_20201209.xlsm") %>% 
-  clean_names() %>% 
-  filter(!is.na(x) & !is.na(y)) %>% 
-  st_as_sf(coords = c("x", "y"),
-           crs = 4326) %>% 
-  st_intersection(.,
-                  regioner)
-
-rejser <- readRDS("data/rejsekortdata.rds")
-
-plot_df <- readRDS("data/plot_df.rds")
-
-vs <- readRDS("data/vs.rds")
-
-geo <- readRDS("data/geo.rds")
-
-kommuner_elec <- st_read(dsn = "data/kommuner_98",
-                         layer = "kommuner_98")
-
-
-
-
-```
 
 
 
@@ -160,6 +120,47 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 
 ## Hvorfor ikke bare bruge "klassiske" visualiseringer? (I)
 
+```{r, echo=F, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
+library(tidyverse)
+library(janitor)
+library(sf)
+library(tmap)
+
+regioner <- st_read(dsn = "data/regioner",
+                    layer = "regioner")
+
+kommuner <- st_read(dsn = "data/kommuner",
+                    layer = "kommuner")
+
+metrostop <- st_read(dsn = "data/metro_stops",
+                    layer = "metro_stops")
+
+metrolinjer <- st_read(dsn = "data/metro_lines",
+                       layer = "metro_lines")
+
+dsb <- readxl::read_xlsx("data/DSB_Stations_20201209.xlsm") %>% 
+  clean_names() %>% 
+  filter(!is.na(x) & !is.na(y)) %>% 
+  st_as_sf(coords = c("x", "y"),
+           crs = 4326) %>% 
+  st_intersection(.,
+                  regioner)
+
+rejser <- readRDS("data/rejsekortdata.rds")
+
+plot_df <- readRDS("data/plot_df.rds")
+
+vs <- readRDS("data/vs.rds")
+
+geo <- readRDS("data/geo.rds")
+
+kommuner_elec <- st_read(dsn = "data/kommuner_98",
+                         layer = "kommuner_98")
+
+
+
+
+```
 
 
 \columnsbegin
@@ -209,9 +210,12 @@ Typisk kan man med fordel (overveje at) visualisere sit data grafisk, hvis
 * Der er nogle __substantielle geografiske mønstre__ i data, der er interessante
 (case in point:)
 
-eller,
+og/eller,
 
-* Det data, vi gerne vil visualisere fundamentalt set har en geografisk dimension
+* Det data, vi gerne vil visualisere fundamentalt set har en tydelig geografisk dimension. Selvom der ikke er noget geografisk mønster. Her vil en geografisk fremstilling ikke bidrage substantielt men hjælpe modtageren med en klar reference
+
+
+Kort er fede, fordi de er de __eneste visualiseringer, hvor alle har en intuitiv forståelse af X- og Y-aksen__
 
 
 
