@@ -491,15 +491,7 @@ head(vshare)
 ```
 
 
-YYY
-```{r, eval=T,message=FALSE, warning=FALSE, results='hide'}
-region <- st_read(dsn = "data/regioner",
-                  layer = "regioner")
-```
 
-```{r, eval=T, warning=FALSE}
-head(region)
-```
 
 
 
