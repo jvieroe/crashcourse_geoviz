@@ -85,17 +85,21 @@ regioner <- st_read(dsn = "data/regioner",
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
 #### Load data
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, results='hide'}
 
 rivers <- st_read(dsn = "data/rivers",
                   layer = "rivers")
 
+
+
+```
+```{r, warning=FALSE, message=FALSE}
+
 class(rivers$geometry)
 
 ggplot() +
-  geom_sf(data = rivers)
-
-
+  geom_sf(data = rivers) +
+  theme_void()
 
 ```
 
@@ -155,11 +159,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
 
-## OpenStreet Map
+## OpenStreetMap
 
-Opgave: visualisér hjemby
 
 (alternativt, osm <- opq(bbox = 'Vejle, Denmark'))
+
+
 
 ## CRS: Projektioner af kloden
 > _"All models are wrong, but some are useful"_ <br> -- George Box

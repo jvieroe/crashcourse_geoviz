@@ -24,6 +24,28 @@ ggplot() +
   geom_sf(data = urbana)
 
 
+world <- ne_download(scale = 50,
+                      type = "countries") %>% 
+  st_as_sf()
+
+europe_bbox <- st_bbox(c(xmin = -12, xmax = 41, ymax = 71, ymin = 34), crs = st_crs(4326))
+
+europe <- world %>% 
+  st_crop(europe_bbox)
+
+europe <- europe %>% 
+  filter(REGION_UN == "Europe")
+
+
+tmap_mode("view")
+
+tm_shape(europe) +
+  tm_polygons()
+
+ggplot() +
+  geom_sf(data = europe)
+
+
 rivers <- rivers %>% 
   select(name, featurecla, ne_id)
 
@@ -42,3 +64,5 @@ st_write(urbana,
          delete_layer = TRUE,
          factorsAsCharacter = TRUE,
          driver = "ESRI Shapefile")
+
+
