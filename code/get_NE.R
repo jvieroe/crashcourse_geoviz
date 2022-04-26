@@ -65,4 +65,15 @@ st_write(urbana,
          factorsAsCharacter = TRUE,
          driver = "ESRI Shapefile")
 
+europe <- europe %>% 
+  select(cntry = SOVEREIGNT,
+         unit = ADMIN,
+         sub_re = SUBREGION)
 
+st_write(europe,
+         dsn = "data/europe",
+         layer = "europe",
+         encoding = "UTF-8",
+         delete_layer = TRUE,
+         factorsAsCharacter = TRUE,
+         driver = "ESRI Shapefile")
