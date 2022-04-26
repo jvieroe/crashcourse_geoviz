@@ -179,6 +179,8 @@ ggplot() +
   theme_void()
 
 ```
+
+
 Aha! Det er jo meget fedt, at vi har data på byer rundt i hele verden, men lige her gør det nok mere skade end gavn.
 
 Husk, at `tidyverse`-funktioner kan bruges på `sf`-datasæt, akkurat som på klassiske datasæt. Hvis der var en regionsvariabel i bydatasættet, kunne vi derfor let filtrere alt uden for Europa væk vha. `dplyr::filter()`. Det er der desværre ikke, så vi må ty til andre tricks.
@@ -290,8 +292,11 @@ Forskellen er jo ikke enorm, men den er klar! Hvis I arbejder med større datas�
 Nå, I digress. Tilbage til visualiseringen. Det nye `city_cntry` data kan vi let joine med vores landepolygoner med en simpel `left_join()`, og så er vi back in business!
 
 ```{r, warning=FALSE, message=FALSE}
-
 df_europe <- europe %>% 
+  group_by(cntry) %>% 
+  summarize()
+
+df_europe <- df_europe %>% 
   tidylog::left_join(.,
                      city_cntry,
                      by = "cntry")
@@ -352,14 +357,92 @@ ggplot() +
 ```
 
 
+Det eneste, der måske kan være lidt misvisende er, at vores befolkningsmål ikke er korrigeret for landenes areal. Det er heldigvis nemt at implementere med `st_area()` fra `sf`-pakken og lidt datarwrangling:
+
+
+```{r, warning=FALSE, message=FALSE}
+df_europe <- df_europe %>% 
+  mutate(poly_area = st_area(.)) %>% 
+  mutate(poly_area = unclass(poly_area))
+
+df_europe <- df_europe %>% 
+  mutate(relative_area = area/poly_area)
+
+ggplot() +
+  geom_sf(data = df_europe,
+          aes(fill = relative_area),
+          color = "white",
+          size = .01) +
+  scale_fill_viridis_c(name = "Urban Area as Share\n of Total Area") +
+  theme_void() +
+  guides(fill = guide_colorbar(direction = "vertical",
+                               barheight = 12,
+                               barwidth = .5))
+
+```
+
+Det tegner jo et lidt andet mønster.
+
+Lad os, for at vende tilbage til den oprindelige analyse, se om datasættet over floder kan bidrage lidt!
+
+```{r, warning=FALSE, message=FALSE}
+
+# beskær data til kun at dække Europa
+rivers <- rivers %>% 
+  st_intersection(.,
+                  df_europe)
+
+
+ggplot() +
+  geom_sf(data = df_europe,
+          aes(fill = relative_area),
+          color = "white",
+          size = .01) +
+  scale_fill_viridis_c(name = "Urban Area as Share\n of Total Area") +
+  geom_sf(data = rivers,
+          color = "orange") +
+  theme_void() +
+  guides(fill = guide_colorbar(direction = "vertical",
+                               barheight = 12,
+                               barwidth = .5))
+
+```
+
 
 ## Visualisér med `tmap`
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+Til de fleste formål vil `ggplot2` være bedre til at visualisere jeres spatiale data på. Syntaxen er også noget mindre logisk, selvom den overordnede struktur minder om `ggplot2`'s.
+
+`tmap` har dog en central fordel: det er eminent til at lave interaktive kort! 
+
+Af samme grund bruger jeg det flittigt, når jeg arbejder med/manipulerer data, fordi det gør det nemt at inspicere datakilder og -kvalitet:
+
+```{r, warning=FALSE, message=FALSE}
+# sæt til interaktiv visning
+tmap_mode("view")
+
+tm_shape(df_europe) +
+  tm_polygons(col = "relative_area", alpha = 0.85,
+              border.col = "white", lwd = .8) +
+  tm_shape(rivers) +
+  tm_lines(col = "steelblue")
+
+
+
+```
+
+
+Bemærk i øvrigt, at i modsætning til `geom_sf()` i `ggplot2`, skal `tmap` have specificeret typen af spatial data (med andre ord, hvilken geometry, der er  tale om).
 
 
 ## Læs og gem data
 
 xx
+
+
+<!-- tmap::tmap_save(html, -->
+<!--                 "kbh_kort.html") -->
+
 
 ## OpenStreetMap
 
