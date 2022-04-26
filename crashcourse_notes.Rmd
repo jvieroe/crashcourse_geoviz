@@ -322,7 +322,20 @@ ggplot() +
 
 ```
 
-Bum! Det var lige det, vi gerne ville have. Nu vi er i gang, kan vi godt prøve at gøre det lidt pænt.
+Bum! Det var lige det, vi gerne ville have. Men faktisk er det lidt dumt, at Rusland er med på kortet, når det ikke rigtigt er en del af Europa -- og fordi vi alligevel kun viser en lille del af det. Lad os fjerne det med en simpel `filter()`:
+
+```{r, warning=FALSE, message=FALSE}
+df_europe <- df_europe %>% 
+  filter(cntry != "Russia")
+
+ggplot() +
+  geom_sf(data = df_europe,
+          aes(fill = area)) +
+  theme_void()
+
+```
+
+Sådan! Nu vi er i gang, kan vi godt prøve at gøre det lidt pænt.
 
 ```{r, warning=FALSE, message=FALSE}
 ggplot() +
@@ -330,7 +343,11 @@ ggplot() +
           aes(fill = area),
           color = "white",
           size = .01) +
-  theme_void()
+  scale_fill_viridis_c(name = "Sum of Area (km^2)\n ofUrban Areas") +
+  theme_void() +
+  guides(fill = guide_colorbar(direction = "vertical",
+                               barheight = 12,
+                               barwidth = .5))
 
 ```
 
