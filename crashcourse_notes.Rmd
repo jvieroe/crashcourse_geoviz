@@ -18,7 +18,15 @@ subtitle: xx
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Dataviz vs kartografi
+## Pakker
+```{r, class.source = 'fold-show', warning=FALSE, message=FALSE}
+library(tidyverse)
+library(janitor)
+library(sf)
+library(tmap)
+library(rnaturalearth)
+
+```
 
 ## Datastrukturer
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
@@ -33,9 +41,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor
 
 #### Verden før `sf`
 
-Integer posuere cursus ullamcorper. Donec tincidunt ultrices rhoncus. Vivamus ex felis, iaculis eu erat vel, mollis sollicitudin massa. Nam a finibus nunc. Morbi a purus eget urna vestibulum accumsan. Phasellus scelerisque ipsum venenatis lobortis rhoncus. Maecenas mi ante, pretium vel dolor non, condimentum sollicitudin tellus. Mauris nibh est, convallis pharetra turpis quis, iaculis placerat nunc. Duis ut efficitur massa, in pellentesque nisi. Donec vulputate tristique vulputate. Integer a volutpat ante. Vivamus ornare, erat eu pellentesque ullamcorper, orci justo ultricies elit, at accumsan elit lectus ac nulla. In metus nibh, cursus non dictum at, consequat nec arcu.
+<center>
+```{r pressure, echo=FALSE, fig.cap="A caption", out.width = '100%'}
+knitr::include_graphics("pictures/sp.png")
+```
+</center>
 
-Cras efficitur porta nulla, quis dictum eros lacinia imperdiet. Nam condimentum, est ut consequat auctor, massa dui malesuada risus, sed congue augue lacus pulvinar leo. Nam eget semper neque, at lacinia elit. Aliquam sit amet augue lectus. Nunc.
 
 #### Where the magic happens: `df$geometry`
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
@@ -46,27 +57,53 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor
 ### `points`
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
+#### Load data
+```{r, warning=FALSE, message=FALSE}
+dsb <- readxl::read_xlsx("data/DSB_Stations_20201209.xlsm") %>% 
+  clean_names() %>% 
+  filter(!is.na(x) & !is.na(y)) %>% 
+  st_as_sf(coords = c("x", "y"),
+           crs = 4326)
+
+```
+
+
 
 ### `polygons`
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+#### Load data
+```{r, warning=FALSE, message=FALSE}
+regioner <- st_read(dsn = "data/regioner",
+                    layer = "regioner")
+
+```
+
 
 
 ### `lines`
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
+#### Load data
+```{r, warning=FALSE, message=FALSE}
+library(rnaturalearth)
+
+rivers <- ne_download(scale = 50,
+                      type = 'rivers_lake_centerlines',
+                      category = 'physical')
+
+rivers <- rivers %>% 
+  st_as_sf()
+
+ggplot() +
+  geom_sf(data = rivers)
+
+```
+
 
 ## Let's get started!
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
-```{r, class.source = 'fold-show', warning=FALSE, message=FALSE}
-library(tidyverse)
-library(sf)
-library(repinion)
-
-# Installér {repinion}, hvis du ikke har den:
-# devtools::install_github("jvieroe/repinion")
-
-```
 ### Indlæs data
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
