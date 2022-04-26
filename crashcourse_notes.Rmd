@@ -101,7 +101,8 @@ urbana <- st_read(dsn = "data/urbana",
 class(urbana$geometry)
 
 ggplot() +
-  geom_sf(data = urbana) +
+  geom_sf(data = urbana,
+          size = .01) +
   theme_void()
 
 ```
@@ -152,20 +153,196 @@ ggplot() +
 ```
 
 
-## Let's get started!
+## Visualisér med `ggplot2`
+
+Vi vil gerne vise størrelsen af urbane centre i Europa Vi har også en idé om, at mange større byer ligger tæt på floder, fordi det historisk set har været en fordel at være tæt på vand, fordi det gjorde handel lettere.
+
+Lad os starte med at vise kortet over Europa! Fordi vi bruger `sf`-pakken til det hele, kan vi bruge `tidyverse`-funktioner til at manipulere data med.
+
+Vi har ikke brug for at vise koordinater hen ad akserne, så vi bruger `theme_void()`:
+
+
+```{r, warning=FALSE, message=FALSE}
+ggplot() +
+  geom_sf(data = europe) +
+  theme_void()
+
+```
+
+Ikke dumt! Lad os tilføje vores data over byer. Det gør vi let ved at tilføje endnu en "geometry" til vores ``ggplot`:
+
+```{r, warning=FALSE, message=FALSE}
+
+ggplot() +
+  geom_sf(data = europe) +
+  geom_sf(data = urbana) +
+  theme_void()
+
+```
+Aha! Det er jo meget fedt, at vi har data på byer rundt i hele verden, men lige her gør det nok mere skade end gavn.
+
+Husk, at `tidyverse`-funktioner kan bruges på `sf`-datasæt, akkurat som på klassiske datasæt. Hvis der var en regionsvariabel i bydatasættet, kunne vi derfor let filtrere alt uden for Europa væk vha. `dplyr::filter()`. Det er der desværre ikke, så vi må ty til andre tricks.
+
+Heldigvis har `sf-pakken` en lang række værktøjer, der hjælper os med at manipulere data. Fx kan vi bruge `st_intersection()` til at beskære ét datasæt med et andet:
+
+```{r, warning=FALSE, message=FALSE}
+
+eu_cities <- urbana %>% 
+  st_intersection(.,
+                  europe)
+
+ggplot() +
+  geom_sf(data = europe) +
+  geom_sf(data = eu_cities,
+          size = .8) +
+  theme_void()
+
+
+```
+
+Meget bedre! Men, det bliver en smule tætpakket med alle de prikker. Lad os lege lidt med det visuelle:
+
+```{r, warning=FALSE, message=FALSE}
+
+ggplot() +
+  geom_sf(data = europe, fill = "white") +
+  geom_sf(data = eu_cities,
+          size = 1,
+          alpha = .5) +
+  theme_void()
+
+
+```
+
+Da vi beskar bydatasættet med shapefilen med Europa-kortet, tilføjede den automatisk data fra sidstnævnte. 
+
+
+```{r, warning=FALSE, message=FALSE}
+eu_cities
+```
+
+
+Det kan vi bruge til at tilføje flere farver til vores kort!
+
+
+```{r, warning=FALSE, message=FALSE}
+
+ggplot() +
+  geom_sf(data = europe, fill = "white") +
+  geom_sf(data = eu_cities,
+          aes(fill = sub_re),
+          shape = 21,
+          size = 1,
+          alpha = .5) +
+  theme_void()
+
+
+```
+
+
+Ikke dumt! Men det er stadig svært at udlede så meget substantielt. Lad os prøve noget nyt: bruge de data, vi fik smidt på byerne før til at summere nogle mere aggregerede mål. På den måde kan vi visualisere landene (polygoner) med information fra byerne (punkter).
+
+Bydatasættet har ikke data på population, men der er et mål for areal i kvadratmeter. Lad os antage, at det er en fin proxy for befolkning (her antager vi konstant befolkningstæthed, hvilket selvfølgelig ikke er korrekt, men lad os køre med det).
+
+Her har vi to spatiale datasæt:
+
+1. Et over lande (polygoner)
+2. Et over byer (punkter), med lande- og regionsvariable fra det første
+
+Det kan selvfølgelig kombineres! Igen, vi kan bruge alle de `tidyverse`-tricks vi kender og elsker.
+
+Fordi vi i sidste ende gerne vil visualisere polygonerne, har vi ikke brug for det spatiale element i bydatasættet. Det skal bare merges igen. Derfor _sletter vi `geometry`-listen_. Hvorfor ?
+
+1. `sf` vil  ikke merge to spatiale datasæt med en klassisk `*_join()`. Den vil meget hellere joine på det spatiale, men det har vi ikke brug for her
+2. Spatialt data er tungt. Som tommelfingerregel bør I derfor altid droppe `geometry`'en, når I ikke skal bruge den. Lad mig vise det nedenfor:
+
+
+```{r, warning=FALSE, message=FALSE}
+library(tictoc)
+
+# aggreger vores areal-variabel inden for lande med spatialt data
+tic()
+city_cntry <- eu_cities %>% 
+  group_by(cntry) %>% 
+  summarize(area = sum(area_sqkm)) %>% 
+  ungroup()
+toc()
+
+```
+```{r, warning=FALSE, message=FALSE}
+
+# aggreger vores areal-variabel inden for lande med ikke-spatialt data
+temp <- eu_cities %>% 
+  st_drop_geometry()
+
+tic()
+city_cntry <- temp %>% 
+  group_by(cntry) %>% 
+  summarize(area = sum(area_sqkm)) %>% 
+  ungroup()
+toc() ; rm(temp)
+
+```
+
+
+Forskellen er jo ikke enorm, men den er klar! Hvis I arbejder med større datasæt, kan det hurtigt blive en enorm fordel at tænke over, hvornår det spatiale aspekt af data mest bare er en hæmsko.
+
+Nå, I digress. Tilbage til visualiseringen. Det nye `city_cntry` data kan vi let joine med vores landepolygoner med en simpel `left_join()`, og så er vi back in business!
+
+```{r, warning=FALSE, message=FALSE}
+
+df_europe <- europe %>% 
+  tidylog::left_join(.,
+                     city_cntry,
+                     by = "cntry")
+
+```
+
+
+Det gik jo smooth! Vi kan dog se, at tre lande (i polygondatasættet) ikke blev merged med noget data. Det er sådan noget man altid lige skal tjekke (og derfor jeg ELSKER {`tidylog`}-pakken), men her er det bare fordi der ikke var nogle større byer. Lad os for god ordens skyld bruge den information til at erstatte `NA` med `0` i vores nye variabel:
+
+```{r, warning=FALSE, message=FALSE}
+
+df_europe <- df_europe %>% 
+  mutate(area = ifelse(is.na(area),
+                       0,
+                       area))
+
+```
+
+
+Nu kan vi lave vores nye kort!
+
+
+```{r, warning=FALSE, message=FALSE}
+ggplot() +
+  geom_sf(data = df_europe,
+          aes(fill = area)) +
+  theme_void()
+
+```
+
+Bum! Det var lige det, vi gerne ville have. Nu vi er i gang, kan vi godt prøve at gøre det lidt pænt.
+
+```{r, warning=FALSE, message=FALSE}
+ggplot() +
+  geom_sf(data = df_europe,
+          aes(fill = area),
+          color = "white",
+          size = .01) +
+  theme_void()
+
+```
+
+
+
+## Visualisér med `tmap`
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
 
+## Læs og gem data
 
-
-
-### Visualisér med `ggplot2`
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
-
-
-### Visualisér med `tmap`
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
-
+xx
 
 ## OpenStreetMap
 
@@ -252,4 +429,5 @@ xx
 
 ## Vil du vide mere?
 
-xx
+* [R for Data Science](https://r4ds.had.co.nz/)
+* [Geocomputation with R](https://geocompr.robinlovelace.net/)

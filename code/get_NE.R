@@ -20,6 +20,23 @@ urbana <- ne_download(scale = 10,
   st_as_sf()
 
 
+urbana <- urbana %>% 
+  st_centroid() %>% 
+  mutate(tmp = row_number())
+
+# urbana <- urbana %>% 
+#   mutate(tmp = row_number()) %>% 
+#   st_drop_geometry()
+# 
+# urbana_cents <- urbana_cents %>% 
+#   tidylog::left_join(.,
+#                      urbana,
+#                      by = "tmp")
+# 
+# rm(urbana)
+# 
+# urbana <- urbana_cents
+
 ggplot() +
   geom_sf(data = urbana)
 
