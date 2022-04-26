@@ -10,7 +10,6 @@ output:
     toc_float: yes
   pdf_document:
     toc: yes
-subtitle: xx
 ---
 
 
@@ -24,40 +23,120 @@ library(tidyverse)
 library(janitor)
 library(sf)
 library(tmap)
-library(rnaturalearth)
+
 
 ```
+## Det er nemt at visualisere spatialt data
 
-## Datastrukturer
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+... medmindre man ikke aner, hvordan man gør!
 
-Integer posuere cursus ullamcorper. Donec tincidunt ultrices rhoncus. Vivamus ex felis, iaculis eu erat vel, mollis sollicitudin massa. Nam a finibus nunc. Morbi a purus eget urna vestibulum accumsan. Phasellus scelerisque ipsum venenatis lobortis rhoncus. Maecenas mi ante, pretium vel dolor non, condimentum sollicitudin tellus. Mauris nibh est, convallis pharetra turpis quis, iaculis placerat nunc. Duis ut efficitur massa, in pellentesque nisi. Donec vulputate tristique vulputate. Integer a volutpat ante. Vivamus ornare, erat eu pellentesque ullamcorper, orci justo ultricies elit, at accumsan elit lectus ac nulla. In metus nibh, cursus non dictum at, consequat nec arcu.
+<center>
+```{r, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("pictures/first_map.png")
+```
+</center>
 
-Cras efficitur porta nulla, quis dictum eros lacinia imperdiet. Nam condimentum, est ut consequat auctor, massa dui malesuada risus, sed congue augue lacus pulvinar leo. Nam eget semper neque, at lacinia elit. Aliquam sit amet augue lectus. Nunc.
 
-### Din bedste ven: `sf`
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+## Din nye bedste ven: `sf`
 
+* Den typiske måde at lege med spatialt data på er vha. GIS (Geographic Information Systems)-værktøjer designet til det
+  + QGis, ArcGIS osv.
+
+* Programmer som `R` er dog løbende blevet udvidet med pakker, der gør det muligt at klare alting i det samme stykke software, som man bruger til andre ting
+
+* Det er dobbelt smart, fordi man har alting ét sted og bygget op omkring kode, der kan ændres og opdateres
+
+* Med `sf` er det blevet [smooth sailing](https://www.nickbearman.me.uk/2019/04/spatial-r-moving-from-sp-to-sf/). Den måde, pakken håndterer det _spatiale_ aspekt af et datasæt gør, at det ligner alle andre datasæt til forveksling
+
+* I kan kende næsten alle `sf`-funktioner på deres `st_*`-prefix (fx `st_cast()`)
 
 ### Verden før `sf`
 
 <center>
-```{r pressure, echo=FALSE, fig.cap="Data ifølge {sp}", out.width = '100%'}
+```{r, echo=FALSE, fig.cap="Data ifølge {sp}", out.width = '100%'}
 knitr::include_graphics("pictures/sp.png")
 ```
 </center>
 
 
+
+### Læs og gem data
+Spatialt data opbevares typisk enten som
+
+1. Rå-data (ikke-spatialt format) men med `x, y`-koordinater
+  + For alt andet end punktdata, kan det godt være lidt irriterende at arbejde med, fordi det så skal "samles" korrekt. Sidstnævnte støder I heldigvis sjældent på
+2. `geojson`
+  + Har jeg faktisk aldrig brugt til lokale filer, kun til at læse ind online
+3. `shapefile`
+  + Faktisk et lidt misvisende navn, fordi shapefiles består af flere filer
+  + Jeg vil anbefale at opbevare hver "fil" (sæt af filer) i en separat mappe med samme navn som filerne
+
+<center>
+```{r, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("pictures/europe_shapefile.png")
+```
+</center>
+
+
+I kan læse `geojson`-filer med `sf::read_sf``:
+
+```{r, warning=FALSE, message=FALSE}
+url <- 
+  "https://api.dataforsyningen.dk/kommuner?format=geojson"
+
+kommuner_raw <- 
+  read_sf(url)
+
+rm(kommuner_raw)
+
+```
+
+
+Til shapefiles foretrækker (plejer?) jeg at bruge `sf::st_read()`. Her angiver `dsn` den mappe, jeres (flere!) filer ligger i. `layer` angiver navnet, de forskellige filer har til fælles (dvs. alt undtagen endelser, fx `.shp`)
+
+```{r, warning=FALSE, message=FALSE}
+europe <- st_read(dsn = "data/europe",
+                  layer = "europe")
+
+```
+
+I kan gemme jeres shapefiles ved hjælp af `sf::st_write()`:
+
+```{r, warning=FALSE, message=FALSE}
+st_write(europe,
+         dsn = "data/europe",
+         layer = "europe",
+         encoding = "UTF-8",
+         delete_layer = TRUE,
+         factorsAsCharacter = TRUE,
+         driver = "ESRI Shapefile")
+
+
+```
+
+
+
 ### Where the magic happens: `df$geometry`
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+Det smarte ved `sf`'s måde at opbevare spatialt data på er, at ALT det spatiale ligger i den liste, der hedder `geometry`. Den er også "fredet", og man kan ikke slette den med `select()`. Hvis man vil af med den (og det vil man af og til, det vender vi tilbage til!), er der en specifik måde til det.
+
+Udover `geometry` ligner spatiale datasæt en `tibble` som I kender dem. Bemærk, at `sf` tilføjer geografisk metadata, når I printer datasættet (inkl. CRS, datatype og geografisk omfang, `bounding box`)
+
+```{r, warning=FALSE, message=FALSE}
+europe
+
+```
+
 
 
 ### Der er intet mystisk eller unikt ved "spatialt" data
 
 
 ```{r, warning=FALSE, message=FALSE}
-tribble(~lat, ~lon,
-        55.71372762470475, 9.556222451831141)
+tribble(~name,~n_champs,~lat, ~lon,
+        "Vejle Boldklub",5,55.71372762470475, 9.556222451831141,
+        "Aarhus Gymnastikforening",5,56.13193948661876, 10.196519237914524,
+        "AC Horsens",0,55.87162048058711, 9.857707600274574)
 
 
 ```
@@ -83,12 +162,9 @@ tm_shape(df) +
 
 
 ## Datatyper
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
 ### `points`
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
-#### Load data
 ```{r, warning=FALSE, message=FALSE, results='hide'}
 urbana <- st_read(dsn = "data/urbana",
                   layer = "urbana")
@@ -109,9 +185,7 @@ ggplot() +
 
 
 ### `lines`
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
-#### Load data
 ```{r, warning=FALSE, message=FALSE, results='hide'}
 
 rivers <- st_read(dsn = "data/rivers",
@@ -133,9 +207,7 @@ ggplot() +
 
 
 ### `polygons`
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
-#### Load data
 ```{r, warning=FALSE, message=FALSE, results='hide'}
 europe <- st_read(dsn = "data/europe",
                   layer = "europe")
@@ -155,9 +227,13 @@ ggplot() +
 
 ## Visualisér med `ggplot2`
 
-Vi vil gerne vise størrelsen af urbane centre i Europa Vi har også en idé om, at mange større byer ligger tæt på floder, fordi det historisk set har været en fordel at være tæt på vand, fordi det gjorde handel lettere.
+Vi vil gerne vise størrelsen af urbane centre i Europa 
 
-Lad os starte med at vise kortet over Europa! Fordi vi bruger `sf`-pakken til det hele, kan vi bruge `tidyverse`-funktioner til at manipulere data med.
+Vi har også en idé om, at mange større byer ligger tæt på floder, fordi det historisk set har været en fordel at være tæt på vand, fordi det gjorde handel lettere.
+
+Lad os starte med at vise kortet over Europa! 
+
+Fordi vi bruger `sf`-pakken til det hele, kan vi bruge `tidyverse`-funktioner til at manipulere data med -- og `ggplot2` til at visualisere det!
 
 Vi har ikke brug for at vise koordinater hen ad akserne, så vi bruger `theme_void()`:
 
@@ -407,6 +483,10 @@ ggplot() +
                                barwidth = .5))
 
 ```
+```{r, warning=FALSE, message=FALSE}
+ggsave(plot = last_plot(),
+       filename = "plots/europe_static.png")
+```
 
 
 ## Visualisér med `tmap`
@@ -435,19 +515,21 @@ tm_shape(df_europe) +
 Bemærk i øvrigt, at i modsætning til `geom_sf()` i `ggplot2`, skal `tmap` have specificeret typen af spatial data (med andre ord, hvilken geometry, der er  tale om).
 
 
-## Læs og gem data
+```{r, warning=FALSE, message=FALSE}
+html <- tm_shape(df_europe) + 
+  tm_polygons(col = "relative_area", alpha = 0.85,
+              border.col = "white", lwd = .8) +
+  tm_shape(rivers) +
+  tm_lines(col = "steelblue")
 
-xx
+tmap::tmap_save(html,
+                "plots/europe_interactive.html")
 
 
-<!-- tmap::tmap_save(html, -->
-<!--                 "kbh_kort.html") -->
+```
 
 
-## OpenStreetMap
 
-
-(alternativt, osm <- opq(bbox = 'Vejle, Denmark'))
 
 
 
@@ -519,15 +601,18 @@ For mere information om brug af CRS'er i R, se:
 * [Choosing a projection](http://www.geo.hunter.cuny.edu/~jochen/gtech201/lectures/lec6concepts/map%20coordinate%20systems/how%20to%20choose%20a%20projection.htm)
 
 
-## Data wrangling
+<!-- ## Data wrangling -->
 
-### `st_cast` og `MULTI*`-klassen
+<!-- Der er en række funktioner, I højst sandsynligt vil finde brugbare, hvis I skal lege med spatiale datakilder. -->
 
-xx
+<!-- Nedenfor har jeg listet nogle af de mest centrale: -->
+
+<!-- * `st_cast()`: omformatér jeres data -->
+<!-- * `st_transform()`: omprojicér jeres data med en (ny) CRS -->
 
 
 
 ## Vil du vide mere?
 
-* [R for Data Science](https://r4ds.had.co.nz/)
-* [Geocomputation with R](https://geocompr.robinlovelace.net/)
+* [R for Data Science af Hadley Wickham](https://r4ds.had.co.nz/)
+* [Geocomputation with R af Robin Lovelace](https://geocompr.robinlovelace.net/)

@@ -126,6 +126,51 @@ Jeg kommer __ikke__ til at snakke (så meget) om:
 ## Hvorfor skal vi arbejde med spatialt data?
 
 
+```{r, echo=F, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
+library(tidyverse)
+library(janitor)
+library(sf)
+library(tmap)
+
+regioner <- st_read(dsn = "data/regioner",
+                    layer = "regioner")
+
+kommuner <- st_read(dsn = "data/kommuner",
+                    layer = "kommuner")
+
+metrostop <- st_read(dsn = "data/metro_stops",
+                    layer = "metro_stops")
+
+metrolinjer <- st_read(dsn = "data/metro_lines",
+                       layer = "metro_lines")
+
+dsb <- readxl::read_xlsx("data/DSB_Stations_20201209.xlsm") %>% 
+  clean_names() %>% 
+  filter(!is.na(x) & !is.na(y)) %>% 
+  st_as_sf(coords = c("x", "y"),
+           crs = 4326) %>% 
+  st_intersection(.,
+                  regioner)
+
+rejser <- readRDS("data/rejsekortdata.rds")
+
+plot_df <- readRDS("data/plot_df.rds")
+
+vs <- readRDS("data/vs.rds")
+
+geo <- readRDS("data/geo.rds")
+
+kommuner_elec <- st_read(dsn = "data/kommuner_98",
+                         layer = "kommuner_98")
+
+
+dk <- st_read(dsn = "data/dk",
+              layer = "dk")
+
+
+
+
+```
 
 \columnsbegin
 \column{.5\textwidth}
@@ -163,6 +208,7 @@ ggplot() +
 
 
 ## Hvorfor skal vi arbejde med spatialt data?
+
 
 
 \columnsbegin
@@ -229,51 +275,7 @@ ggplot() +
 
 ## Hvad er (geo)spatialt data?
 
-```{r, echo=F, eval=TRUE, message=FALSE,warning=FALSE, results='hide'}
-library(tidyverse)
-library(janitor)
-library(sf)
-library(tmap)
 
-regioner <- st_read(dsn = "data/regioner",
-                    layer = "regioner")
-
-kommuner <- st_read(dsn = "data/kommuner",
-                    layer = "kommuner")
-
-metrostop <- st_read(dsn = "data/metro_stops",
-                    layer = "metro_stops")
-
-metrolinjer <- st_read(dsn = "data/metro_lines",
-                       layer = "metro_lines")
-
-dsb <- readxl::read_xlsx("data/DSB_Stations_20201209.xlsm") %>% 
-  clean_names() %>% 
-  filter(!is.na(x) & !is.na(y)) %>% 
-  st_as_sf(coords = c("x", "y"),
-           crs = 4326) %>% 
-  st_intersection(.,
-                  regioner)
-
-rejser <- readRDS("data/rejsekortdata.rds")
-
-plot_df <- readRDS("data/plot_df.rds")
-
-vs <- readRDS("data/vs.rds")
-
-geo <- readRDS("data/geo.rds")
-
-kommuner_elec <- st_read(dsn = "data/kommuner_98",
-                         layer = "kommuner_98")
-
-
-dk <- st_read(dsn = "data/dk",
-              layer = "dk")
-
-
-
-
-```
 
 
 * "Spatial data" er basically alt data, hvor observationer har en form for placering/relation ift. hinanden
