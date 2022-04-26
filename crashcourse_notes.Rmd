@@ -86,17 +86,16 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor
 
 #### Load data
 ```{r, warning=FALSE, message=FALSE}
-library(rnaturalearth)
 
-rivers <- ne_download(scale = 50,
-                      type = 'rivers_lake_centerlines',
-                      category = 'physical')
+rivers <- st_read(dsn = "data/rivers",
+                  layer = "rivers")
 
-rivers <- rivers %>% 
-  st_as_sf()
+class(rivers$geometry)
 
 ggplot() +
   geom_sf(data = rivers)
+
+
 
 ```
 

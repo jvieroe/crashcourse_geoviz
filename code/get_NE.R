@@ -8,6 +8,7 @@ rivers <- ne_download(scale = 10,
                       category = 'physical') %>% 
   st_as_sf()
 
+
 ggplot() +
   geom_sf(data = rivers)
 
@@ -23,7 +24,8 @@ ggplot() +
   geom_sf(data = urbana)
 
 
-
+rivers <- rivers %>% 
+  select(name, featurecla, ne_id)
 
 st_write(rivers,
          dsn = "data/rivers",
