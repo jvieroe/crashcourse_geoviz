@@ -39,17 +39,48 @@ Cras efficitur porta nulla, quis dictum eros lacinia imperdiet. Nam condimentum,
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
 
-#### Verden før `sf`
+### Verden før `sf`
 
 <center>
-```{r pressure, echo=FALSE, fig.cap="A caption", out.width = '100%'}
+```{r pressure, echo=FALSE, fig.cap="Data ifølge {sp}", out.width = '100%'}
 knitr::include_graphics("pictures/sp.png")
 ```
 </center>
 
 
-#### Where the magic happens: `df$geometry`
+### Where the magic happens: `df$geometry`
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+
+### Der er intet mystisk eller unikt ved "spatialt" data
+
+
+```{r, warning=FALSE, message=FALSE}
+tribble(~lat, ~lon,
+        55.71372762470475, 9.556222451831141)
+
+
+```
+
+```{r, warning=FALSE, message=FALSE}
+df <- tribble(~name,~n_champs,~lat, ~lon,
+              "Vejle Boldklub",5,55.71372762470475, 9.556222451831141,
+              "Aarhus Gymnastikforening",5,56.13193948661876, 10.196519237914524,
+              "AC Horsens",0,55.87162048058711, 9.857707600274574)
+
+df <- df %>% 
+  st_as_sf(coords = c("lon", "lat"),
+           crs = 4326)
+
+tmap_mode("view")
+
+tm_shape(df) +
+  tm_bubbles(size = 2,
+             col = "n_champs")
+
+```
+
+
 
 ## Datatyper
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
@@ -58,27 +89,22 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
 #### Load data
-```{r, warning=FALSE, message=FALSE}
-dsb <- readxl::read_xlsx("data/DSB_Stations_20201209.xlsm") %>% 
-  clean_names() %>% 
-  filter(!is.na(x) & !is.na(y)) %>% 
-  st_as_sf(coords = c("x", "y"),
-           crs = 4326)
+```{r, warning=FALSE, message=FALSE, results='hide'}
+urbana <- st_read(dsn = "data/urbana",
+                  layer = "urbana")
 
 ```
 
 
-
-### `polygons`
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
-
-#### Load data
 ```{r, warning=FALSE, message=FALSE}
-regioner <- st_read(dsn = "data/regioner",
-                    layer = "regioner")
+
+class(urbana$geometry)
+
+ggplot() +
+  geom_sf(data = urbana) +
+  theme_void()
 
 ```
-
 
 
 ### `lines`
@@ -91,8 +117,9 @@ rivers <- st_read(dsn = "data/rivers",
                   layer = "rivers")
 
 
-
 ```
+
+
 ```{r, warning=FALSE, message=FALSE}
 
 class(rivers$geometry)
@@ -104,51 +131,32 @@ ggplot() +
 ```
 
 
+### `polygons`
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
+
+#### Load data
+```{r, warning=FALSE, message=FALSE, results='hide'}
+europe <- st_read(dsn = "data/europe",
+                  layer = "europe")
+
+```
+
+```{r, warning=FALSE, message=FALSE}
+
+class(europe$geometry)
+
+ggplot() +
+  geom_sf(data = europe) +
+  theme_void()
+
+```
+
+
 ## Let's get started!
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
-### Indlæs data
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus blandit dolor non quam vestibulum condimentum. Praesent ut est ornare quam eleifend faucibus vel vitae eros. Etiam vel velit eget metus euismod tincidunt. Nunc mattis augue in ante euismod, quis fermentum arcu tincidunt. Cras a erat magna. Vestibulum egestas enim vel nibh suscipit, ac fringilla lorem ullamcorper. Proin nibh neque, efficitur luctus mi at, lobortis gravida neque.
 
 
-```{r}
-plot(pressure)
-```
-
-### temp
-
-Et eller andet sted: afmystificer!
-
-
-```{r, class.source = 'fold-show', warning=FALSE, message=FALSE}
-library(tidyverse)
-library(sf)
-library(tmap)
-
-tmap_mode("view")
-
-tribble(~lat, ~lon,
-        55.71372762470475, 9.556222451831141)
-
-
-```
-```{r, class.source = 'fold-show', warning=FALSE, message=FALSE}
-vb <- tribble(~lat, ~lon,
-              55.71372762470475, 9.556222451831141) %>% 
-  st_as_sf(coords = c("lon", "lat"),
-           crs = 4326)
-
-ggplot() +
-  geom_sf(data = vb, size = 2, col = "#a71d2a")
-
-```
-
-
-```{r, class.source = 'fold-show', warning=FALSE, message=FALSE}
-tm_shape(vb) +
-  tm_dots(siz = .5, col = "#a71d2a")
-
-```
 
 
 ### Visualisér med `ggplot2`
